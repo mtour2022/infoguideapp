@@ -1,4 +1,209 @@
-#root {
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet');
+
+/* Body Reset */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Text Default */
+body {
+  font-family: 'Inter', sans-serif !important;
+}
+
+.col {
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+.row {
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+
+.subtitle {
+  color: black;
+  text-align: start;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 20px; /* 142.857% */
+}
+
+.caption {
+  text-align: start;
+  font-size: 10px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 20px; /* 142.857% */
+}
+
+/* containers */
+.container,
+.container-fluid {
+  padding: 0 !important;
+  margin: 0 !important;
+  width: 100% !important;
+  max-width: 100% !important;
+}
+
+.body-container {
+  padding: 50px 20px !important; /* Default padding for small screens */
+}
+
+@media (min-width: 768px) { /* Medium screens and above */
+  .body-container {
+    padding: 50px 25px !important;
+  }
+}
+
+@media (min-width: 1200px) { /* Large screens and above */
+  .body-container {
+    padding: 50px 50px !important;
+  }
+}
+
+.empty-container {
+  height: 25px;
+}
+
+/* text */
+.title {
+  color: #1F89B2;
+  text-align: center;
+  font-size: 36px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 55px; /* 152.778% */
+  letter-spacing: 0.36px;
+}
+
+
+.custom-form {
+  border-radius: 15px !important;
+  background: #FFF !important;
+  box-shadow: 0px 5px 10px 0px rgba(0, 0, 0, 0.15) !important;
+  padding: 20px; /* Adds spacing inside the form */
+  max-width: 100%; /* Adjust width as needed */
+}
+
+
+.column {
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+.row {
+  margin-right: 0 !important;
+  margin-left: 0 !important;
+}
+
+
+/* AppNavBar.css */
+.navbar {
+  background-color: white !important;
+  border-bottom: 1px solid #E1E1E1 !important;
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1) !important;
+  font-family: 'Poppins', sans-serif !important;
+  color: black !important;
+  font-size: small !important;
+} 
+
+.navbar-brand img {
+  height: 30px !important;
+}
+
+.navbar-toggler {
+  border: none !important;
+}
+
+.navbar .navlink {
+  font-size: small !important;
+  color: black !important;
+  font-weight: 500 !important;
+}
+
+.navbar .navlink:hover {
+  color: #1F89B2 !important; /* Blue hover effect */
+
+}
+
+.sustainable {
+  font-size: small !important;
+  color: rgb(15, 147, 65) !important;
+  font-weight: 500 !important;
+}
+
+.sustainable:hover {
+  color: #1F89B2 !important; /* Blue hover effect */
+
+}
+
+.notification {
+  font-size: small !important;
+  color: rgb(236, 178, 6) !important;
+  font-weight: 500 !important;
+}
+
+.notification:hover {
+  color: #1F89B2 !important; /* Blue hover effect */
+
+}
+
+
+
+
+
+.navlink-inner {
+  font-size: small !important;
+  color: black !important;
+  background-color: white !important;
+  font-weight: 500 !important;
+}
+
+/* Change dropdown title color */
+.navbar .nav-item .nav-link.dropdown-toggle {
+  color: black !important; /* Default color */
+  font-weight: 500 !important;
+}
+
+/* Change dropdown title color on hover */
+.navbar .nav-item .nav-link.dropdown-toggle:hover {
+  color: #1F89B2 !important; /* Blue hover effect */
+}
+
+
+.navlink-inner:hover {
+  color: #1F89B2 !important; /* Darker blue on hover */
+}
+
+.navlink-title {
+  font-size: small !important;
+  color: black !important;
+  background-color: white !important;
+  font-weight: 500 !important;
+}
+
+.navlink-title:hover {
+  color: #1F89B2 !important; /* Darker blue on hover */
+}
+
+
+
+/* Remove dropdown borders for md (768px) and sm (576px) screens */
+@media (max-width: 991px) { /* Bootstrap md breakpoint (992px and below) */
+  .dropdown-menu {
+    border: none !important;
+    box-shadow: none !important;
+  }
+}
+
+
+
+/* NEW CODES UP HERE */
+/* #root {
   max-width: 1280px;
   margin: 0 auto;
   padding: 2rem;
@@ -39,4 +244,4 @@
 
 .read-the-docs {
   color: #888;
-}
+} */

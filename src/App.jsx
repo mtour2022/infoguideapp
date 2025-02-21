@@ -1,35 +1,43 @@
-import { useState } from 'react'
 import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 import './App.css'
+import { Container } from 'react-bootstrap';
+import { Navigate } from 'react-router-dom';
+import { BrowserRouter as Router } from 'react-router-dom';
+import { Route, Routes } from 'react-router-dom';
+import NotFound from './pages/NotFound.jsx';
+import Home from './pages/Home.jsx';
+import { useState, useContext } from 'react';
+import { AuthProvider, useAuth} from './auth/authentication.jsx';
+import AppNavBar from './components/AppNavBar';
+import AddStories from './admin/AddStories';
 
-function App() {
-  const [count, setCount] = useState(0)
+function PrivateRoute({ element, ...rest }) {
+  const { userLoggedIn } = useAuth();
 
-  return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+  return userLoggedIn ? (
+    element
+  ) : (
+    <Navigate to="/*" replace={true} />
+  );
 }
 
-export default App
+function App() {
+  return (
+    < AuthProvider>
+      <Router>  
+        <AppNavBar />
+          <Container fluid>
+            <Routes>
+              {/* <Route path="/" element={<Home />}/> */}
+              <Route path="/" element={<AddStories />}/>
+              <Route path="/home" element={<Home />}/>
+              <Route path="*" element={<NotFound />}/>
+            </Routes>
+          </Container >
+      </Router>
+    </AuthProvider>
+  );  
+}
+
+export default App;
