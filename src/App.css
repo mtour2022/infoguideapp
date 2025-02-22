@@ -22,7 +22,6 @@ body {
   padding: 0 !important;
 }
 
-
 .subtitle {
   color: black;
   text-align: start;
@@ -72,14 +71,29 @@ body {
 /* text */
 .title {
   color: #1F89B2;
-  text-align: center;
+  text-align: start;
   font-size: 36px;
   font-style: normal;
-  font-weight: 600;
-  line-height: 55px; /* 152.778% */
-  letter-spacing: 0.36px;
+  font-weight: bold;
 }
 
+.label {
+  color: #1f1f1f;
+  text-align: start;
+  font-size: 21px;
+  font-style: normal;
+  font-weight: bold;
+  letter-spacing: 1px;
+}
+
+.subtitle {
+  color: #1f1f1f;
+  text-align: start;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 20px; /* 142.857% */
+}
 
 .custom-form {
   border-radius: 15px !important;
@@ -89,16 +103,52 @@ body {
   max-width: 100%; /* Adjust width as needed */
 }
 
-
-.column {
-  margin: 0 !important;
-  padding: 0 !important;
+.dropzone-container-big {
+  background-color: #f7fdff !important;
+  min-height: 400px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  border-style: dashed !important;
+  cursor: pointer !important;
+  border-radius: 10px !important;
+  border-color: #1F89B2 !important;
+  border-width: 1.5px !important;
 }
 
-.row {
-  margin-right: 0 !important;
-  margin-left: 0 !important;
+.dropzone-uploaded-image-big {
+  width: 100%;   /* Ensures the image fills the entire width */
+  height: auto;  /* Keeps aspect ratio */
+  border-radius: 10px !important;
+  max-height: 400px; /* Ensures it doesn't exceed 400px */
+  min-height: 400px; /* Ensures it stays at least 400px */
+  object-fit: cover; /* Fills the container while maintaining aspect ratio */
 }
+
+.dropzone-container-small {
+  background-color: #f7fdff !important;
+  min-height: 200px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  border-style: dashed !important;
+  cursor: pointer !important;
+  border-radius: 10px !important;
+  border-color: #1F89B2 !important;
+  border-width: 1.5px !important;
+}
+
+.dropzone-uploaded-image-small {
+  width: 100%;   /* Ensures the image fills the entire width */
+  border-radius: 10px !important;
+  height: auto;  /* Keeps aspect ratio */
+  max-height: 200px; /* Ensures it doesn't exceed 400px */
+  min-height: 200px; /* Ensures it stays at least 400px */
+  object-fit: cover; /* Fills the container while maintaining aspect ratio */
+}
+
+
+
 
 
 /* AppNavBar.css */
