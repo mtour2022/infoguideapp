@@ -7,7 +7,7 @@ import { useDropzone } from "react-dropzone"; // Dropzone for image upload
 import Swal from "sweetalert2";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrash, faPlus, faCirclePlay, faCirclePlus, faCancel} from '@fortawesome/free-solid-svg-icons';
-import RichTextEditor from '../components/TextEditor'; // adjust the path as needed
+import RichTextEditor from './TextEditor'; // adjust the path as needed
 
 // Dropzone component for handling each body section's image drop
 const BodyImageDropzone = ({ index, section, onBodyImageDrop }) => {
@@ -263,12 +263,9 @@ export default function StoryForm() {
     // }, []);
 
     return (
-        <Container className="p-6 max-w-lg mx-auto bg-white rounded-xl shadow-md body-container">
             <Form className="custom-form body-container" onSubmit={handleSubmit}>
                 <h2 className="text-2xl font-bold mb-4">Submit an Article</h2>
-
                 <Row className="d-flex flex-md-row flex-column">
-                
                     <Col className="col me-lg-2 me-md-1">
                         <Form.Group className="mb-3">
                             <Form.Label className="label">Classification</Form.Label>
@@ -612,6 +609,5 @@ export default function StoryForm() {
                     </Button>
                 </Container>
             </Form>
-        </Container>
     );
 }

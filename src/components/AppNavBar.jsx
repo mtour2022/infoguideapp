@@ -1,10 +1,10 @@
 import { Container, Navbar, Nav, Image, NavDropdown, Accordion  } from 'react-bootstrap';
 import logo from'../assets/images/logo_with_title.png';
 import { Link, NavLink } from 'react-router-dom';
-// import { useAuth } from '../auth/authentication.js';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBell, faLeaf} from '@fortawesome/free-solid-svg-icons';
-// import WeatherNav from './Weather';
+import WeatherNav from './Weather';
+// import { useAuth } from '../auth/authentication.js';
 
 
 
@@ -12,10 +12,6 @@ import { faBell, faLeaf} from '@fortawesome/free-solid-svg-icons';
 
 export default function AppNavBar() {
   // const { userLoggedIn } = useAuth();
-
-
-
-
 
   return (
     <Navbar expand="lg" className='px-4 px-md-10 px-lg-4 navbar'>
@@ -27,7 +23,9 @@ export default function AppNavBar() {
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="ms-auto">
             {/* <WeatherNav /> */}
+            {/* <WeatherNav></WeatherNav> */}
             <Nav.Link className='ms-lg-2 navlink' as={NavLink} to="/">Home</Nav.Link>
+            <Nav.Link className='ms-lg-2 navlink' as={NavLink} to="/">Tourism Stories</Nav.Link>
             <NavDropdown className='ms-lg-2 navlink' title="Experience" id="basic-nav-dropdown">
               <NavDropdown className='ms-lg-2 me-lg-2 ms-md-2 ms-sm-2 navlink' title="Hospitality & Lodging" id="basic-nav-dropdown">
                     <NavDropdown.Item as={NavLink} className=' navlink-inner'>
@@ -55,11 +53,11 @@ export default function AppNavBar() {
               <NavDropdown.Divider />
               <NavDropdown className='ms-lg-2 me-lg-2 ms-md-2 ms-sm-2  navlink' title="Tourism & Leisure" id="basic-nav-dropdown">
                     <NavDropdown.Item as={NavLink} className='navlink-inner'>
-                      Travel & Tour Operators
+                      Tour Guides
                     </NavDropdown.Item>
                     <NavDropdown.Divider />
                     <NavDropdown.Item as={NavLink} className='navlink-inner'>
-                      Tour Guides
+                      Travel & Tour Operators
                     </NavDropdown.Item>
                     <NavDropdown.Divider />
                     <NavDropdown.Item as={NavLink} className='navlink-inner'>
@@ -102,6 +100,12 @@ export default function AppNavBar() {
                       Parking Spaces
                     </NavDropdown.Item>
               </NavDropdown>
+              <NavDropdown.Divider />
+              <NavDropdown className='ms-lg-2 me-lg-2 navlink' title="Medical" id="basic-nav-dropdown">
+                <Nav.Link className='ms-lg-2 me-lg-2 ms-md-2 ms-sm-2  navlink' as={NavLink} to="/">Clinics & Hospitals</Nav.Link>
+                <NavDropdown.Divider /> 
+                <Nav.Link className='ms-lg-2 me-lg-2 ms-md-2 ms-sm-2  navlink' as={NavLink} to="/">Vertinery Clinics</Nav.Link>
+              </NavDropdown>
                 
               <NavDropdown.Divider />
               <Nav.Link className='ms-lg-2 me-lg-2 ms-md-2 ms-sm-2  navlink' as={NavLink} to="/">Activities</Nav.Link>
@@ -124,11 +128,13 @@ export default function AppNavBar() {
               <NavDropdown.Divider />
               <Nav.Link className='ms-lg-2 me-lg-2 ms-md-2 ms-sm-2  navlink' as={NavLink} to="/">Life Style & Facilities</Nav.Link>
               <NavDropdown.Divider />
+              <Nav.Link className='ms-lg-2 me-lg-2 ms-md-2 ms-sm-2  navlink' as={NavLink} to="/">Virtual Tour Guide</Nav.Link>
+              <NavDropdown.Divider />
               <Nav.Link className='ms-lg-2 me-lg-2 ms-md-2 ms-sm-2  navlink' as={NavLink} to="/">Helpful Links</Nav.Link>
               <NavDropdown.Divider />
               <Nav.Link className='ms-lg-2 me-lg-2 ms-md-2 ms-sm-2  navlink' as={NavLink} to="/">Tourist FAQ</Nav.Link>
               <NavDropdown.Divider />
-              <Nav.Link className='ms-lg-2 me-lg-2 ms-md-2 ms-sm-2  navlink' as={NavLink} to="/">Tourism Stories</Nav.Link>
+              <Nav.Link className='ms-lg-2 me-lg-2 ms-md-2 ms-sm-2  navlink' as={NavLink} to="/">Printable Materials</Nav.Link>
               
 
             </NavDropdown>
@@ -138,18 +144,23 @@ export default function AppNavBar() {
             <NavDropdown className='ms-lg-2 me-lg-2 navlink' title="Others" id="basic-nav-dropdown">
               <Nav.Link className='ms-lg-2 me-lg-2 ms-md-2 ms-sm-2  navlink' as={NavLink} to="/">Compaint</Nav.Link>
               <NavDropdown.Divider />
-              <Nav.Link className='ms-lg-2 me-lg-2 ms-md-2 ms-sm-2  navlink' as={NavLink} to="/">Awards & Recognitions</Nav.Link>
-              <NavDropdown.Divider />
+           
               <Nav.Link className='ms-lg-2 me-lg-2 ms-md-2 ms-sm-2  navlink' as={NavLink} to="/">Tourist Arrivals</Nav.Link>
               <NavDropdown.Divider />
               <Nav.Link className='ms-lg-2 me-lg-2 ms-md-2 ms-sm-2  navlink' as={NavLink} to="/">Cruise Ship Arrivals</Nav.Link>
               <NavDropdown.Divider />
               <Nav.Link className='ms-lg-2 me-lg-2 ms-md-2 ms-sm-2  navlink' as={NavLink} to="/">Flight Data</Nav.Link>
               <NavDropdown.Divider />
-              <Nav.Link className='ms-lg-2 me-lg-2 ms-md-2 ms-sm-2  navlink' as={NavLink} to="/">Travel Expos, Conventions, & B2B</Nav.Link>
-              <NavDropdown.Divider />
               <Nav.Link className='ms-lg-2 me-lg-2 ms-md-2 ms-sm-2  navlink' as={NavLink} to="/">M.I.C.E. Reports</Nav.Link>
               <NavDropdown.Divider />
+              <Nav.Link className='ms-lg-2 me-lg-2 ms-md-2 ms-sm-2  navlink' as={NavLink} to="/">Awards & Recognitions</Nav.Link>
+              <NavDropdown.Divider />
+              <Nav.Link className='ms-lg-2 me-lg-2 ms-md-2 ms-sm-2  navlink' as={NavLink} to="/">Travel Expos, Conventions, & B2B</Nav.Link>
+              <NavDropdown.Divider />
+              <Nav.Link className='ms-lg-2 me-lg-2 ms-md-2 ms-sm-2  navlink' as={NavLink} to="/">Tourism Projects</Nav.Link>
+              <NavDropdown.Divider />
+
+              
               <Nav.Link className='ms-lg-2 me-lg-2 ms-md-2 ms-sm-2  navlink' as={NavLink} to="/">Our Story</Nav.Link>
               <NavDropdown.Divider />
               <Nav.Link className='ms-lg-2 me-lg-2 ms-md-2 ms-sm-2  navlink' as={NavLink} to="/">About Us</Nav.Link>
@@ -158,6 +169,7 @@ export default function AppNavBar() {
 
               
             </NavDropdown>
+            
             <Nav.Link className='ms-lg-2 notification' as={NavLink} to="/">
                 <FontAwesomeIcon icon={faBell} size="xs" fixedWidth /> Updates
             </Nav.Link>

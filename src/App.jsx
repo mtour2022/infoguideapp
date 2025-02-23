@@ -10,7 +10,8 @@ import Home from './pages/Home.jsx';
 import { useState, useContext } from 'react';
 import { AuthProvider, useAuth} from './auth/authentication.jsx';
 import AppNavBar from './components/AppNavBar';
-import AddStories from './admin/AddStories';
+import AddStories from './components/AddStories.jsx';
+import AdminDashboard from './pages/AdminDashboard.jsx';
 
 function PrivateRoute({ element, ...rest }) {
   const { userLoggedIn } = useAuth();
@@ -29,10 +30,12 @@ function App() {
         <AppNavBar />
           <Container fluid>
             <Routes>
+              <Route path="/" element={<AdminDashboard />}/>
               {/* <Route path="/" element={<Home />}/> */}
-              <Route path="/" element={<AddStories />}/>
               <Route path="/home" element={<Home />}/>
               <Route path="*" element={<NotFound />}/>
+              {/* to be private */}
+              <Route path="/stories+form" element={<AddStories />}/>
             </Routes>
           </Container >
       </Router>

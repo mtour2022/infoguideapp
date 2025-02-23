@@ -100,7 +100,7 @@ body {
   background: #FFF !important;
   box-shadow: 0px 5px 10px 0px rgba(0, 0, 0, 0.15) !important;
   padding: 20px; /* Adds spacing inside the form */
-  max-width: 100%; /* Adjust width as needed */
+  max-width: 100% !important; /* Adjust width as needed */
 }
 
 .dropzone-container-big {
@@ -149,7 +149,21 @@ body {
 
 
 
+/* Sidebar.css */
+.sidebar {
+  color: rgb(39, 38, 38) !important;
+} 
 
+.sidebar .navlink {
+  font-size: 16px !important;
+  color: rgb(39, 38, 38)!important;
+  font-weight: 500 !important;
+}
+
+.sidebar .navlink:hover {
+  color: #1F89B2 !important; /* Blue hover effect */
+
+}
 
 /* AppNavBar.css */
 .navbar {
@@ -181,7 +195,6 @@ body {
 }
 
 .sustainable {
-  font-size: small !important;
   color: rgb(15, 147, 65) !important;
   font-weight: 500 !important;
 }
@@ -192,7 +205,6 @@ body {
 }
 
 .notification {
-  font-size: small !important;
   color: rgb(236, 178, 6) !important;
   font-weight: 500 !important;
 }
