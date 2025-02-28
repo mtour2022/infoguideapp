@@ -50,6 +50,7 @@ body {
 
 .body-container {
   padding: 50px 20px !important; /* Default padding for small screens */
+  
 }
 
 @media (min-width: 768px) { /* Medium screens and above */
@@ -66,6 +67,10 @@ body {
 
 .empty-container {
   height: 25px;
+}
+
+.grey-container{
+  background-color: #f5f5ff !important;
 }
 
 /* text */
@@ -147,6 +152,10 @@ body {
   object-fit: cover; /* Fills the container while maintaining aspect ratio */
 }
 
+.pagination-number{
+  background-color: white !important;
+}
+
 
 
 /* Sidebar.css */
@@ -154,6 +163,9 @@ body {
   color: rgb(39, 38, 38) !important;
 } 
 
+.white-container {
+  background-color: #FFF !important;
+}
 .sidebar .navlink {
   font-size: 16px !important;
   color: rgb(39, 38, 38)!important;

@@ -18,10 +18,42 @@ import {
   faSwimmer,
   faBarChart,
   faMedal,
-  faHandshake
+  faHandshake,
+  faHardHat,
+  faFlag,
+  faBullhorn,
+  faShopLock,
+  faShoppingBag,
+  faSpa,
+  faDumbbell,
+  faBus,
+  faPlaneArrival,
+  faShippingFast,
+  faFerry,
+  faParking,
+  faTooth,
+  faBinoculars,
+  faPassport,
+  faUmbrellaBeach,
+  faLink,
+  faWalking,
+  faPrint,
+  faVideoCamera,
+  faShip,
+  faPlane,
+  faUserGroup,
+  faPeopleGroup,
+  faCalendarXmark,
+  faSignHanging,
+  faRibbon,
+
 } from '@fortawesome/free-solid-svg-icons';
 import { Container, Row, Col, Button, Nav, Offcanvas, Collapse } from 'react-bootstrap';
 import StoryForm from '../components/AddStories';
+import { faShopify } from '@fortawesome/free-brands-svg-icons';
+import { faCalendarCheck, faCommenting } from '@fortawesome/free-regular-svg-icons';
+import StoriesDataTable from '../admin/Table-Stories';
+import AccommodationTable from '../admin/TableAccommodations';
 
 // Sidebar link component using onClick to set active content.
 function NavlinkIcon({ icon, title, onClick, active }) {
@@ -86,13 +118,17 @@ export default function AdminDashboard() {
         );
         case 'stories':
             return (
-              <div>
-                <h2>Tourism Stories to Tell</h2>
-                <p>Submission of Articles are thoroughly reviewed first.</p>
-                <StoryForm></StoryForm>
-                <Container className='empty-container'></Container>
-              </div>
+              <>
+                <StoriesDataTable></StoriesDataTable>
+              </>
             );
+            case 'accommodations':
+              return (
+                <>
+                  <AccommodationTable></AccommodationTable>
+                </>
+              );
+        
       // Add more cases for other pages as needed.
       default:
         return (
@@ -150,14 +186,14 @@ export default function AdminDashboard() {
             <NavlinkIcon
               icon={faHotel}
               title="Accommodations"
-              onClick={() => { setActivePage('hospitality'); handleClose(); }}
-              active={activePage === 'hospitality'}
+              onClick={() => { setActivePage('accommodations'); handleClose(); }}
+              active={activePage === 'accommodations'}
             />
             <NavlinkIcon
               icon={faLadderWater}
-              title="Resorts"
-              onClick={() => { setActivePage('hospitality'); handleClose(); }}
-              active={activePage === 'hospitality'}
+              title="Recreational Resorts"
+              onClick={() => { setActivePage('resorts'); handleClose(); }}
+              active={activePage === 'resorts'}
             />
           </ExpandableNavItem>
           <ExpandableNavItem title="Food & Beverages" className="ms-lg-2 mb-2 me-lg-2 navlink">
@@ -182,26 +218,37 @@ export default function AdminDashboard() {
           </ExpandableNavItem>
           <ExpandableNavItem title="Tourism & Leisure" className="ms-lg-2 mb-2 me-lg-2 navlink">
             <NavlinkIcon
-              icon={faUtensils}
+              icon={faBullhorn}
               title="Tour Guides"
               onClick={() => { setActivePage('guides'); handleClose(); }}
               active={activePage === 'guides'}
             />
             <NavlinkIcon
-              icon={faWineGlass}
+              icon={faFlag}
               title="Travel & Tours Operators"
               onClick={() => { setActivePage('ttas'); handleClose(); }}
               active={activePage === 'ttas'}
             />
             <NavlinkIcon
-              icon={faCoffee}
+              icon={faSwimmer}
               title="Tourist Activity Provider"
               onClick={() => { setActivePage('providers'); handleClose(); }}
               active={activePage === 'providers'}
             />
-            
             <NavlinkIcon
-              icon={faCoffee}
+              icon={faPeopleGroup}
+              title="M.I.C.E. Facilities"
+              onClick={() => { setActivePage('mice+facilities'); handleClose(); }}
+              active={activePage === 'mice+facilities'}
+            />
+            <NavlinkIcon
+              icon={faCalendarXmark}
+              title="Events Planning Companies"
+              onClick={() => { setActivePage('events+planning'); handleClose(); }}
+              active={activePage === 'events+planning'}
+            />
+            <NavlinkIcon
+              icon={faShoppingBag}
               title="Tourist & Specialty Shops"
               onClick={() => { setActivePage('shops'); handleClose(); }}
               active={activePage === 'shops'}
@@ -209,13 +256,13 @@ export default function AdminDashboard() {
           </ExpandableNavItem>
           <ExpandableNavItem title="Health & Wellness" className="ms-lg-2 mb-2 me-lg-2 navlink">
             <NavlinkIcon
-              icon={faUtensils}
+              icon={faSpa}
               title="Spa & Wellness Centres"
               onClick={() => { setActivePage('spas'); handleClose(); }}
               active={activePage === 'spas'}
             />
             <NavlinkIcon
-              icon={faUtensils}
+              icon={faDumbbell}
               title="Gyms & Fitness Clubs"
               onClick={() => { setActivePage('gyms'); handleClose(); }}
               active={activePage === 'gyms'}
@@ -223,45 +270,45 @@ export default function AdminDashboard() {
           </ExpandableNavItem>
           <ExpandableNavItem title="Transport & Parking" className="ms-lg-2 mb-2 me-lg-2 navlink">
             <NavlinkIcon
-              icon={faCoffee}
-              title="Tourist Land Transport"
+              icon={faBus}
+              title="Tourist Land Transport Operators"
               onClick={() => { setActivePage('land+transport'); handleClose(); }}
               active={activePage === 'land+transport'}
             />
             <NavlinkIcon
-              icon={faCoffee}
-              title="AirLines"
-              onClick={() => { setActivePage('airlines'); handleClose(); }}
-              active={activePage === 'airlines'}
+              icon={faPlaneArrival}
+              title="Tourst Air Transport Operators"
+              onClick={() => { setActivePage('airtransport'); handleClose(); }}
+              active={activePage === 'airtransport'}
             />
             <NavlinkIcon
-              icon={faCoffee}
+              icon={faFerry}
               title="Passenger Ship Lines"
               onClick={() => { setActivePage('passenger-ships'); handleClose(); }}
               active={activePage === 'passenger-ships'}
             />
             <NavlinkIcon
-              icon={faUtensils}
+              icon={faParking}
               title="Parking Spaces"
               onClick={() => { setActivePage('parkings'); handleClose(); }}
               active={activePage === 'parkings'}
             />
           </ExpandableNavItem>
-          <ExpandableNavItem title="Medical Facilities" className="ms-lg-2 mb-2 me-lg-2 navlink">
+          <ExpandableNavItem title="Healthcare Facilities" className="ms-lg-2 mb-2 me-lg-2 navlink">
             <NavlinkIcon
-              icon={faUtensils}
-              title="Hospitals & Other Clinics"
+              icon={faHospital}
+              title="Hospitals & Clinics"
               onClick={() => { setActivePage('hospitals'); handleClose(); }}
               active={activePage === 'hospitals'}
             />
             <NavlinkIcon
-              icon={faUtensils}
+              icon={faDog}
               title="Veterinary Clinics"
               onClick={() => { setActivePage('veterinary+clinics'); handleClose(); }}
               active={activePage === 'veterinary+clinics'}
             />
             <NavlinkIcon
-              icon={faUtensils}
+              icon={faTooth}
               title="Dental Clinics"
               onClick={() => { setActivePage('dental+clinics'); handleClose(); }}
               active={activePage === 'dental+clinics'}
@@ -273,56 +320,68 @@ export default function AdminDashboard() {
             onClick={() => { setActivePage('activities'); handleClose(); }}
             active={activePage === 'activities'}
           />
+          <NavlinkIcon
+            icon={faBinoculars}
+            title="Attractions"
+            onClick={() => { setActivePage('attractions'); handleClose(); }}
+            active={activePage === 'attractions'}
+          />
           
         </ExpandableNavItem>
         <ExpandableNavItem title="Essentials" className="ms-lg-2 mb-2 navlink">
             <NavlinkIcon
-                icon={faSwimmer}
+                icon={faAmbulance}
                 title="Emergency Hotlines"
                 onClick={() => { setActivePage('hotlines'); handleClose(); }}
                 active={activePage === 'hotlines'}
             />
             <NavlinkIcon
-                icon={faSwimmer}
+                icon={faPassport}
                 title="Tourist Requirements"
                 onClick={() => { setActivePage('requirements'); handleClose(); }}
                 active={activePage === 'requirements'}
             />
             <NavlinkIcon
-                icon={faSwimmer}
+                icon={faUmbrellaBeach}
                 title="Beach Ordinances"
                 onClick={() => { setActivePage('ordinances'); handleClose(); }}
                 active={activePage === 'ordinances'}
             />
             <NavlinkIcon
-                icon={faSwimmer}
+                icon={faCalendarCheck}
                 title="Calendar of Events"
                 onClick={() => { setActivePage('events'); handleClose(); }}
                 active={activePage === 'events'}
             />
             <NavlinkIcon
-                icon={faSwimmer}
-                title="Life Style & Facilities"
-                onClick={() => { setActivePage('facilities'); handleClose(); }}
-                active={activePage === 'facilities'}
-            />
-            <NavlinkIcon
-                icon={faSwimmer}
+                icon={faLink}
                 title="Helpful Links"
                 onClick={() => { setActivePage('links'); handleClose(); }}
                 active={activePage === 'links'}
             />
             <NavlinkIcon
-                icon={faSwimmer}
+                icon={faWalking}
+                title="Life Style & Facilities"
+                onClick={() => { setActivePage('facilities'); handleClose(); }}
+                active={activePage === 'facilities'}
+            />
+            <NavlinkIcon
+                icon={faCommenting}
                 title="Tourist FAQ"
                 onClick={() => { setActivePage('faq'); handleClose(); }}
                 active={activePage === 'faq'}
             />
             <NavlinkIcon
-                icon={faSwimmer}
+                icon={faPrint}
                 title="Printable Materials"
                 onClick={() => { setActivePage('materials'); handleClose(); }}
                 active={activePage === 'materials'}
+            />
+            <NavlinkIcon
+                icon={faVideoCamera}
+                title="Virtual Tour Guide"
+                onClick={() => { setActivePage('virtual+guide'); handleClose(); }}
+                active={activePage === 'virtual+guide'}
             />
         </ExpandableNavItem>
         <ExpandableNavItem title="Toursim Data" className="ms-lg-2 mb-2 navlink">
@@ -333,19 +392,19 @@ export default function AdminDashboard() {
                 active={activePage === 'arrivals'}
             />
             <NavlinkIcon
-                icon={faBarChart}
+                icon={faShip}
                 title="Cruise Arrivals"
                 onClick={() => { setActivePage('cruises'); handleClose(); }}
                 active={activePage === 'cruise'}
             />
             <NavlinkIcon
-                icon={faBarChart}
+                icon={faPlane}
                 title="Flights Data"
                 onClick={() => { setActivePage('flights'); handleClose(); }}
                 active={activePage === 'flights'}
             />
             <NavlinkIcon
-                icon={faBarChart}
+                icon={faUserGroup}
                 title="M.I.C.E. Reports"
                 onClick={() => { setActivePage('mice+reports'); handleClose(); }}
                 active={activePage === 'mice+reports'}
@@ -359,21 +418,18 @@ export default function AdminDashboard() {
                 active={activePage === 'awards'}
             />
             <NavlinkIcon
-                icon={faMedal}
+                icon={faSignHanging}
                 title="Travel Expos, Conventions, & B2B"
                 onClick={() => { setActivePage('awards'); handleClose(); }}
                 active={activePage === 'awards'}
             />
             <NavlinkIcon
-                icon={faMedal}
+                icon={faHandshake}
                 title="Tourism Projects"
                 onClick={() => { setActivePage('awards'); handleClose(); }}
                 active={activePage === 'awards'}
             />
         </ExpandableNavItem>
-
-        
-        
         <Nav.Link
           className="ms-lg-2 navlink"
           onClick={() => { setActivePage('complaints'); handleClose(); }}
@@ -394,17 +450,27 @@ export default function AdminDashboard() {
   );
 
   return (
-    <Container fluid>
+    <Container fluid className="grey-container">
       <Row>
         {/* Persistent sidebar: Visible only on large screens and up */}
-        <Col xs={3} className="p-0 d-none d-lg-block bg-light" style={{ minHeight: '100vh' }}>
+        <Col
+          xs={3}
+          className="p-0 d-none d-lg-block white-container"
+          style={{
+            minHeight: '100vh',
+            maxHeight: '100vh',
+            overflowY: 'auto',
+            position: 'sticky',
+            top: 0
+          }}
+        >
           {sidebarContent}
         </Col>
 
         {/* Main Content Area */}
         <Col xs={12} md={12} lg={9} className="p-4">
           {/* Menu button visible on small and medium screens */}
-          <Button variant="primary" className="d-lg-none mb-3" onClick={handleShow}>
+          <Button variant="outline-primary" className="d-lg-none mb-3" onClick={handleShow}>
             Menu
           </Button>
           {renderContent()}

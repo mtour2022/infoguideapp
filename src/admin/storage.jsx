@@ -1,63 +1,190 @@
-// {storyFormData.body.map((section, index) => (
-//     <Row key={index} className="d-flex flex-md-row flex-column">
-//         <Container className="empty-container"></Container>
-//         <Form.Group className="mb-3 m-0 p-0">
-//                 <Form.Label className="label">Subtitle (Optional)</Form.Label>
-//                 <Form.Control
-//                     type="text"
-//                     className="fw-bold"
-//                     value={section.subtitle}
-//                     onChange={(e) => handleBodyChange(index, "subtitle", e.target.value)}
-//                 />
-//         </Form.Group>
-//         <Col className="col me-lg-2 me-md-1">
+import React, { useEffect, useState } from "react";
+import { Table, Form, Button, Container, Row, Col } from "react-bootstrap";
+import { db } from "../config/firebase"; // Import your Firebase config
+import { collection, getDocs } from "firebase/firestore";
+import ReactPaginate from "react-paginate";
+import * as XLSX from "xlsx";
 
-//             <Form.Group className="mb-3">
-//                 <Form.Label className="label">Image (Optional)</Form.Label>
-//                 <Container {...getBodyImageRootProps()} className={`dropzone-container-small text-center w-100 ${section.image ? "border-success" : ""}`}>
-//                     <input {...getBodyImageInputProps()} accept="image/*" />
-//                     {section.image ? (
-//                         <img src={URL.createObjectURL(section.image)} alt="Body Image Preview" className="dropzone-uploaded-image-small" />
-//                     ) : (
-//                         <p className="text-muted">Drag & Drop Image Here or <span className="text-primary text-decoration-underline">Choose File</span></p>
-//                     )}
-//                 </Container>
-//                 {section.image && (
-//                     <Button className="mt-2" variant="outline-danger" onClick={() => removeBodyImage(index)}>
-//                         <FontAwesomeIcon icon={faCancel} size="xs" fixedWidth /> Remove Image
-//                     </Button>
-//                 )}
-//             </Form.Group>
-//         </Col>
-        
-//         <Col className="col ms-lg-2 ms-md-1">
-            
-//             <Form.Group className="mb-3">
-//                 <Form.Label className="label">Body</Form.Label>
-//                 <Form.Control
-//                     as="textarea"
-//                     ref={textareaRef}
-//                     value={section.body}
-//                     onChange={(e) => handleBodyChange(index, "body", e.target.value)}
-//                     rows={8}
-//                     onInput={handleAutoResize}  // Trigger resizing on input
-//                     style={{ resize: 'none' }}  // Disable manual resizing
-//                 />
-//             </Form.Group>
-            
-//         </Col>
-//         <Container className="mb-4 d-flex justify-content-end">
-//                 <Button
-//                     variant="outline-danger"
-//                     type="button"
-//                     onClick={() => deleteBodySection(index)} // Delete button functionality
-//                     className="mt-3 w-full"
-//                 >
-//                     <FontAwesomeIcon icon={faTrash} size="xs" fixedWidth /> Delete Section
-//                 </Button>
-//         </Container>
-        
-//     </Row>
-    
-// ))
-// }
+const DataTable = () => {
+  const [data, setData] = useState([]);
+  const [search, setSearch] = useState("");
+  const [classificationFilter, setClassificationFilter] = useState("");
+  const [purposeFilter, setPurposeFilter] = useState("");
+  const [sortOrder, setSortOrder] = useState("asc"); // Default sorting order
+  const [currentPage, setCurrentPage] = useState(0);
+  const itemsPerPage = 10;
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const querySnapshot = await getDocs(collection(db, "stories"));
+      const dataList = querySnapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+      }));
+      setData(dataList);
+    };
+
+    fetchData();
+  }, []);
+
+  // Sorting function for date column
+  const handleSort = () => {
+    const sortedData = [...data].sort((a, b) => {
+      return sortOrder === "asc"
+        ? new Date(a.date) - new Date(b.date)
+        : new Date(b.date) - new Date(a.date);
+    });
+    setData(sortedData);
+    setSortOrder(sortOrder === "asc" ? "desc" : "asc");
+  };
+
+  // Filtering and searching logic
+  const filteredData = data.filter(
+    (item) =>
+      (classificationFilter === "" || item.classification === classificationFilter) &&
+      (purposeFilter === "" || item.purpose === purposeFilter) &&
+      (item.title.toLowerCase().includes(search.toLowerCase()) ||
+        item.classification.toLowerCase().includes(search.toLowerCase()) ||
+        item.purpose.toLowerCase().includes(search.toLowerCase()) ||
+        item.date.toLowerCase().includes(search.toLowerCase()) ||
+        item.name.toLowerCase().includes(search.toLowerCase()) ||
+        item.email.toLowerCase().includes(search.toLowerCase()) ||
+        item.social.toLowerCase().includes(search.toLowerCase()))
+  );
+
+  // Pagination logic
+  const pageCount = Math.ceil(filteredData.length / itemsPerPage);
+  const displayedData = filteredData.slice(
+    currentPage * itemsPerPage,
+    (currentPage + 1) * itemsPerPage
+  );
+
+  const handlePageClick = ({ selected }) => {
+    setCurrentPage(selected);
+  };
+
+  // Function to format the current date as MMDDYYYY
+  const getFormattedDate = () => {
+    const now = new Date();
+    const mm = String(now.getMonth() + 1).padStart(2, "0"); // Month (01-12)
+    const dd = String(now.getDate()).padStart(2, "0"); // Day (01-31)
+    const yyyy = now.getFullYear(); // Year (4 digits)
+    return `${mm}${dd}${yyyy}`;
+  };
+
+  // Export to Excel
+  const exportToExcel = () => {
+    const ws = XLSX.utils.json_to_sheet(
+      data.map(({ id, body, tags, references, headerImage, ...rest }) => rest)
+    );
+    const wb = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, "Data");
+    XLSX.writeFile(wb, `tourism_stories_infoguide_${getFormattedDate()}.xlsx`);
+  };
+
+  // Extract unique values for filters
+  const classifications = [...new Set(data.map((item) => item.classification))];
+  const purposes = [...new Set(data.map((item) => item.purpose))];
+
+  return (
+    <Container>
+      {/* Search and Filters Row */}
+
+        <h1 className="text-2xl font-bold mb-1">Submit an Article</h1>
+        <p>Each article submitted must be thoroughly reviewed by the technical writers.</p>
+
+
+      <Row className="mb-4 mt-4">
+        <Col md={4} className="mb-2 me-2 col">
+          <Form.Control
+            type="text"
+            placeholder={`Search up to over ${data.length} articles`}
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+          />
+        </Col>
+        <Col md={3} className="mb-2 me-2 col">
+          <Form.Select
+            value={classificationFilter}
+            onChange={(e) => setClassificationFilter(e.target.value)}
+          >
+            <option value="">All Classifications</option>
+            {classifications.map((classification, index) => (
+              <option key={index} value={classification}>
+                {classification}
+              </option>
+            ))}
+          </Form.Select>
+        </Col>
+        <Col md={3} className="mb-2 col">
+          <Form.Select
+            value={purposeFilter}
+            onChange={(e) => setPurposeFilter(e.target.value)}
+          >
+            <option value="">All Purposes</option>
+            {purposes.map((purpose, index) => (
+              <option key={index} value={purpose}>
+                {purpose}
+              </option>
+            ))}
+          </Form.Select>
+        </Col>
+      </Row>
+
+      {/* Data Table */}
+      <Table striped bordered hover responsive>
+        <thead>
+          <tr>
+            <th onClick={handleSort} style={{ cursor: "pointer" }}>
+              Date {sortOrder === "asc" ? "▲" : "▼"}
+            </th>
+            <th>Classification</th>
+            <th>Purpose</th>
+            <th>Title</th>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Social</th>
+          </tr>
+        </thead>
+        <tbody>
+          {displayedData.map((item) => (
+            <tr key={item.id}>
+              <td>{new Date(item.date).toLocaleDateString('en-US', { month: 'long', day: '2-digit', year: 'numeric' })}</td>
+              <td>{item.classification}</td>
+              <td>{item.purpose}</td>
+              <td>{item.title}</td>
+              <td>{item.name}</td>
+              <td>{item.email}</td>
+              <td>{item.social}</td>
+            </tr>
+          ))}
+        </tbody>
+
+      </Table>
+
+      {/* Pagination */}
+      <Container className="d-flex justify-content-between align-items-center mb-4">
+        <Button onClick={exportToExcel} variant="success">
+          Download Excel
+        </Button>
+        <ReactPaginate
+          previousLabel={"◄"}
+          nextLabel={"►"}
+          pageCount={pageCount}
+          onPageChange={handlePageClick}
+          containerClassName={"pagination mb-0"}
+          pageClassName={"page-item"}
+          pageLinkClassName={"page-link"}
+          previousClassName={"page-item"}
+          previousLinkClassName={"page-link"}
+          nextClassName={"page-item"}
+          nextLinkClassName={"page-link"}
+          activeClassName={"active"}
+        />
+    </Container>
+
+    </Container>
+  );
+};
+
+export default DataTable;

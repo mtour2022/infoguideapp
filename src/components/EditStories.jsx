@@ -11,10 +11,14 @@ import RichTextEditor from './TextEditor'; // adjust the path as needed
 import HeaderImageDropzone from './HeaderImageDropzone';
 
 
+
+
+
 const BodyImageDropzone = ({
     index,
     section,
     onBodyImageDrop,
+    editingItem,
     dropzoneName = "dropzone-container-small",
     previewName = "dropzone-uploaded-image-small"
   }) => {
@@ -23,10 +27,14 @@ const BodyImageDropzone = ({
       accept: "image/png, image/jpeg, image/jpg",
     });
   
-    // Use the new uploaded image if available
-    const imagePreview = section.image
-      ? URL.createObjectURL(section.image)
-      : null;
+    // If editingItem exists and has an image for this section, use its URL.
+    // Otherwise, if a new file is selected, create an object URL.
+    const imagePreview =
+      editingItem && editingItem.body[index]?.image
+        ? editingItem.body[index].image
+        : section.image
+        ? URL.createObjectURL(section.image)
+        : null;
   
     return (
       <Container
@@ -35,11 +43,7 @@ const BodyImageDropzone = ({
       >
         <input {...getInputProps()} accept="image/*" />
         {imagePreview ? (
-          <img
-            src={imagePreview}
-            alt="Body Image Preview"
-            className={previewName}
-          />
+          <img src={imagePreview} alt="Body Image Preview" className={previewName} />
         ) : (
           <p className="text-muted">
             Drag & Drop Image Here or{" "}
@@ -50,7 +54,10 @@ const BodyImageDropzone = ({
     );
   };
   
-export default function StoryForm() {
+  
+  
+  
+export default function EditStoryForm({editingItem, toAddForm}) {
     const [storyFormData, setStoryFormData] = useState({
         id:"",
         title: "",
@@ -68,7 +75,43 @@ export default function StoryForm() {
         
     // Populate form data if exists
     useEffect(() => {
-    }, []);
+        if (editingItem) {
+          setStoryFormData({
+            id: editingItem.id || "",
+            title: editingItem.title || "",
+            classification: editingItem.classification || "",
+            purpose: editingItem.purpose || "",
+            date: editingItem.date || "",
+            headerImage: editingItem.headerImage || null,
+            body: editingItem.body.map(section => ({
+              ...section,
+              image: section.image || null, // Only use the image property
+            })),
+            tags: editingItem.tags || [],
+            references: editingItem.references || [],
+            name: editingItem.name || "",
+            email: editingItem.email || "",
+            social: editingItem.social || "",
+          });
+        } else {
+          setStoryFormData({
+            id: "",
+            title: "",
+            classification: "",
+            purpose: "",
+            date: "",
+            headerImage: null,
+            body: [{ subtitle: "", body: "", image: null, image_source: "" }],
+            tags: [],
+            references: [],
+            name: "",
+            email: "",
+            social: "",
+          });
+        }
+      }, [editingItem]);
+      
+
 
     const classificationOptions = ["Informative", "Inspirational", "Promotional and Marketing", "Educational", "Opinions and Review"];
     
@@ -80,25 +123,35 @@ export default function StoryForm() {
         "Opinions and Review": ["Product and Service Reviews", "Case Study"]
     };
 
+    const deleteImageFromFirebase = async (imageUrl) => {
+        if (!imageUrl) return;
+        const storageRef = ref(storage, imageUrl);
+        try {
+          await deleteObject(storageRef);
+        } catch (error) {
+          console.error("Error deleting image:", error);
+        }
+      };
+
    
     const [bodyImages, setBodyImages] = useState([]);
 
-    const resetForm = () => {
-        setStoryFormData({
-            id:"",
-            title: "",
-            classification: "",
-            purpose: "",
-            date: "",
-            headerImage: null,
-            body: [{ subtitle: "", body: "", image: null, image_source: ""}],
-            tags: [],
-            references: [],
-            name: "",
-            email: "",
-            social: "",
-        });
-    };
+    // const resetForm = () => {
+    //     setStoryFormData({
+    //         id:"",
+    //         title: "",
+    //         classification: "",
+    //         purpose: "",
+    //         date: "",
+    //         headerImage: null,
+    //         body: [{ subtitle: "", body: "", image: null, image_source: ""}],
+    //         tags: [],
+    //         references: [],
+    //         name: "",
+    //         email: "",
+    //         social: "",
+    //     });
+    // };
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -178,6 +231,11 @@ export default function StoryForm() {
         }));
     };
 
+
+
+    
+
+
     // Handler for dropping an image into a specific body section
     const onBodyImageDrop = (acceptedFiles, index) => {
         if (acceptedFiles.length > 0) {
@@ -217,88 +275,184 @@ export default function StoryForm() {
 
 
 
-    // Submit the form data
+    // // Submit the form data
+    // const handleSubmit = async (e) => {
+    //     e.preventDefault();
+
+    //     // Show SweetAlert2 loading screen
+    //     Swal.fire({
+    //         title: 'Submitting...',
+    //         text: 'Please wait while we submit your story.',
+    //         allowOutsideClick: false,
+    //         didOpen: () => {
+    //         Swal.showLoading();
+    //         }
+    //     });
+
+    //     try {
+    //         // Upload header image if available
+    //         let headerImageURL = await uploadImageToFirebase(
+    //             storyFormData.headerImage,
+    //             `stories/${Date.now()}_${storyFormData.headerImage}`
+    //         );
+
+    //         // Upload body images if available
+    //         const bodyImagesURLs = await Promise.all(
+    //             storyFormData.body.map(async (section, index) => {
+    //                 if (section.image) {
+    //                     const imageURL = await uploadImageToFirebase(section.image, `stories/${Date.now()}_${section.image.name}`);
+    //                     return imageURL;
+    //                 }
+    //                 return "";
+    //             })
+    //         );
+
+    //         // Prepare the story object to send to Firebase Firestore
+    //         const story = {
+    //             id: "",
+    //             classification: storyFormData.classification,
+    //             purpose: storyFormData.purpose,
+    //             title: storyFormData.title,
+    //             headerImage: headerImageURL,
+    //             date: storyFormData.date,
+    //             body: storyFormData.body.map((section, index) => ({
+    //                 subtitle: section.subtitle,
+    //                 body: section.body,
+    //                 image: bodyImagesURLs[index] || "",
+    //                 image_source: section.image_source, 
+    //             })),
+    //             tags: storyFormData.tags,
+    //             references: storyFormData.references,
+    //             name: storyFormData.name,
+    //             email: storyFormData.email,
+    //             social: storyFormData.social,
+    //         };
+
+    //         const docRef = await addDoc(collection(db, "stories"), story);
+    //         const storyDoc = doc(db, "stories", docRef.id);
+    //         await updateDoc(storyDoc, { id: docRef.id });
+
+    //         Swal.fire({
+    //             title: "Story Submitted",
+    //             text: "Your story has been submitted successfully!",
+    //             icon: "success",
+    //         });
+
+    //         // Reset form data after successful submission
+    //         setBodyImages([]);
+    //         resetHeaderImage();
+    //     } catch (error) {
+    //         console.error("Error submitting story:", error);
+    //         Swal.fire({
+    //             title: "Error",
+    //             text: "There was an issue submitting your story. Please try again.",
+    //             icon: "error",
+    //         });
+    //     }
+    // };
+
+    // Update the story data
     const handleSubmit = async (e) => {
         e.preventDefault();
-
-        // Show SweetAlert2 loading screen
+      
+        // Show SweetAlert2 loading screen for update
         Swal.fire({
-            title: 'Submitting...',
-            text: 'Please wait while we submit your story.',
-            allowOutsideClick: false,
-            didOpen: () => {
+          title: 'Updating...',
+          text: 'Please wait while we update your story.',
+          allowOutsideClick: false,
+          didOpen: () => {
             Swal.showLoading();
-            }
+          },
         });
-
+      
         try {
-            // Upload header image if available
-            let headerImageURL = await uploadImageToFirebase(
-                storyFormData.headerImage,
-                `stories/${Date.now()}_${storyFormData.headerImage}`
+          // Handle header image replacement
+          let headerImageURL;
+          if (storyFormData.headerImage instanceof File) {
+            // If a new header image is provided, delete the old one (if it exists)
+            if (editingItem && editingItem.headerImage) {
+              await deleteImageFromFirebase(editingItem.headerImage);
+            }
+            headerImageURL = await uploadImageToFirebase(
+              storyFormData.headerImage,
+              `stories/${Date.now()}_${storyFormData.headerImage.name}`
             );
-
-            // Upload body images if available
-            const bodyImagesURLs = await Promise.all(
-                storyFormData.body.map(async (section, index) => {
-                    if (section.image) {
-                        const imageURL = await uploadImageToFirebase(section.image, `stories/${Date.now()}_${section.image.name}`);
-                        return imageURL;
-                    }
-                    return "";
-                })
-            );
-
-            // Prepare the story object to send to Firebase Firestore
-            const story = {
-                id: "",
-                classification: storyFormData.classification,
-                purpose: storyFormData.purpose,
-                title: storyFormData.title,
-                headerImage: headerImageURL,
-                date: storyFormData.date,
-                body: storyFormData.body.map((section, index) => ({
-                    subtitle: section.subtitle,
-                    body: section.body,
-                    image: bodyImagesURLs[index] || "",
-                    image_source: section.image_source, 
-                })),
-                tags: storyFormData.tags,
-                references: storyFormData.references,
-                name: storyFormData.name,
-                email: storyFormData.email,
-                social: storyFormData.social,
-            };
-
-            const docRef = await addDoc(collection(db, "stories"), story);
-            const storyDoc = doc(db, "stories", docRef.id);
-            await updateDoc(storyDoc, { id: docRef.id });
-
-            Swal.fire({
-                title: "Story Submitted",
-                text: "Your story has been submitted successfully!",
-                icon: "success",
-            });
-
-            // Reset form data after successful submission
-            resetForm();
-            setBodyImages([]);
-            resetHeaderImage();
+          } else {
+            headerImageURL = storyFormData.headerImage;
+          }
+      
+          // Handle body images replacement
+          const bodyImagesURLs = await Promise.all(
+            storyFormData.body.map(async (section, index) => {
+              if (section.image instanceof File) {
+                // If a new body image is provided, delete the old one (if it exists)
+                if (
+                  editingItem &&
+                  editingItem.body &&
+                  editingItem.body[index] &&
+                  editingItem.body[index].image
+                ) {
+                  await deleteImageFromFirebase(editingItem.body[index].image);
+                }
+                return await uploadImageToFirebase(
+                  section.image,
+                  `stories/${Date.now()}_${section.image.name}`
+                );
+              }
+              return section.image;
+            })
+          );
+      
+          // Prepare the updated story object for Firestore
+          const updatedStory = {
+            classification: storyFormData.classification,
+            purpose: storyFormData.purpose,
+            title: storyFormData.title,
+            headerImage: headerImageURL,
+            date: storyFormData.date,
+            body: storyFormData.body.map((section, index) => ({
+              subtitle: section.subtitle,
+              body: section.body,
+              image: bodyImagesURLs[index] || "",
+              image_source: section.image_source,
+            })),
+            tags: storyFormData.tags,
+            references: storyFormData.references,
+            name: storyFormData.name,
+            email: storyFormData.email,
+            social: storyFormData.social,
+          };
+      
+          // Update the existing document using the story's id
+          const storyDocRef = doc(db, "stories", storyFormData.id);
+          await updateDoc(storyDocRef, updatedStory);
+      
+          Swal.fire({
+            title: "Story Updated",
+            text: "Your story has been updated successfully!",
+            icon: "success",
+          });
+      
+          // Optionally reset form data after a successful update
+          setBodyImages([]);
+          resetHeaderImage();
+          toAddForm();
         } catch (error) {
-            console.error("Error submitting story:", error);
-            Swal.fire({
-                title: "Error",
-                text: "There was an issue submitting your story. Please try again.",
-                icon: "error",
-            });
+          console.error("Error updating story:", error);
+          Swal.fire({
+            title: "Error",
+            text: "There was an issue updating your story. Please try again.",
+            icon: "error",
+          });
         }
-    };
+      };
+      
 
     const textareaRef = useRef(null);
 
     return (
               <Form className="custom-form body-container" onSubmit={handleSubmit}>
-                <h1 className="mb-4">Add Tourism Story Form</h1>
+                <h1 className="mb-4">Edit Tourism Story Form</h1>
                 <Row className="d-flex flex-md-row flex-column">
                     <Col className="col me-lg-2 me-md-1">
                         <Form.Group className="mb-3">
@@ -419,6 +573,7 @@ export default function StoryForm() {
                                 <BodyImageDropzone 
                                     index={index} 
                                     section={section} 
+                                    editingItem={editingItem}
                                     onBodyImageDrop={handleImageDrop} 
                                     dropzoneName="dropzone-container-small"
                                     previewName="dropzone-uploaded-image-small"
@@ -553,15 +708,15 @@ export default function StoryForm() {
                 <Container className="empty-container"></Container>
                 <Container className="empty-container"></Container>
 
-                <Container className="d-flex justify-content-between">
-                    <Button variant="outline-danger" onClick={resetForm}>Reset Form</Button>
+                <Container className="d-flex justify-content-end">
+                  
                     <Button 
                         variant="outline-primary" 
                         type="submit" 
                         className="w-full" 
                         onClick={handleSubmit}
                     >
-                        Submit Article
+                        Submit Update
                     </Button>
                 </Container>
             </Form>

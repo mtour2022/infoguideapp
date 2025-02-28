@@ -95,13 +95,19 @@ export default function AppNavBar() {
                     <NavDropdown.Item as={NavLink} className='navlink-inner'>
                       Tourist Land Transports
                     </NavDropdown.Item>
+                    <NavDropdown.Item as={NavLink} className='navlink-inner'>
+                      Tourist Air Transports
+                    </NavDropdown.Item>
+                    <NavDropdown.Item as={NavLink} className='navlink-inner'>
+                      Passenger Ships
+                    </NavDropdown.Item>
                     <NavDropdown.Divider />
                     <NavDropdown.Item as={NavLink} className='navlink-inner'>
                       Parking Spaces
                     </NavDropdown.Item>
               </NavDropdown>
               <NavDropdown.Divider />
-              <NavDropdown className='ms-lg-2 me-lg-2 navlink' title="Medical" id="basic-nav-dropdown">
+              <NavDropdown className='ms-lg-2 me-lg-2 navlink' title="Healthcare" id="basic-nav-dropdown">
                 <Nav.Link className='ms-lg-2 me-lg-2 ms-md-2 ms-sm-2  navlink' as={NavLink} to="/">Clinics & Hospitals</Nav.Link>
                 <NavDropdown.Divider /> 
                 <Nav.Link className='ms-lg-2 me-lg-2 ms-md-2 ms-sm-2  navlink' as={NavLink} to="/">Vertinery Clinics</Nav.Link>
@@ -144,23 +150,26 @@ export default function AppNavBar() {
             <NavDropdown className='ms-lg-2 me-lg-2 navlink' title="Others" id="basic-nav-dropdown">
               <Nav.Link className='ms-lg-2 me-lg-2 ms-md-2 ms-sm-2  navlink' as={NavLink} to="/">Compaint</Nav.Link>
               <NavDropdown.Divider />
-           
-              <Nav.Link className='ms-lg-2 me-lg-2 ms-md-2 ms-sm-2  navlink' as={NavLink} to="/">Tourist Arrivals</Nav.Link>
+              <Nav.Link className='ms-lg-2 me-lg-2 ms-md-2 ms-sm-2  navlink' as={NavLink} to="/">Tourism Frontliners</Nav.Link>
               <NavDropdown.Divider />
-              <Nav.Link className='ms-lg-2 me-lg-2 ms-md-2 ms-sm-2  navlink' as={NavLink} to="/">Cruise Ship Arrivals</Nav.Link>
+              <NavDropdown className='ms-lg-2 me-lg-2 ms-md-2 ms-sm-2  navlink' title="Tourism Data" id="basic-nav-dropdown">
+                    <Nav.Link className='ms-lg-2 me-lg-2 ms-md-2 ms-sm-2  navlink' as={NavLink} to="/">Tourist Arrivals</Nav.Link>
+                    <NavDropdown.Divider />
+                    <Nav.Link className='ms-lg-2 me-lg-2 ms-md-2 ms-sm-2  navlink' as={NavLink} to="/">Cruise Ship Arrivals</Nav.Link>
+                    <NavDropdown.Divider />
+                    <Nav.Link className='ms-lg-2 me-lg-2 ms-md-2 ms-sm-2  navlink' as={NavLink} to="/">Flight Data</Nav.Link>
+                    <NavDropdown.Divider />
+                    <Nav.Link className='ms-lg-2 me-lg-2 ms-md-2 ms-sm-2  navlink' as={NavLink} to="/">M.I.C.E. Reports</Nav.Link>
+              </NavDropdown>
               <NavDropdown.Divider />
-              <Nav.Link className='ms-lg-2 me-lg-2 ms-md-2 ms-sm-2  navlink' as={NavLink} to="/">Flight Data</Nav.Link>
+              <NavDropdown className='ms-lg-2 me-lg-2 ms-md-2 ms-sm-2  navlink' title="Achievements" id="basic-nav-dropdown">
+                    <Nav.Link className='ms-lg-2 me-lg-2 ms-md-2 ms-sm-2  navlink' as={NavLink} to="/">Awards & Recognitions</Nav.Link>
+                    <NavDropdown.Divider />
+                    <Nav.Link className='ms-lg-2 me-lg-2 ms-md-2 ms-sm-2  navlink' as={NavLink} to="/">Travel Expos, Conventions, & B2B</Nav.Link>
+                    <NavDropdown.Divider />
+                    <Nav.Link className='ms-lg-2 me-lg-2 ms-md-2 ms-sm-2  navlink' as={NavLink} to="/">Tourism Projects</Nav.Link>
+              </NavDropdown>
               <NavDropdown.Divider />
-              <Nav.Link className='ms-lg-2 me-lg-2 ms-md-2 ms-sm-2  navlink' as={NavLink} to="/">M.I.C.E. Reports</Nav.Link>
-              <NavDropdown.Divider />
-              <Nav.Link className='ms-lg-2 me-lg-2 ms-md-2 ms-sm-2  navlink' as={NavLink} to="/">Awards & Recognitions</Nav.Link>
-              <NavDropdown.Divider />
-              <Nav.Link className='ms-lg-2 me-lg-2 ms-md-2 ms-sm-2  navlink' as={NavLink} to="/">Travel Expos, Conventions, & B2B</Nav.Link>
-              <NavDropdown.Divider />
-              <Nav.Link className='ms-lg-2 me-lg-2 ms-md-2 ms-sm-2  navlink' as={NavLink} to="/">Tourism Projects</Nav.Link>
-              <NavDropdown.Divider />
-
-              
               <Nav.Link className='ms-lg-2 me-lg-2 ms-md-2 ms-sm-2  navlink' as={NavLink} to="/">Our Story</Nav.Link>
               <NavDropdown.Divider />
               <Nav.Link className='ms-lg-2 me-lg-2 ms-md-2 ms-sm-2  navlink' as={NavLink} to="/">About Us</Nav.Link>
