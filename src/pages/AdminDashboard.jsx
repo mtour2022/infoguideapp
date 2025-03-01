@@ -52,8 +52,9 @@ import { Container, Row, Col, Button, Nav, Offcanvas, Collapse } from 'react-boo
 import StoryForm from '../components/AddStories';
 import { faShopify } from '@fortawesome/free-brands-svg-icons';
 import { faCalendarCheck, faCommenting } from '@fortawesome/free-regular-svg-icons';
-import StoriesDataTable from '../admin/Table-Stories';
+import StoriesDataTable from '../admin/TableStories';
 import AccommodationTable from '../admin/TableAccommodations';
+import RecreationalResortTable from '../admin/TableRecreationalResorts';
 
 // Sidebar link component using onClick to set active content.
 function NavlinkIcon({ icon, title, onClick, active }) {
@@ -122,12 +123,18 @@ export default function AdminDashboard() {
                 <StoriesDataTable></StoriesDataTable>
               </>
             );
-            case 'accommodations':
-              return (
-                <>
-                  <AccommodationTable></AccommodationTable>
-                </>
-              );
+      case 'accommodations':
+        return (
+          <>
+            <AccommodationTable></AccommodationTable>
+          </>
+        );
+      case 'resorts':
+        return (
+          <>
+            <RecreationalResortTable></RecreationalResortTable>
+          </>
+        );
         
       // Add more cases for other pages as needed.
       default:

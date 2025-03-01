@@ -15,19 +15,18 @@ import ReactPaginate from "react-paginate";
 import * as XLSX from "xlsx";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEdit, faPlus, faRefresh, faTrash } from "@fortawesome/free-solid-svg-icons";
-import AccommodationForm from "../components/accommodations/AccommodationForm";
-import EditingAccommodationForm from "../components/accommodations/EditAccommodatonForm";
+import RecreationalResortForm from "../components/recreationalresorts/RecreationalResortForm";
+import EditingRecreationalResortForm from "../components/recreationalresorts/EditRecreationalResortForm";
 import Swal from "sweetalert2";
 
 
-const AccommodationTable = () => {
+const RecreatonalResortTable = () => {
   const [data, setData] = useState([]);
   const [search, setSearch] = useState("");
   const [classificationFilter, setClassificationFilter] = useState("");
   const [subCategoryFilter, setSubCategoryFilter] = useState("");
   const [geoFilter, subGeoFilter] = useState("");
   const [barangayFilter, setBarangayFilter] = useState("");
-  const [accreditationFilter, setAccreditationFilter] = useState("");
 
 
   const [sortOrder, setSortOrder] = useState("asc");
@@ -40,7 +39,7 @@ const AccommodationTable = () => {
   }, []);
 
   const fetchData = async () => {
-    const querySnapshot = await getDocs(collection(db, "accommodations"));
+    const querySnapshot = await getDocs(collection(db, "resorts"));
     const dataList = querySnapshot.docs.map((doc) => ({
       id: doc.id,
       ...doc.data(),
@@ -52,7 +51,24 @@ const AccommodationTable = () => {
     setEditingItem(item);
   };
 
- 
+  // Update an item in Firebase
+//   const handleSaveEdit = async () => {
+//     if (editingItem) {
+//       const itemRef = doc(db, "resorts", editingItem.id);
+//       await updateDoc(itemRef, {
+//         name: editingItem.title,
+//         established: editingItem.established,
+//         category: editingItem.category,
+//         subcategory: editingItem.subcategory,
+//         classification: editingItem.classification,
+//         geo: editingItem.geo,
+//         barangay: editingItem.address.barangay,
+//         street: editingItem.address.street,
+//       });
+//       fetchData(); // Refresh data
+//       setEditingItem(null);
+//     }
+//   };
 
   // Delete an item from Firebase
   const handleDelete = async (id) => {
@@ -75,7 +91,7 @@ const AccommodationTable = () => {
 
 
   // Filtering and searching logic
-  const filteredData = data.filter((item) => {
+const filteredData = data.filter((item) => {
     // Check subcategory filter
     const subCategoryMatch = subCategoryFilter === "" || item.subcategory === subCategoryFilter;
   
@@ -98,16 +114,7 @@ const AccommodationTable = () => {
       item.classification.toLowerCase().includes(searchTerm) ||
       item.geo.toLowerCase().includes(searchTerm) ||
       item.address.barangay.toLowerCase().includes(searchTerm) ||
-      item.address.street.toLowerCase().includes(searchTerm) ||
-      item.accreditation.toLowerCase().includes(searchTerm) ||
-      item.ratings.toLowerCase().includes(searchTerm);
-  
-    // Check accreditation filter
-    const isAccredited = item.accreditation && item.accreditation.trim() !== "";
-    const accreditationMatch =
-      accreditationFilter === "" ||
-      (accreditationFilter === "DOT Accredited" && isAccredited) ||
-      (accreditationFilter === "Not Accredited" && !isAccredited);
+      item.address.street.toLowerCase().includes(searchTerm); // Remove the extra '||' here
   
     // Return true if all conditions are met
     return (
@@ -115,12 +122,10 @@ const AccommodationTable = () => {
       classificationMatch &&
       geoMatch &&
       barangayMatch &&
-      searchMatch &&
-      accreditationMatch
+      searchMatch
     );
   });
   
-
   const getFormattedDate = () => {
     const date = new Date();
     return date.toISOString().split("T")[0]; // Formats as YYYY-MM-DD
@@ -131,14 +136,10 @@ const AccommodationTable = () => {
       return {
         ...rest,
         facilities: Array.isArray(rest.facilities) ? rest.facilities.join(", ") : "", // Use rest.facilities
-        amenities: Array.isArray(rest.amenities) ? rest.amenities.join(", ") : "",
-        awards: Array.isArray(rest.awards) ? rest.awards.join(", ") : "",
+        activities: Array.isArray(rest.amenities) ? rest.amenities.join(", ") : "",
         images: Array.isArray(rest.images) ? rest.images.join(", ") : "",
-        roomtypes: Array.isArray(rest.roomtypes) ? rest.roomtypes.join(", ") : "",
         operatinghours: Array.isArray(rest.operatinghours) ? rest.operatinghours.join(", ") : "",
-        inclusivity: Array.isArray(rest.inclusivity) ? rest.inclusivity.join(", ") : "",
         socials: Array.isArray(rest.socials) ? rest.socials.join(", ") : "",
-        memberships: Array.isArray(rest.memberships) ? rest.memberships.join(", ") : "",
         address: rest.address ? JSON.stringify(rest.address) : "", // Convert objects to JSON string
       };
     });
@@ -172,14 +173,14 @@ const AccommodationTable = () => {
   return (
     <Container>
       <h1 className="text-2xl font-bold mb-1">Accommodation Establishment</h1>
-      <p>List of Department of Tourism (DOT) Accredited and LGU-Recognized Accommodation Establishment</p>
+      <p>List of LGU-Recognized Recreational Resorts</p>
 
       {/* Search and Filters */}
       <Row>
         <Col md={6} className="mb-1 me-2 col">
           <Form.Control
             type="text"
-            placeholder={`Search up to over ${data.length} accommodations`}
+            placeholder={`Search up to over ${data.length} recreational resorts`}
             value={search}
             onChange={(e) => setSearch(e.target.value)}
           />
@@ -240,17 +241,6 @@ const AccommodationTable = () => {
             ))}
           </Form.Select>
         </Col>
-        <Col md={2} className="mb-1 me-2 col">
-            <Form.Select
-              value={accreditationFilter}
-              onChange={(e) => setAccreditationFilter(e.target.value)}
-            >
-              <option value="">All Accreditations</option>
-              <option value="DOT Accredited">DOT Accredited</option>
-              <option value="Not Accredited">Not Accredited</option>
-            </Form.Select>
-          </Col>
-
         <Container className="d-flex justify-content-end align-items-center mt-2 mb-4">
           <Button variant="outline-secondary" className="me-2" onClick={fetchData}>
             <FontAwesomeIcon icon={faRefresh} size="xs" fixedWidth /> Refresh List
@@ -273,8 +263,6 @@ const AccommodationTable = () => {
             <th>Geo Location</th>
             <th>Barangay</th>
             <th>Street</th>
-            <th>Accreditation</th>
-            <th>Rating</th>
             <th>Actions</th>
 
           </tr>
@@ -292,8 +280,6 @@ const AccommodationTable = () => {
               <td>{item.geo}</td>
               <td>{item.address.barangay}</td>
               <td>{item.address.street}</td>
-              <td>{item.accreditation}</td>
-              <td>{item.ratings}</td>
 
               <td>
                 <Container className="d-flex justify-content-center align-items-center">
@@ -338,18 +324,18 @@ const AccommodationTable = () => {
 
       {/* Conditionally render the Edit or Add form */}
       {editingItem ? (
-        <EditingAccommodationForm
+        <EditingRecreationalResortForm
         editingItem={editingItem}
         toAddForm={() => setEditingItem(null)} // This correctly switches back to the add form
         >
 
-        </EditingAccommodationForm>
+        </EditingRecreationalResortForm>
       ) : (
-        <AccommodationForm></AccommodationForm>
+        <RecreationalResortForm></RecreationalResortForm>
       )}
 
     </Container>
   );
 };
 
-export default AccommodationTable;
+export default RecreatonalResortTable;

@@ -63,7 +63,7 @@ export const categoryOptions = [
   export const subcategoriesOptions = {
     "Hospitality & Lodging": [
       "Accommodation Establishments",
-      "Recreational Resort",
+      "Recreational Resorts",
     ],
     "Food & Beverages": [
       "Restaurants",
@@ -95,7 +95,7 @@ export const categoryOptions = [
 
   export const classificationOptions= {
     "Accommodation Establishments": [ "Resort", "Hotel", "Mabuhay Accommodation", "Apartment Hotel/Apartel"],
-    "Recreational Resort": ["Mainland Activity Resort"],
+    "Recreational Resorts": ["Mainland Activity Resort"],
     "Restaurants": [ "Fine Dining", "Buffet", "Casual Dining", "Pop-up", "Fast Foood", "Bistro", "Pub"],
     "Bars & Party Clubs": ["Cocktail Bar", "Live Music Bar", "Lounges", "Sports Bar", "Entertainment Bars", "Dance Clubs", "Rooftop Clubs"],
     "Café & Coworking": ["Classic Café", "Breakfast Café", "Coworking Café", "Brunch Café", "Pub Café", "Open Coworking Space"],
@@ -119,9 +119,10 @@ export const categoryOptions = [
   export const geoOptions = [
     'Boracay Island',
     'Mainland Malay',
-    'Municipality of Malay',
+    'Caticlan Area (Near Airport and Jettyport)',
     'Nearby Town',
     'Capital Town, Kalibo',
+    'Municipality of Malay',
     'Aklan Province'
   ];
 
@@ -142,7 +143,9 @@ export const categoryOptions = [
     'Beside Main/Commercial Road',
     'Beside Access Road',
     'Private Road',
-    'Coastal Area'
+    'Coastal Area',
+    'Riverside',
+    'Hillside',
   ];
   
 

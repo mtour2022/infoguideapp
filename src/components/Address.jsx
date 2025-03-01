@@ -21,6 +21,7 @@ const AddressForm = ({ groupData, setGroupData }) => {
     const [country, setCountry] = useState("Philippines");
 
     useEffect(() => {
+        setCountry("Philippines");
         regions().then(setRegionList);
     }, []);
 

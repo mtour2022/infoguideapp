@@ -326,7 +326,6 @@ export default function EditingAccommodationForm({editingItem, toAddForm}) {
       ratings : "",
       established : "",
       lowest : "",
-      assets : [],
       slogan : "",
       description : "",
       facilities : [],
@@ -797,9 +796,7 @@ export default function EditingAccommodationForm({editingItem, toAddForm}) {
               // }
               onChange={(value) => handleChange(value, "socials")}
               label={"Social Media Links (Type & Enter)"}
-              items={accommodationFormData.socials}
               editingItems={accommodationFormData.socials}
-
               resetKey={resetKey} 
             />
           </Col>
@@ -819,7 +816,6 @@ export default function EditingAccommodationForm({editingItem, toAddForm}) {
               // }
               onChange={(value) => handleChange(value, "operatinghours")}
               label={"Operating Hours (Type & Enter)"}
-              items={accommodationFormData.operatinghours}
               editingItems={accommodationFormData.operatinghours}
               resetKey={resetKey} 
               caption="format: hh:mm A  | e.g. 08:00 AM"
@@ -916,7 +912,6 @@ export default function EditingAccommodationForm({editingItem, toAddForm}) {
               // }
               onChange={(value) => handleChange(value, "memberships")}
               editingItems={accommodationFormData.memberships}
-              items={accommodationFormData.memberships}
               resetKey={resetKey} 
             />
 
@@ -931,7 +926,6 @@ export default function EditingAccommodationForm({editingItem, toAddForm}) {
               // }
               onChange={(value) => handleChange(value, "awards")}
               editingItems={accommodationFormData.awards}
-              items={accommodationFormData.awards}
               resetKey={resetKey} 
               label={"Awards, Recognitions, Seals and Certifications (Type & Enter)"}
             />
