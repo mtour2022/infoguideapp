@@ -28,12 +28,12 @@ import {
   subcategoriesOptions,
   classificationOptions,
 } from '../../datamodel/accommodation_model';
-import AccommodationFormData from "../../datamodel/accommodation_model"; 
+import RecreationalResortsFormData from "../../datamodel/recreationalresort_model"; 
 import { setDataInElement } from "ckeditor5";
 
 export default function AccommodationForm({}) {
   const [resetKey, setResetKey] = useState(0); // Reset trigger
-  const [accommodationFormData, setAccommodationFormData] = useState(new AccommodationFormData());
+  const [recreationalResortsFormData, setrecreationalResortsFormData] = useState(new RecreationalResortsFormData());
 
     // Local state for selections
     const [selectedCategory, setSelectedCategory] = useState("");
@@ -44,20 +44,20 @@ export default function AccommodationForm({}) {
   const handleChange = (e, field) => {
     if (Array.isArray(e)) {
         // If `e` is an array, it's coming from TextGroupInputField
-        setAccommodationFormData((prev) => ({
+        setrecreationalResortsFormData((prev) => ({
             ...prev,
             [field]: e, // Directly set the array value
         }));
     } else if (typeof e === "string") {
         // If `e` is a string, it's from ReactQuill (rich text editor)
-        setAccommodationFormData((prev) => ({
+        setrecreationalResortsFormData((prev) => ({
             ...prev,
             [field]: e,
         }));
     } else {
         // Standard form fields
         const { name, value } = e.target;
-        setAccommodationFormData((prev) => ({
+        setrecreationalResortsFormData((prev) => ({
             ...prev,
             [name]: value,
         }));
@@ -68,7 +68,7 @@ export default function AccommodationForm({}) {
   // Handle category change and reset subcategory.
   const handleCategoryChange = (e) => {
     const { value } = e.target;
-    setAccommodationFormData((prev) => ({
+    setrecreationalResortsFormData((prev) => ({
       ...prev,
       category: value,
       subcategory: "",
@@ -81,7 +81,7 @@ export default function AccommodationForm({}) {
       return;
     }
   
-    setAccommodationFormData((prev) => ({
+    setrecreationalResortsFormData((prev) => ({
       ...prev,
       address: {
         ...prev.address,
@@ -95,15 +95,14 @@ export default function AccommodationForm({}) {
   
 
   useEffect(() => {
-    if (!accommodationFormData.accreditation) {
-      setAccommodationFormData((prevData) => ({
+    if (!recreationalResortsFormData.accreditation) {
+      setrecreationalResortsFormData((prevData) => ({
         ...prevData,
         category: "Hospitality & Lodging",
-        subcategory: "Accommodation Establishments",
       }));
       setSelectedCategory("Hospitality & Lodging");
     }
-  }, [setAccommodationFormData, accommodationFormData.category]);
+  }, [setrecreationalResortsFormData, recreationalResortsFormData.category]);
   
 
   
@@ -132,18 +131,18 @@ export default function AccommodationForm({}) {
     
         try {
             // Upload header image if available
-            let headerImageURL = accommodationFormData.headerImage
-                ? await uploadImageToFirebase(accommodationFormData.headerImage, `accommodations/${Date.now()}_${accommodationFormData.headerImage.name}`)
+            let headerImageURL = recreationalResortsFormData.headerImage
+                ? await uploadImageToFirebase(recreationalResortsFormData.headerImage, `accommodations/${Date.now()}_${recreationalResortsFormData.headerImage.name}`)
                 : null;
     
             // Upload logo if available
-            let logoURL = accommodationFormData.logo
-                ? await uploadImageToFirebase(accommodationFormData.logo, `accommodations/${Date.now()}_${accommodationFormData.logo.name}`)
+            let logoURL = recreationalResortsFormData.logo
+                ? await uploadImageToFirebase(recreationalResortsFormData.logo, `accommodations/${Date.now()}_${recreationalResortsFormData.logo.name}`)
                 : null;
     
             // Upload images if available
             const imagesURLs = await Promise.all(
-              accommodationFormData.images.map(async (image) => {
+              recreationalResortsFormData.images.map(async (image) => {
                     return image ? await uploadImageToFirebase(image, `accommodations/${Date.now()}_${image.name}`) : "";
                 })
             );
@@ -151,33 +150,33 @@ export default function AccommodationForm({}) {
             // Create an instance of AccommodationFormData and populate it
             const accommodationData = new AccommodationFormData();
             accommodationData.id = ""; // Firestore will generate this
-            accommodationData.name = accommodationFormData.name;
-            accommodationData.category = accommodationFormData.category || selectedCategory;
-            accommodationData.subcategory = accommodationFormData.subcategory || selectedSubcategory;
-            accommodationData.classification = accommodationFormData.classification || selectedClassification;
-            accommodationData.accreditation = accommodationFormData.accreditation;
-            accommodationData.ratings = accommodationFormData.ratings;
-            accommodationData.established = accommodationFormData.established;
-            accommodationData.lowest = accommodationFormData.lowest;
-            accommodationData.slogan = accommodationFormData.slogan;
-            accommodationData.description = accommodationFormData.description;
-            accommodationData.facilities = accommodationFormData.facilities || [];
-            accommodationData.amenities = accommodationFormData.amenities || [];
-            accommodationData.awards = accommodationFormData.awards || [];
+            accommodationData.name = recreationalResortsFormData.name;
+            accommodationData.category = recreationalResortsFormData.category || selectedCategory;
+            accommodationData.subcategory = recreationalResortsFormData.subcategory || selectedSubcategory;
+            accommodationData.classification = recreationalResortsFormData.classification || selectedClassification;
+            accommodationData.accreditation = recreationalResortsFormData.accreditation;
+            accommodationData.ratings = recreationalResortsFormData.ratings;
+            accommodationData.established = recreationalResortsFormData.established;
+            accommodationData.lowest = recreationalResortsFormData.lowest;
+            accommodationData.slogan = recreationalResortsFormData.slogan;
+            accommodationData.description = recreationalResortsFormData.description;
+            accommodationData.facilities = recreationalResortsFormData.facilities || [];
+            accommodationData.amenities = recreationalResortsFormData.amenities || [];
+            accommodationData.awards = recreationalResortsFormData.awards || [];
             accommodationData.images = imagesURLs;
-            accommodationData.roomtypes = accommodationFormData.roomtypes || [];
-            accommodationData.operatinghours = accommodationFormData.operatinghours || [];
-            accommodationData.inclusivity = accommodationFormData.inclusivity || [];
-            accommodationData.accessibility = accommodationFormData.accessibility || [];
+            accommodationData.roomtypes = recreationalResortsFormData.roomtypes || [];
+            accommodationData.operatinghours = recreationalResortsFormData.operatinghours || [];
+            accommodationData.inclusivity = recreationalResortsFormData.inclusivity || [];
+            accommodationData.accessibility = recreationalResortsFormData.accessibility || [];
             accommodationData.logo = logoURL;
             accommodationData.headerImage = headerImageURL;
-            accommodationData.website = accommodationFormData.website;
-            accommodationData.address = { ...accommodationFormData.address };
-            accommodationData.link = accommodationFormData.link;
-            accommodationData.geo = accommodationFormData.geo;
-            accommodationData.socials = accommodationFormData.socials || [];;
-            accommodationData.memberships = accommodationFormData.memberships || [];
-            accommodationData.note = accommodationFormData.not;
+            accommodationData.website = recreationalResortsFormData.website;
+            accommodationData.address = { ...recreationalResortsFormData.address };
+            accommodationData.link = recreationalResortsFormData.link;
+            accommodationData.geo = recreationalResortsFormData.geo;
+            accommodationData.socials = recreationalResortsFormData.socials || [];;
+            accommodationData.memberships = recreationalResortsFormData.memberships || [];
+            accommodationData.note = recreationalResortsFormData.not;
     
             // Save accommodation data to Firestore
             const docRef = await addDoc(collection(db, "accommodations"), accommodationData.toJSON());
@@ -207,21 +206,21 @@ export default function AccommodationForm({}) {
   
 
   const resetLogo = () => {
-    setAccommodationFormData((prev) => ({
+    setrecreationalResortsFormData((prev) => ({
         ...prev,
         logo: null,
     }));
   };
 
   const resetHeaderImage = () => {
-    setAccommodationFormData((prev) => ({
+    setrecreationalResortsFormData((prev) => ({
         ...prev,
         headerImage: null,
     }));
   };
 
   const resetForm = () => {
-    setAccommodationFormData({
+    setrecreationalResortsFormData({
       id : "",
       name : "",
       category : "",
@@ -277,9 +276,9 @@ export default function AccommodationForm({}) {
               <Form.Label className="label">Category</Form.Label>
               <Form.Control
                 type="text"
-                placeholder="Enter Category"
-                name="category"
-                value={accommodationFormData.category || "Hospitality & Lodging"}
+                placeholder="Enter accreditation (Optional)"
+                name="accreditation"
+                value={recreationalResortsFormData.category || "Hospitality & Lodging"}
                 onChange={handleChange}
                 readOnly
               />
@@ -287,29 +286,18 @@ export default function AccommodationForm({}) {
 
             </Col>
             <Col md={6}>
-            <Form.Group controlId="subcategory" className="mb-3">
-              <Form.Label className="label">Category</Form.Label>
-              <Form.Control
-                type="text"
-                placeholder="Enter Subcategory"
-                name="subcategory"
-                value={accommodationFormData.subcategory || "Accommodation Establishments"}
-                onChange={handleChange}
-                readOnly
-              />
-            </Form.Group>
-            {/* {selectedCategory && subcategoriesOptions[selectedCategory] && (
+            {selectedCategory && subcategoriesOptions[selectedCategory] && (
                     <Form.Group controlId="formSubcategory" className="mb-3">
                     <Form.Label className="label">Subcategory</Form.Label>
                     <Form.Select
-                      value={accommodationFormData.subcategory || ""}
+                      value={recreationalResortsFormData.subcategory || ""}
                       onChange={(e) => {
                         const newSubcategory = e.target.value;
                         setSelectedSubcategory(newSubcategory);
                         setSelectedClassification(""); // Reset classification when subcategory changes
 
                         // Update accommodationFormData
-                        setAccommodationFormData((prev) => ({
+                        setrecreationalResortsFormData((prev) => ({
                           ...prev,
                           subcategory: newSubcategory,
                           classification: "", // Reset classification in form data
@@ -323,18 +311,18 @@ export default function AccommodationForm({}) {
                     </Form.Select>
 
                     </Form.Group>
-                )} */}
+                )}
             {selectedSubcategory && classificationOptions[selectedSubcategory] && (
             <Form.Group controlId="formClassification" className="mb-3">
             <Form.Label className="label">Classification</Form.Label>
             <Form.Select
-              value={accommodationFormData.classification || ""}
+              value={recreationalResortsFormData.classification || ""}
               onChange={(e) => {
                 const newClassification = e.target.value;
                 setSelectedClassification(newClassification);
 
                 // Update accommodationFormData
-                setAccommodationFormData((prev) => ({
+                setrecreationalResortsFormData((prev) => ({
                   ...prev,
                   classification: newClassification,
                 }));
@@ -358,8 +346,8 @@ export default function AccommodationForm({}) {
             <Form.Group controlId="name" className="mb-3">
               <Form.Label className="label">Business Logo</Form.Label>
                     <LogoImageDropzone
-                    storyForm={accommodationFormData}
-                    setStoryForm={setAccommodationFormData}
+                    storyForm={recreationalResortsFormData}
+                    setStoryForm={setrecreationalResortsFormData}
                     dropzoneName="dropzone-container-small"
                     previewName="dropzone-uploaded-image-small"
                     caption="Drag & Drop Logo here"
@@ -380,7 +368,7 @@ export default function AccommodationForm({}) {
                   type="text"
                   placeholder="Enter business name"
                   name="name"
-                  value={accommodationFormData.name}
+                  value={recreationalResortsFormData.name}
                   onChange={handleChange}
                   required
                 />
@@ -397,7 +385,7 @@ export default function AccommodationForm({}) {
                 type="text"
                 placeholder="Enter business slogan/phrase/tagline"
                 name="slogan"
-                value={accommodationFormData.slogan}
+                value={recreationalResortsFormData.slogan}
                 onChange={handleChange}
               />
             </Form.Group>
@@ -411,7 +399,7 @@ export default function AccommodationForm({}) {
                     placeholder="e.g.: 2000"
                     name="established"
                     required
-                    value={accommodationFormData.established}
+                    value={recreationalResortsFormData.established}
                     onChange={(e) => {
                       const value = e.target.value;
                       if (/^\d*\.?\d*$/.test(value)) {
@@ -428,7 +416,7 @@ export default function AccommodationForm({}) {
                 <Form.Label className="label">Brief Description</Form.Label>
                 <ReactQuill
                     theme="snow"
-                    value={accommodationFormData.description || ""} 
+                    value={recreationalResortsFormData.description || ""} 
                     onChange={(value) => handleChange(value, "description")} // Pass value and field name
                     required
                     style={{ height: '300px' }} 
@@ -438,14 +426,14 @@ export default function AccommodationForm({}) {
         </Row>
         <Row className="mt-2">
           <Col md={12} >
-            <AddressInput groupData={accommodationFormData} setGroupData={setAccommodationFormData} resetKey={resetKey}></AddressInput>
+            <AddressInput groupData={recreationalResortsFormData} setGroupData={setrecreationalResortsFormData} resetKey={resetKey}></AddressInput>
           </Col>
         </Row>
         <Row className="mt-2">
           <Col md={12}>
           <MapWidgetFormGroup
             onLocationSelect={handleLocationSelect}
-             name={accommodationFormData.name || ""}
+             name={recreationalResortsFormData.name || ""}
              resetKey={resetKey}
           />
           </Col>
@@ -458,7 +446,7 @@ export default function AccommodationForm({}) {
                     type="text"
                     placeholder="Select Location First"
                     name="link"
-                    value={accommodationFormData.link}
+                    value={recreationalResortsFormData.link}
                     onChange={handleChange}
                     readOnly
                 />
@@ -473,7 +461,7 @@ export default function AccommodationForm({}) {
                     type="text"
                     placeholder="Select Location First"
                     name="lat"
-                    value={accommodationFormData.address.lat}
+                    value={recreationalResortsFormData.address.lat}
                     onChange={handleChange}
                     readOnly
                 />
@@ -486,7 +474,7 @@ export default function AccommodationForm({}) {
                     type="text"
                     placeholder="Select Location First"
                     name="long"
-                    value={accommodationFormData.address.long}
+                    value={recreationalResortsFormData.address.long}
                     onChange={handleChange}
                     readOnly
                 />
@@ -499,7 +487,7 @@ export default function AccommodationForm({}) {
             <Form.Label className="label">Geographical Location</Form.Label>
             <Form.Select
               name="geo"
-              value={accommodationFormData.geo}
+              value={recreationalResortsFormData.geo}
               onChange={handleChange}
             >
               <option value="" disabled>Select Geo Location</option>
@@ -516,7 +504,7 @@ export default function AccommodationForm({}) {
             <Form.Label className="label">Accessibility</Form.Label>
             <Form.Select
               name="accessibility"
-              value={accommodationFormData.accessibility}
+              value={recreationalResortsFormData.accessibility}
               onChange={handleChange}
             >
               <option value="" disabled>Select Accessibility</option>
@@ -539,8 +527,8 @@ export default function AccommodationForm({}) {
             <Form.Group controlId="name" className="mb-3">
               <Form.Label className="label">Cover Photo</Form.Label>
               <HeaderImageDropzone
-                    storyForm={accommodationFormData}
-                    setStoryForm={setAccommodationFormData}
+                    storyForm={recreationalResortsFormData}
+                    setStoryForm={setrecreationalResortsFormData}
                     dropzoneName="dropzone-container-big"
                     previewName="dropzone-uploaded-image-big"
                     />
@@ -552,8 +540,8 @@ export default function AccommodationForm({}) {
             <Form.Group controlId="name" >
               <Form.Label className="label me-2">Promotional & Marketing Photos</Form.Label>
               <MultiImageDropzone
-                  dataForm={accommodationFormData}
-                  setDataForm={setAccommodationFormData}
+                  dataForm={recreationalResortsFormData}
+                  setDataForm={setrecreationalResortsFormData}
                   caption="Drag & drop images or click to select (Max: 10)"
                   dropzoneName="dropzone-container-small"
                   previewName="dropzone-uploaded-image-small"
@@ -570,7 +558,7 @@ export default function AccommodationForm({}) {
                 type="text"
                 placeholder="Enter accreditation (Optional)"
                 name="accreditation"
-                value={accommodationFormData.accreditation}
+                value={recreationalResortsFormData.accreditation}
                 onChange={handleChange}
               />
             </Form.Group>
@@ -582,7 +570,7 @@ export default function AccommodationForm({}) {
                 type="text"
                 placeholder="Enter ratings (Optional)"
                 name="ratings"
-                value={accommodationFormData.ratings}
+                value={recreationalResortsFormData.ratings}
                 onChange={handleChange}
               />
             </Form.Group>
@@ -596,7 +584,7 @@ export default function AccommodationForm({}) {
                   type="text"
                   placeholder="Enter website link"
                   name="website"
-                  value={accommodationFormData.website}
+                  value={recreationalResortsFormData.website}
                   onChange={handleChange}
                 />
               </Form.Group>
@@ -608,7 +596,7 @@ export default function AccommodationForm({}) {
               // }
               onChange={(value) => handleChange(value, "socials")}
               label={"Social Media Links (Type & Enter)"}
-              items={accommodationFormData.socials}
+              items={recreationalResortsFormData.socials}
               resetKey={resetKey} 
             />
           </Col>
@@ -628,7 +616,7 @@ export default function AccommodationForm({}) {
               // }
               onChange={(value) => handleChange(value, "operatinghours")}
               label={"Operating Hours (Type & Enter)"}
-              items={accommodationFormData.operatinghours}
+              items={recreationalResortsFormData.operatinghours}
               resetKey={resetKey} 
               caption="format: hh:mm A  | e.g. 08:00 AM"
             />
@@ -641,7 +629,7 @@ export default function AccommodationForm({}) {
               type="text"
               placeholder="Enter Lowest Price"
               name="lowest"
-              value={accommodationFormData.lowest}
+              value={recreationalResortsFormData.lowest}
               onChange={(e) => {
                 const value = e.target.value;
                 if (/^\d*\.?\d*$/.test(value)) {
@@ -720,7 +708,7 @@ export default function AccommodationForm({}) {
               // }
               onChange={(value) => handleChange(value, "memberships")}
 
-              items={accommodationFormData.memberships}
+              items={recreationalResortsFormData.memberships}
               resetKey={resetKey} 
             />
 
@@ -735,7 +723,7 @@ export default function AccommodationForm({}) {
               // }
               onChange={(value) => handleChange(value, "awards")}
 
-              items={accommodationFormData.awards}
+              items={recreationalResortsFormData.awards}
               resetKey={resetKey} 
               label={"Awards, Recognitions, Seals and Certifications (Type & Enter)"}
             />
@@ -751,7 +739,7 @@ export default function AccommodationForm({}) {
                 <Form.Label className="label">Notes, Reminders, Remarks, and Other Details</Form.Label>
                 <ReactQuill
                     theme="snow"
-                    value={accommodationFormData.note || ""} 
+                    value={recreationalResortsFormData.note || ""} 
                     onChange={(value) => handleChange(value, "note")} // Pass value and field name
                     required
                     style={{ height: '300px' }} 

@@ -8,13 +8,13 @@ import Swal from "sweetalert2";
 import ReactQuill from 'react-quill-new';
 import 'react-quill-new/dist/quill.snow.css';
 import AddressInput from '../Address';
-import MapWidgetFormGroup from "../MapLocator"; // Adjust the import path as needed
+import MapWidgetFormGroup from "../map/MapLocator"; // Adjust the import path as needed
 import HeaderImageDropzone from '../HeaderImageDropzone';
 import LogoImageDropzone from "../LogoImageDrop";
 import SelectionFieldWidget from "../SelectionField";
 import TextGroupInputField from "../TextGroupInputField";
 import MultiImageDropzone from "../MultiImageDropzone";
-
+import GoogleMapComponent from "../map/MapLocation";
 
 
 import {
@@ -93,6 +93,8 @@ export default function EditingAccommodationForm({editingItem, toAddForm}) {
       link: link || "", // Ensure link is never undefined
     }));
   };
+
+
   
   
 
@@ -147,6 +149,7 @@ export default function EditingAccommodationForm({editingItem, toAddForm}) {
         setSelectedClassification(editingItem.classification || "");
       } else {
         setSelectedCategory("Hospitality & Lodging");
+        setSelectedSubcategory("Accommodation Establishments");
       }
     }
   }, [editingItem]); // Dependency array includes editingItem
@@ -359,6 +362,22 @@ export default function EditingAccommodationForm({editingItem, toAddForm}) {
     setSelectedSubcategory("");
   };
 
+   // Initialize the isEditing state to false
+   const [isEditingAddress, setIsEditingAddress] = useState(false);
+
+   // Function to handle the Edit button click
+   const handleEditAddressClick = () => {
+     setIsEditingAddress(!isEditingAddress); // Toggle the isEditing state
+   };
+
+   // Initialize the isEditing state to false
+   const [isEditingMap, setIsEditingMap] = useState(false);
+
+   // Function to handle the Edit button click
+   const handleEditMapClick = () => {
+    setIsEditingMap(!isEditingMap); // Toggle the isEditing state
+   };
+
 
   return (
     
@@ -379,7 +398,19 @@ export default function EditingAccommodationForm({editingItem, toAddForm}) {
 
             </Col>
             <Col md={6}>
-            {selectedCategory && subcategoriesOptions[selectedCategory] && (
+                        <Form.Group controlId="subcategory" className="mb-3">
+                          <Form.Label className="label">Category</Form.Label>
+                          <Form.Control
+                            type="text"
+                            placeholder="Enter Subcategory"
+                            name="subcategory"
+                            value={accommodationFormData.subcategory || "Accommodation Establishments"}
+                            onChange={handleChange}
+                            readOnly
+                          />
+          </Form.Group>
+            
+            {/* {selectedCategory && subcategoriesOptions[selectedCategory] && (
                     <Form.Group controlId="formSubcategory" className="mb-3">
                     <Form.Label className="label">Subcategory</Form.Label>
                     <Form.Select
@@ -404,7 +435,7 @@ export default function EditingAccommodationForm({editingItem, toAddForm}) {
                     </Form.Select>
 
                     </Form.Group>
-                )}
+                )} */}
             {selectedSubcategory && classificationOptions[selectedSubcategory] && (
             <Form.Group controlId="formClassification" className="mb-3">
             <Form.Label className="label">Classification</Form.Label>
@@ -519,18 +550,95 @@ export default function EditingAccommodationForm({editingItem, toAddForm}) {
         </Row>
         <Row className="mt-2">
           <Col md={12} >
-            <AddressInput groupData={accommodationFormData} setGroupData={setAccommodationFormData} resetKey={resetKey} editingItems={accommodationFormData}></AddressInput>
+
+           
+              {isEditingAddress ? (
+                <AddressInput groupData={accommodationFormData} setGroupData={setAccommodationFormData} resetKey={resetKey}></AddressInput>
+              ) : (
+                <Form.Group className="mt-3 mb-3">
+                <div className="d-flex justify-content-between align-items-center">
+                  <Form.Label className="label mb-2">Local Business Address</Form.Label>
+                  <Button variant="outline-danger" className="mb-2" onClick={handleEditAddressClick}>
+                    {isEditingAddress ? 'Cancel' : 'Edit Address'}
+                  </Button>
+                </div>
+                <>
+                  <Form.Control
+                    className="mb-3"
+                    type="text"
+                    name="address.country"
+                    placeholder="Country"
+                    value={accommodationFormData.address.country}
+                    readOnly
+                  />
+                  <Form.Control
+                    className="my-3"
+                    type="text"
+                    name="address.region"
+                    placeholder="Region"
+                    value={accommodationFormData.address.region}
+                    readOnly
+                  />
+                  <Form.Control
+                    className="my-3"
+                    type="text"
+                    name="address.province"
+                    placeholder="Province"
+                    value={accommodationFormData.address.province}
+                    readOnly
+                  />
+                  <Form.Control
+                    className="my-3"
+                    type="text"
+                    name="address.city"
+                    placeholder="City/Municipality/Town"
+                    value={accommodationFormData.address.town}
+                    readOnly
+                  />
+                  <Form.Control
+                    className="my-3"
+                    type="text"
+                    name="address.barangay"
+                    placeholder="Barangay"
+                    value={accommodationFormData.address.barangay}
+                    readOnly
+                  />
+                  <Form.Control
+                    className="my-3"
+                    type="text"
+                    name="address.street"
+                    placeholder="Street Name / Zone (Optional)"
+                    value={accommodationFormData.address.street}
+                    readOnly
+                  />
+                </>
+                </Form.Group>
+              )}
           </Col>
         </Row>
         <Row className="mt-2">
           <Col md={12}>
-          <MapWidgetFormGroup
-            onLocationSelect={handleLocationSelect}
-             name={accommodationFormData.name || ""}
-             resetKey={resetKey}
-          />
+              {isEditingMap ? (
+                  <MapWidgetFormGroup
+                  onLocationSelect={handleLocationSelect}
+                  name={accommodationFormData.name || ""}
+                  resetKey={resetKey}
+                  editingItems={accommodationFormData.address}
+                />
+              ) : (
+                <Form.Group className="mt-3 mb-3">
+                <div className="d-flex justify-content-between align-items-center">
+                  <Form.Label className="label mb-2">Local Business Address</Form.Label>
+                  <Button variant="outline-danger" className="mb-2" onClick={handleEditMapClick}>
+                    {isEditingMap ? 'Cancel' : 'Edit Map Location'}
+                  </Button>
+                </div>
+                <GoogleMapComponent latitude={accommodationFormData.address.lat} longitude={accommodationFormData.address.long} />
+                </Form.Group>
+              )}
           </Col>
         </Row>
+        
         <Row className="mt-2">
             <Col md={12}>
                 <Form.Group controlId="link" className="mb-3">
@@ -628,10 +736,10 @@ export default function EditingAccommodationForm({editingItem, toAddForm}) {
             </Form.Group>
             </Col>
         </Row>
-        <Row className="mt-2">
+        <Row className="mt-2 ">
             <Col  md={12}>
             <Form.Group controlId="name" >
-              <Form.Label className="label me-2">Promotional & Marketing Photos</Form.Label>
+              <Form.Label className="label">Promotional & Marketing Photos</Form.Label>
               <MultiImageDropzone
                   dataForm={accommodationFormData}
                   setDataForm={setAccommodationFormData}
@@ -850,15 +958,15 @@ export default function EditingAccommodationForm({editingItem, toAddForm}) {
         <Container className="empty-container"></Container>
 
         <Row className="mt-2">
-          <Container className="d-flex justify-content-between">
-                              <Button variant="outline-danger" className="ms-3" onClick={resetForm}>Reset Form</Button>
+          <Container className="d-flex justify-content-end">
+                              {/* <Button variant="outline-danger" className="ms-3" onClick={resetForm}>Reset Form</Button> */}
                               <Button 
                                   variant="outline-primary" 
                                   type="submit" 
                                   className="w-full me-3" 
                                   onClick={handleSubmit}
                               >
-                                  Submit Accommodation
+                                  Submit Update
                               </Button>
                           </Container>
         </Row>

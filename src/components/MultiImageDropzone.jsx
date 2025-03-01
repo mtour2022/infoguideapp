@@ -43,7 +43,7 @@ const MultiImageDropzone = ({ dataForm, setDataForm, caption, dropzoneName, prev
   return (
     <Container className="text-center w-100">
       <Row className="d-md-flex flex-md-column flex-lg-row align-items-center">
-        <Col md={12} lg={4} className="order-lg-1 order-md-2">
+        <Col md={12} lg={4} className="order-lg-1 order-md-2 col">
           <div 
             {...getRootProps()} 
             className={`${dropzoneName} p-3 border rounded ${dataForm.images?.length ? "border-success" : ""}`}
@@ -58,7 +58,7 @@ const MultiImageDropzone = ({ dataForm, setDataForm, caption, dropzoneName, prev
           </div>
         </Col>
 
-        <Col md={12} lg={8} className="order-lg-2 order-md-1">
+        <Col md={12} lg={8} className="order-lg-2 order-md-1  col">
           {/* Image Previews */}
           <div 
             className="d-flex flex-wrap justify-content-center align-items-center gap-2 border border-secondary rounded p-2"

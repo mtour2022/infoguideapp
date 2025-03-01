@@ -27,6 +27,8 @@ const AccommodationTable = () => {
   const [subCategoryFilter, setSubCategoryFilter] = useState("");
   const [geoFilter, subGeoFilter] = useState("");
   const [barangayFilter, setBarangayFilter] = useState("");
+  const [accreditationFilter, setAccreditationFilter] = useState("");
+
 
   const [sortOrder, setSortOrder] = useState("asc");
   const [currentPage, setCurrentPage] = useState(0);
@@ -92,25 +94,51 @@ const AccommodationTable = () => {
 
 
   // Filtering and searching logic
-  const filteredData = data.filter(
-    (item) =>
-        (subCategoryFilter === "" || item.subcategory === subCategoryFilter) &&
-      (classificationFilter === "" || item.classification === classificationFilter) &&
-      (geoFilter === "" || item.geo === geoFilter) &&
-      (barangayFilter === "" || item.address.barangay === barangayFilter) &&
-
-      (item.name.toLowerCase().includes(search.toLowerCase()) ||
-        item.established.toLowerCase().includes(search.toLowerCase()) ||
-        item.category.toLowerCase().includes(search.toLowerCase()) ||
-        item.subcategory.toLowerCase().includes(search.toLowerCase()) ||
-        item.classification.toLowerCase().includes(search.toLowerCase()) ||
-        item.geo.toLowerCase().includes(search.toLowerCase()) ||
-        item.address.barangay.toLowerCase().includes(search.toLowerCase()) ||
-        item.address.street.toLowerCase().includes(search.toLowerCase()) ||
-        item.accreditation.toLowerCase().includes(search.toLowerCase()) ||
-        item.ratings.toLowerCase().includes(search.toLowerCase())
-    )
-  );
+  const filteredData = data.filter((item) => {
+    // Check subcategory filter
+    const subCategoryMatch = subCategoryFilter === "" || item.subcategory === subCategoryFilter;
+  
+    // Check classification filter
+    const classificationMatch = classificationFilter === "" || item.classification === classificationFilter;
+  
+    // Check geographic filter
+    const geoMatch = geoFilter === "" || item.geo === geoFilter;
+  
+    // Check barangay filter
+    const barangayMatch = barangayFilter === "" || item.address.barangay === barangayFilter;
+  
+    // Check search filter
+    const searchTerm = search.toLowerCase();
+    const searchMatch =
+      item.name.toLowerCase().includes(searchTerm) ||
+      item.established.toLowerCase().includes(searchTerm) ||
+      item.category.toLowerCase().includes(searchTerm) ||
+      item.subcategory.toLowerCase().includes(searchTerm) ||
+      item.classification.toLowerCase().includes(searchTerm) ||
+      item.geo.toLowerCase().includes(searchTerm) ||
+      item.address.barangay.toLowerCase().includes(searchTerm) ||
+      item.address.street.toLowerCase().includes(searchTerm) ||
+      item.accreditation.toLowerCase().includes(searchTerm) ||
+      item.ratings.toLowerCase().includes(searchTerm);
+  
+    // Check accreditation filter
+    const isAccredited = item.accreditation && item.accreditation.trim() !== "";
+    const accreditationMatch =
+      accreditationFilter === "" ||
+      (accreditationFilter === "DOT Accredited" && isAccredited) ||
+      (accreditationFilter === "Not Accredited" && !isAccredited);
+  
+    // Return true if all conditions are met
+    return (
+      subCategoryMatch &&
+      classificationMatch &&
+      geoMatch &&
+      barangayMatch &&
+      searchMatch &&
+      accreditationMatch
+    );
+  });
+  
 
   const getFormattedDate = () => {
     const date = new Date();
@@ -157,14 +185,17 @@ const AccommodationTable = () => {
     setEditingItem(null);
   };
 
+  
+  
+
   return (
     <Container>
-      <h1 className="text-2xl font-bold mb-1">Submit Accommodation Data</h1>
-      <p>Each accommodation data submitted must be thoroughly reviewed by encoders.</p>
+      <h1 className="text-2xl font-bold mb-1">Accommodation Establishment</h1>
+      <p>List of Department of Tourism (DOT) Accredited and LGU-Recognized Accommodation Establishment</p>
 
       {/* Search and Filters */}
       <Row>
-        <Col md={4} className="mb-1 me-2 col">
+        <Col md={6} className="mb-1 me-2 col">
           <Form.Control
             type="text"
             placeholder={`Search up to over ${data.length} accommodations`}
@@ -228,6 +259,17 @@ const AccommodationTable = () => {
             ))}
           </Form.Select>
         </Col>
+        <Col md={2} className="mb-1 me-2 col">
+            <Form.Select
+              value={accreditationFilter}
+              onChange={(e) => setAccreditationFilter(e.target.value)}
+            >
+              <option value="">All Accreditations</option>
+              <option value="DOT Accredited">DOT Accredited</option>
+              <option value="Not Accredited">Not Accredited</option>
+            </Form.Select>
+          </Col>
+
         <Container className="d-flex justify-content-end align-items-center mt-2 mb-4">
           <Button variant="outline-secondary" className="me-2" onClick={fetchData}>
             <FontAwesomeIcon icon={faRefresh} size="xs" fixedWidth /> Refresh List

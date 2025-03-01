@@ -130,8 +130,8 @@ const DataTable = () => {
 
   return (
     <Container>
-      <h1 className="text-2xl font-bold mb-1">Submit an Article</h1>
-      <p>Each article submitted must be thoroughly reviewed by the technical writers.</p>
+      <h1 className="text-2xl font-bold mb-1">Tourism Stories</h1>
+      <p>List of Tourism-related Articles.</p>
 
       {/* Search and Filters */}
       <Row className="mb-4 mt-4">

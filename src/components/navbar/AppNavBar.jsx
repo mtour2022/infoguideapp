@@ -1,9 +1,9 @@
 import { Container, Navbar, Nav, Image, NavDropdown, Accordion  } from 'react-bootstrap';
-import logo from'../assets/images/logo_with_title.png';
+import logo from'../../assets/images/logo_with_title.png';
 import { Link, NavLink } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBell, faLeaf} from '@fortawesome/free-solid-svg-icons';
-import WeatherNav from './Weather';
+import WeatherNav from '../Weather';
 // import { useAuth } from '../auth/authentication.js';
 
 
@@ -22,7 +22,6 @@ export default function AppNavBar() {
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="ms-auto">
-            {/* <WeatherNav /> */}
             {/* <WeatherNav></WeatherNav> */}
             <Nav.Link className='ms-lg-2 navlink' as={NavLink} to="/">Home</Nav.Link>
             <Nav.Link className='ms-lg-2 navlink' as={NavLink} to="/">Tourism Stories</Nav.Link>

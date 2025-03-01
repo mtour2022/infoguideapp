@@ -1,4 +1,4 @@
-export default class RecreationalResorts {
+export default class OtherTourismEnterprisesFormData {
     constructor() {
         this.id = "";
         this.name = "";
@@ -9,8 +9,6 @@ export default class RecreationalResorts {
         this.lowest = "";
         this.slogan = "";
         this.description = "";
-        this.facilities = [];
-        this.activities = []; //instead of amenities activities iya
         this.images = [];
         this.operatinghours = [];
         this.accessibility = "";
