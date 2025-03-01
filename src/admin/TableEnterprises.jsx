@@ -15,12 +15,12 @@ import ReactPaginate from "react-paginate";
 import * as XLSX from "xlsx";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEdit, faPlus, faRefresh, faTrash } from "@fortawesome/free-solid-svg-icons";
-import RecreationalResortForm from "../components/recreationalresorts/RecreationalResortForm";
-import EditingRecreationalResortForm from "../components/recreationalresorts/EditRecreationalResortForm";
+import EnterprisesForm from "../components/enterprises/EnterpriseForm";
+import EditingEnterpriseForm from "../components/enterprises/EditEnterpriseForm";
 import Swal from "sweetalert2";
 
 
-const RecreatonalResortTable = () => {
+const EnterprisesTable = ({category, subcategory}) => {
   const [data, setData] = useState([]);
   const [search, setSearch] = useState("");
   const [classificationFilter, setClassificationFilter] = useState("");
@@ -38,8 +38,21 @@ const RecreatonalResortTable = () => {
     fetchData();
   }, []);
 
+  const [subcategoryDisplay, setSubcategoryDisplay] = useState("");
+
+  useEffect(() => {
+    if (subcategory) {
+      const formattedSubcategory = subcategory
+        .replace(/([A-Z])/g, " $1") // Insert space before capital letters
+        .replace(/^./, (str) => str.toUpperCase()) // Capitalize the first letter
+        .trim(); // Remove leading/trailing spaces
+
+      setSubcategoryDisplay(formattedSubcategory);
+    }
+  }, [subcategory]); // Runs whenever `subcategory` changes
+
   const fetchData = async () => {
-    const querySnapshot = await getDocs(collection(db, "resorts"));
+    const querySnapshot = await getDocs(collection(db, `${subcategory}`));
     const dataList = querySnapshot.docs.map((doc) => ({
       id: doc.id,
       ...doc.data(),
@@ -63,7 +76,7 @@ const RecreatonalResortTable = () => {
       confirmButtonText: "Yes, delete it!"
     }).then(async (result) => {
       if (result.isConfirmed) {
-        await deleteDoc(doc(db, "resorts", id));
+        await deleteDoc(doc(db, `${subcategory}`, id));
         fetchData(); // Refresh data
         Swal.fire("Deleted!", "Your entry has been deleted.", "success");
       }
@@ -118,9 +131,13 @@ const filteredData = data.filter((item) => {
         ...rest,
         facilities: Array.isArray(rest.facilities) ? rest.facilities.join(", ") : "", // Use rest.facilities
         activities: Array.isArray(rest.activities) ? rest.activities.join(", ") : "",
+        awards: Array.isArray(rest.awards) ? rest.awards.join(", ") : "",
         images: Array.isArray(rest.images) ? rest.images.join(", ") : "",
+        roomtypes: Array.isArray(rest.roomtypes) ? rest.roomtypes.join(", ") : "",
         operatinghours: Array.isArray(rest.operatinghours) ? rest.operatinghours.join(", ") : "",
+        inclusivity: Array.isArray(rest.inclusivity) ? rest.inclusivity.join(", ") : "",
         socials: Array.isArray(rest.socials) ? rest.socials.join(", ") : "",
+        memberships: Array.isArray(rest.memberships) ? rest.memberships.join(", ") : "",
         address: rest.address ? JSON.stringify(rest.address) : "", // Convert objects to JSON string
       };
     });
@@ -153,15 +170,15 @@ const filteredData = data.filter((item) => {
 
   return (
     <Container>
-      <h1 className="text-2xl font-bold mb-1">Accommodation Establishment</h1>
-      <p>List of LGU-Recognized Recreational Resorts</p>
+      <h1 className="text-2xl font-bold mb-1">{subcategoryDisplay}</h1>
+      <p>List of DOT Accredited / LGU-Recognized {subcategoryDisplay}</p>
 
       {/* Search and Filters */}
       <Row>
         <Col md={6} className="mb-1 me-2 col">
           <Form.Control
             type="text"
-            placeholder={`Search up to over ${data.length} recreational resorts`}
+            placeholder={`Search up to over ${data.length} ${subcategoryDisplay}`}
             value={search}
             onChange={(e) => setSearch(e.target.value)}
           />
@@ -305,18 +322,23 @@ const filteredData = data.filter((item) => {
 
       {/* Conditionally render the Edit or Add form */}
       {editingItem ? (
-        <EditingRecreationalResortForm
+        <EditingEnterpriseForm
         editingItem={editingItem}
         toAddForm={() => setEditingItem(null)} // This correctly switches back to the add form
+        category={category}
+        subcategory={subcategory}
         >
 
-        </EditingRecreationalResortForm>
+        </EditingEnterpriseForm>
       ) : (
-        <RecreationalResortForm></RecreationalResortForm>
+        <EnterprisesForm
+            category={category}
+            subcategory={subcategory}
+        ></EnterprisesForm>
       )}
 
     </Container>
   );
 };
 
-export default RecreatonalResortTable;
+export default EnterprisesTable;

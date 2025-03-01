@@ -107,9 +107,7 @@ export default function AppNavBar() {
               </NavDropdown>
               <NavDropdown.Divider />
               <NavDropdown className='ms-lg-2 me-lg-2 navlink' title="Healthcare" id="basic-nav-dropdown">
-                <Nav.Link className='ms-lg-2 me-lg-2 ms-md-2 ms-sm-2  navlink' as={NavLink} to="/">Clinics & Hospitals</Nav.Link>
-                <NavDropdown.Divider /> 
-                <Nav.Link className='ms-lg-2 me-lg-2 ms-md-2 ms-sm-2  navlink' as={NavLink} to="/">Vertinery Clinics</Nav.Link>
+                <Nav.Link className='ms-lg-2 me-lg-2 ms-md-2 ms-sm-2  navlink' as={NavLink} to="/">Hospitals and Clinics</Nav.Link>
               </NavDropdown>
                 
               <NavDropdown.Divider />

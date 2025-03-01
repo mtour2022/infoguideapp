@@ -55,6 +55,7 @@ import { faCalendarCheck, faCommenting } from '@fortawesome/free-regular-svg-ico
 import StoriesDataTable from '../admin/TableStories';
 import AccommodationTable from '../admin/TableAccommodations';
 import RecreationalResortTable from '../admin/TableRecreationalResorts';
+import EnterprisesTable from '../admin/TableEnterprises';
 
 // Sidebar link component using onClick to set active content.
 function NavlinkIcon({ icon, title, onClick, active }) {
@@ -135,7 +136,151 @@ export default function AdminDashboard() {
             <RecreationalResortTable></RecreationalResortTable>
           </>
         );
-        
+      case 'restaurants':
+        return (
+          <>
+            <EnterprisesTable 
+            category={"Food & Beverages"}
+            subcategory={"restaurants"}
+            ></EnterprisesTable>
+          </>
+        );
+      case 'barsAndPartyClubs':
+        return (
+          <>
+            <EnterprisesTable 
+            category={"Food & Beverages"}
+            subcategory={"barsAndPartyClubs"}
+            ></EnterprisesTable>
+          </>
+        );
+      case 'cafeAndCoworking':
+        return (
+          <>
+            <EnterprisesTable 
+            category={"Food & Beverages"}
+            subcategory={"cafeAndCoworking"}
+            ></EnterprisesTable>
+          </>
+        );
+      case 'tourguides':
+        return (
+          <>
+            <EnterprisesTable 
+            category={"Tourism & Leisure"}
+            subcategory={"tourguides"}
+            ></EnterprisesTable>
+          </>
+        );
+      case 'travelAndTourOperators':
+        return (
+          <>
+            <EnterprisesTable 
+            category={"Tourism & Leisure"}
+            subcategory={"travelAndTourOperators"}
+            ></EnterprisesTable>
+          </>
+        );
+      case 'touristActivityProviders':
+        return (
+          <>
+            <EnterprisesTable 
+            category={"Tourism & Leisure"}
+            subcategory={"touristActivityProviders"}
+            ></EnterprisesTable>
+          </>
+        );
+      case 'MICEFacilities':
+        return (
+          <>
+            <EnterprisesTable 
+            category={"Tourism & Leisure"}
+            subcategory={"MICEFacilities"}
+            ></EnterprisesTable>
+          </>
+        );
+      case 'eventsPlanningCompanies':
+        return (
+          <>
+            <EnterprisesTable 
+            category={"Tourism & Leisure"}
+            subcategory={"eventsPlanningCompanies"}
+            ></EnterprisesTable>
+          </>
+        );
+      case 'touristAndSpecialtyShops':
+        return (
+          <>
+            <EnterprisesTable 
+            category={"Tourism & Leisure"}
+            subcategory={"touristAndSpecialtyShops"}
+            ></EnterprisesTable>
+          </>
+        );
+      case 'spaAndWellnessCentres':
+        return (
+          <>
+            <EnterprisesTable 
+            category={"Health & Wellness"}
+            subcategory={"spaAndWellnessCentres"}
+            ></EnterprisesTable>
+          </>
+        );
+      case 'gymnsAndFitnessClubs':
+        return (
+          <>
+            <EnterprisesTable 
+            category={"Health & Wellness"}
+            subcategory={"gymnsAndFitnessClubs"}
+            ></EnterprisesTable>
+          </>
+        );
+      case 'touristLandTransportOperators':
+        return (
+          <>
+            <EnterprisesTable 
+            category={"Transport & Parking"}
+            subcategory={"touristLandTransportOperators"}
+            ></EnterprisesTable>
+          </>
+        );
+      case 'touristAirTransportOperators':
+      return (
+        <>
+          <EnterprisesTable 
+          category={"Transport & Parking"}
+          subcategory={"touristAirTransportOperators"}
+          ></EnterprisesTable>
+        </>
+      );
+      case 'passengerShipLines':
+      return (
+        <>
+          <EnterprisesTable 
+          category={"Transport & Parking"}
+          subcategory={"passengerShipLines"}
+          ></EnterprisesTable>
+        </>
+      );
+      case 'parkingSpaces':
+      return (
+        <>
+          <EnterprisesTable 
+          category={"Transport & Parking"}
+          subcategory={"parkingSpaces"}
+          ></EnterprisesTable>
+        </>
+      );
+      case 'hospitalsAndClinics':
+      return (
+        <>
+          <EnterprisesTable 
+          category={"Healthcare Facilities"}
+          subcategory={"hospitalsAndClinics"}
+          ></EnterprisesTable>
+        </>
+      );
+      
       // Add more cases for other pages as needed.
       default:
         return (
@@ -213,112 +358,100 @@ export default function AdminDashboard() {
             <NavlinkIcon
               icon={faWineGlass}
               title="Bars & Party Club"
-              onClick={() => { setActivePage('bars'); handleClose(); }}
-              active={activePage === 'bars'}
+              onClick={() => { setActivePage('barsAndPartyClubs'); handleClose(); }}
+              active={activePage === 'barsAndPartyClubs'}
             />
             <NavlinkIcon
               icon={faCoffee}
               title="Cafés & Coworking"
-              onClick={() => { setActivePage('cafes'); handleClose(); }}
-              active={activePage === 'cafes'}
+              onClick={() => { setActivePage('cafeAndCoworking'); handleClose(); }}
+              active={activePage === 'cafeAndCoworking'}
             />
           </ExpandableNavItem>
           <ExpandableNavItem title="Tourism & Leisure" className="ms-lg-2 mb-2 me-lg-2 navlink">
             <NavlinkIcon
               icon={faBullhorn}
               title="Tour Guides"
-              onClick={() => { setActivePage('guides'); handleClose(); }}
-              active={activePage === 'guides'}
+              onClick={() => { setActivePage('tourguides'); handleClose(); }}
+              active={activePage === 'tourguides'}
             />
             <NavlinkIcon
               icon={faFlag}
               title="Travel & Tours Operators"
-              onClick={() => { setActivePage('ttas'); handleClose(); }}
-              active={activePage === 'ttas'}
+              onClick={() => { setActivePage('travelAndTourOperators'); handleClose(); }}
+              active={activePage === 'travelAndTourOperators'}
             />
             <NavlinkIcon
               icon={faSwimmer}
               title="Tourist Activity Provider"
-              onClick={() => { setActivePage('providers'); handleClose(); }}
-              active={activePage === 'providers'}
+              onClick={() => { setActivePage('touristActivityProviders'); handleClose(); }}
+              active={activePage === 'touristActivityProviders'}
             />
             <NavlinkIcon
               icon={faPeopleGroup}
               title="M.I.C.E. Facilities"
-              onClick={() => { setActivePage('mice+facilities'); handleClose(); }}
-              active={activePage === 'mice+facilities'}
+              onClick={() => { setActivePage('MICEFacilities'); handleClose(); }}
+              active={activePage === 'MICEFacilities'}
             />
             <NavlinkIcon
               icon={faCalendarXmark}
               title="Events Planning Companies"
-              onClick={() => { setActivePage('events+planning'); handleClose(); }}
-              active={activePage === 'events+planning'}
+              onClick={() => { setActivePage('eventsPlanningCompanies'); handleClose(); }}
+              active={activePage === 'eventsPlanningCompanies'}
             />
             <NavlinkIcon
               icon={faShoppingBag}
               title="Tourist & Specialty Shops"
-              onClick={() => { setActivePage('shops'); handleClose(); }}
-              active={activePage === 'shops'}
+              onClick={() => { setActivePage('touristAndSpecialtyShops'); handleClose(); }}
+              active={activePage === 'touristAndSpecialtyShops'}
             />
           </ExpandableNavItem>
           <ExpandableNavItem title="Health & Wellness" className="ms-lg-2 mb-2 me-lg-2 navlink">
             <NavlinkIcon
               icon={faSpa}
               title="Spa & Wellness Centres"
-              onClick={() => { setActivePage('spas'); handleClose(); }}
-              active={activePage === 'spas'}
+              onClick={() => { setActivePage('spaAndWellnessCentres'); handleClose(); }}
+              active={activePage === 'spaAndWellnessCentres'}
             />
             <NavlinkIcon
               icon={faDumbbell}
               title="Gyms & Fitness Clubs"
-              onClick={() => { setActivePage('gyms'); handleClose(); }}
-              active={activePage === 'gyms'}
+              onClick={() => { setActivePage('gymnsAndFitnessClubs'); handleClose(); }}
+              active={activePage === 'gymnsAndFitnessClubs'}
             />
           </ExpandableNavItem>
           <ExpandableNavItem title="Transport & Parking" className="ms-lg-2 mb-2 me-lg-2 navlink">
             <NavlinkIcon
               icon={faBus}
               title="Tourist Land Transport Operators"
-              onClick={() => { setActivePage('land+transport'); handleClose(); }}
-              active={activePage === 'land+transport'}
+              onClick={() => { setActivePage('touristLandTransportOperators'); handleClose(); }}
+              active={activePage === 'touristLandTransportOperators'}
             />
             <NavlinkIcon
               icon={faPlaneArrival}
               title="Tourst Air Transport Operators"
-              onClick={() => { setActivePage('airtransport'); handleClose(); }}
-              active={activePage === 'airtransport'}
+              onClick={() => { setActivePage('touristAirTransportOperators'); handleClose(); }}
+              active={activePage === 'touristAirTransportOperators'}
             />
             <NavlinkIcon
               icon={faFerry}
               title="Passenger Ship Lines"
-              onClick={() => { setActivePage('passenger-ships'); handleClose(); }}
-              active={activePage === 'passenger-ships'}
+              onClick={() => { setActivePage('passengerShipLines'); handleClose(); }}
+              active={activePage === 'passengerShipLines'}
             />
             <NavlinkIcon
               icon={faParking}
               title="Parking Spaces"
-              onClick={() => { setActivePage('parkings'); handleClose(); }}
-              active={activePage === 'parkings'}
+              onClick={() => { setActivePage('parkingSpaces'); handleClose(); }}
+              active={activePage === 'parkingSpaces'}
             />
           </ExpandableNavItem>
           <ExpandableNavItem title="Healthcare Facilities" className="ms-lg-2 mb-2 me-lg-2 navlink">
             <NavlinkIcon
               icon={faHospital}
               title="Hospitals & Clinics"
-              onClick={() => { setActivePage('hospitals'); handleClose(); }}
-              active={activePage === 'hospitals'}
-            />
-            <NavlinkIcon
-              icon={faDog}
-              title="Veterinary Clinics"
-              onClick={() => { setActivePage('veterinary+clinics'); handleClose(); }}
-              active={activePage === 'veterinary+clinics'}
-            />
-            <NavlinkIcon
-              icon={faTooth}
-              title="Dental Clinics"
-              onClick={() => { setActivePage('dental+clinics'); handleClose(); }}
-              active={activePage === 'dental+clinics'}
+              onClick={() => { setActivePage('hospitalsAndClinics'); handleClose(); }}
+              active={activePage === 'hospitalsAndClinics'}
             />
           </ExpandableNavItem>
           <NavlinkIcon
