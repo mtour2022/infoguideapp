@@ -297,7 +297,7 @@ export default function StoryForm() {
     const textareaRef = useRef(null);
 
     return (
-              <Form className="custom-form body-container" onSubmit={handleSubmit}>
+              <Form className="custom-form body-container"  onSubmit={handleSubmit}  onKeyDown={(e) => e.key === "Enter" && e.preventDefault()}>
                 <h1 className="mb-4">Add Tourism Story Form</h1>
                 <Row className="d-flex flex-md-row flex-column">
                     <Col className="col me-lg-2 me-md-1">

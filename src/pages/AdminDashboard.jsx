@@ -56,6 +56,9 @@ import StoriesDataTable from '../admin/TableStories';
 import AccommodationTable from '../admin/TableAccommodations';
 import RecreationalResortTable from '../admin/TableRecreationalResorts';
 import EnterprisesTable from '../admin/TableEnterprises';
+import UpdateTable from '../admin/TableUpdates';
+import DealTable from '../admin/TableDeals';
+import IncomingEventTable from '../admin/TableIncomingEvents';
 
 // Sidebar link component using onClick to set active content.
 function NavlinkIcon({ icon, title, onClick, active }) {
@@ -113,10 +116,21 @@ export default function AdminDashboard() {
         );
       case 'updates':
         return (
-          <div>
-            <h2>Updates</h2>
-            <p>Latest updates will appear here.</p>
-          </div>
+          <>
+            <UpdateTable></UpdateTable>
+          </>
+        );
+      case 'deals':
+        return (
+          <>
+            <DealTable></DealTable>
+          </>
+        );
+      case 'incomingEvents':
+        return (
+          <>
+            <IncomingEventTable></IncomingEventTable>
+          </>
         );
         case 'stories':
             return (
@@ -318,8 +332,8 @@ export default function AdminDashboard() {
         <NavlinkIcon
           icon={faCalendarDay}
           title="Incoming Events"
-          onClick={() => { setActivePage('incoming'); handleClose(); }}
-          active={activePage === 'incoming'}
+          onClick={() => { setActivePage('incomingEvents'); handleClose(); }}
+          active={activePage === 'incomingEvents'}
         />
         <NavlinkIcon
           icon={faBookReader}
@@ -486,6 +500,12 @@ export default function AdminDashboard() {
                 title="Beach Ordinances"
                 onClick={() => { setActivePage('ordinances'); handleClose(); }}
                 active={activePage === 'ordinances'}
+            />
+            <NavlinkIcon
+                icon={faUmbrellaBeach}
+                title="Tariff Rates"
+                onClick={() => { setActivePage('tariffs'); handleClose(); }}
+                active={activePage === 'tariffs'}
             />
             <NavlinkIcon
                 icon={faCalendarCheck}

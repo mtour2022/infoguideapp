@@ -94,9 +94,11 @@ export default function AppNavBar() {
                     <NavDropdown.Item as={NavLink} className='navlink-inner'>
                       Tourist Land Transports
                     </NavDropdown.Item>
+                    <NavDropdown.Divider />
                     <NavDropdown.Item as={NavLink} className='navlink-inner'>
                       Tourist Air Transports
                     </NavDropdown.Item>
+                    <NavDropdown.Divider />
                     <NavDropdown.Item as={NavLink} className='navlink-inner'>
                       Passenger Ships
                     </NavDropdown.Item>
@@ -109,12 +111,10 @@ export default function AppNavBar() {
               <NavDropdown className='ms-lg-2 me-lg-2 navlink' title="Healthcare" id="basic-nav-dropdown">
                 <Nav.Link className='ms-lg-2 me-lg-2 ms-md-2 ms-sm-2  navlink' as={NavLink} to="/">Hospitals and Clinics</Nav.Link>
               </NavDropdown>
-                
               <NavDropdown.Divider />
               <Nav.Link className='ms-lg-2 me-lg-2 ms-md-2 ms-sm-2  navlink' as={NavLink} to="/">Activities</Nav.Link>
               <NavDropdown.Divider />
               <Nav.Link className='ms-lg-2 me-lg-2 ms-md-2 ms-sm-2  navlink' as={NavLink} to="/">Attractions</Nav.Link>
-              
             </NavDropdown>
             <NavDropdown className='ms-lg-2 me-lg-2 navlink' title="Essentials" id="basic-nav-dropdown">
               <Nav.Link className='ms-lg-2 me-lg-2 ms-md-2 ms-sm-2  navlink' as={NavLink} to="/">Emergency Hotlines</Nav.Link>
@@ -138,8 +138,6 @@ export default function AppNavBar() {
               <Nav.Link className='ms-lg-2 me-lg-2 ms-md-2 ms-sm-2  navlink' as={NavLink} to="/">Tourist FAQ</Nav.Link>
               <NavDropdown.Divider />
               <Nav.Link className='ms-lg-2 me-lg-2 ms-md-2 ms-sm-2  navlink' as={NavLink} to="/">Printable Materials</Nav.Link>
-              
-
             </NavDropdown>
             <Nav.Link className='ms-lg-2 me-lg-2  sustainable' as={NavLink} to="/">
                 <FontAwesomeIcon icon={faLeaf} size="xs" fixedWidth /> Sustainable Travel

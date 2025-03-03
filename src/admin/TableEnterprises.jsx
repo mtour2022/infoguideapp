@@ -7,7 +7,8 @@ import {
   Row,
   Col,
   OverlayTrigger,
-  Tooltip,
+  Tooltip,  Spinner
+
 } from "react-bootstrap";
 import { db } from "../config/firebase";
 import { collection, getDocs, doc, updateDoc, deleteDoc } from "firebase/firestore";
@@ -51,14 +52,22 @@ const EnterprisesTable = ({category, subcategory}) => {
     }
   }, [subcategory]); // Runs whenever `subcategory` changes
 
-  const fetchData = async () => {
-    const querySnapshot = await getDocs(collection(db, `${subcategory}`));
-    const dataList = querySnapshot.docs.map((doc) => ({
-      id: doc.id,
-      ...doc.data(),
-    }));
-    setData(dataList);
-  };
+  const [loading, setLoading] = useState(true);
+  
+    const fetchData = async () => {
+      try {
+      const querySnapshot = await getDocs(collection(db, `${subcategory}`));
+      const dataList = querySnapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+      }));
+      setData(dataList);
+      } catch(error) {
+        console.error("Error fetching data:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
 
   const handleEdit = (item) => {
     setEditingItem(item);
@@ -250,6 +259,19 @@ const filteredData = data.filter((item) => {
       </Row>
 
       {/* Data Table */}
+      {loading ? (
+      // Show spinner while loading data
+      <div className="d-flex justify-content-center align-items-center my-5">
+        <Spinner animation="border" role="status">
+          <span className="visually-hidden">Loading...</span>
+        </Spinner>
+      </div>
+    ) : displayedData.length === 0 ? (
+      // Show "No Data Available" message when list is empty
+      <div className="text-center my-5">
+        <h5>No Data Available</h5>
+      </div>
+    ) : (
       <Table striped bordered hover responsive>
         <thead>
           <tr>
@@ -297,6 +319,7 @@ const filteredData = data.filter((item) => {
           ))}
         </tbody>
       </Table>
+    )}
 
       {/* Pagination */}
       <Container className="d-flex justify-content-between align-items-center mb-4 mt-2">

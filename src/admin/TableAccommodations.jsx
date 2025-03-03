@@ -8,6 +8,7 @@ import {
   Col,
   OverlayTrigger,
   Tooltip,
+  Spinner,
 } from "react-bootstrap";
 import { db } from "../config/firebase";
 import { collection, getDocs, doc, updateDoc, deleteDoc } from "firebase/firestore";
@@ -35,17 +36,26 @@ const AccommodationTable = () => {
   const [editingItem, setEditingItem] = useState(null);
   const itemsPerPage = 10;
 
+
   useEffect(() => {
     fetchData();
   }, []);
 
+  const [loading, setLoading] = useState(true);
+
   const fetchData = async () => {
+    try {
     const querySnapshot = await getDocs(collection(db, "accommodations"));
     const dataList = querySnapshot.docs.map((doc) => ({
       id: doc.id,
       ...doc.data(),
     }));
     setData(dataList);
+    } catch(error) {
+      console.error("Error fetching data:", error);
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handleEdit = (item) => {
@@ -262,6 +272,19 @@ const AccommodationTable = () => {
       </Row>
 
       {/* Data Table */}
+      {loading ? (
+      // Show spinner while loading data
+      <div className="d-flex justify-content-center align-items-center my-5">
+        <Spinner animation="border" role="status">
+          <span className="visually-hidden">Loading...</span>
+        </Spinner>
+      </div>
+    ) : displayedData.length === 0 ? (
+      // Show "No Data Available" message when list is empty
+      <div className="text-center my-5">
+        <h5>No Data Available</h5>
+      </div>
+    ) : (
       <Table striped bordered hover responsive>
         <thead>
           <tr>
@@ -313,6 +336,7 @@ const AccommodationTable = () => {
           ))}
         </tbody>
       </Table>
+    )}
 
       {/* Pagination */}
       <Container className="d-flex justify-content-between align-items-center mb-4 mt-2">
