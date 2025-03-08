@@ -13,44 +13,52 @@ import UpdateFormDataModel from "../../datamodel/updates_model";
 import {updatesCategoryOptions} from "../../datamodel/updates_model"; 
 import TextGroupInputField from "../TextGroupInputField";
 
-const BodyImageDropzone = ({
-    index,
-    section,
-    onBodyImageDrop,
-    dropzoneName = "dropzone-container-small",
-    previewName = "dropzone-uploaded-image-small"
-  }) => {
-    const { getRootProps, getInputProps } = useDropzone({
-      onDrop: (acceptedFiles) => onBodyImageDrop(acceptedFiles, index),
-      accept: "image/png, image/jpeg, image/jpg",
-    });
-  
-    // Use the new uploaded image if available
-    const imagePreview = section.image
-      ? URL.createObjectURL(section.image)
+const BodyMediaDropzone = ({
+  index,
+  section,
+  onBodyMediaDrop,
+  dropzoneName = "dropzone-container-small",
+  previewName = "dropzone-uploaded-media-small"
+}) => {
+  const { getRootProps, getInputProps } = useDropzone({
+      onDrop: (acceptedFiles) => onBodyMediaDrop(acceptedFiles, index),
+      accept: "image/png, image/jpeg, image/jpg, video/mp4, video/webm, video/ogg",
+  });
+
+  // Use the new uploaded media if available
+  const mediaPreview = section.media
+      ? URL.createObjectURL(section.media)
       : null;
-  
-    return (
+
+  return (
       <Container
-        {...getRootProps()}
-        className={`${dropzoneName} text-center w-100 ${imagePreview ? "border-success" : ""}`}
+          {...getRootProps()}
+          className={`${dropzoneName} text-center w-100 ${mediaPreview ? "border-success" : ""}`}
       >
-        <input {...getInputProps()} accept="image/*" />
-        {imagePreview ? (
-          <img
-            src={imagePreview}
-            alt="Body Image Preview"
-            className={previewName}
-          />
-        ) : (
-          <p className="text-muted">
-            Drag & Drop Image Here or{" "}
-            <span className="text-primary text-decoration-underline">Choose File</span>
-          </p>
-        )}
+          <input {...getInputProps()} accept="image/*,video/*" />
+          {mediaPreview ? (
+              section.media.type.startsWith("video/") ? (
+                  <video controls className={previewName}>
+                      <source src={mediaPreview} type={section.media.type} />
+                      Your browser does not support the video tag.
+                  </video>
+              ) : (
+                  <img
+                      src={mediaPreview}
+                      alt="Body Media Preview"
+                      className={previewName}
+                  />
+              )
+          ) : (
+              <p className="text-muted">
+                  Drag & Drop Image/Video Here or {" "}
+                  <span className="text-primary text-decoration-underline">Choose File</span>
+              </p>
+          )}
       </Container>
-    );
-  };
+  );
+};
+
 
   
   
@@ -441,7 +449,7 @@ export default function UpdateFormData() {
                                 <Col className="col me-lg-2 me-md-1">
                                     <Form.Group className="mb-3">
                                     <Form.Label className="label">Image (Optional)</Form.Label>
-                                    <BodyImageDropzone 
+                                    <BodyMediaDropzone 
                                         index={index} 
                                         section={section} 
                                         onBodyImageDrop={handleImageDrop} 

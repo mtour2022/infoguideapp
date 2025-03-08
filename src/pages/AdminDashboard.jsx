@@ -46,6 +46,7 @@ import {
   faCalendarXmark,
   faSignHanging,
   faRibbon,
+  faTag,
 
 } from '@fortawesome/free-solid-svg-icons';
 import { Container, Row, Col, Button, Nav, Offcanvas, Collapse } from 'react-bootstrap';
@@ -59,6 +60,15 @@ import EnterprisesTable from '../admin/TableEnterprises';
 import UpdateTable from '../admin/TableUpdates';
 import DealTable from '../admin/TableDeals';
 import IncomingEventTable from '../admin/TableIncomingEvents';
+import SustainableTourismTable from '../admin/TableSustainableTourism';
+import AttractionTable from '../admin/TableAttractions';
+import ActivitiesTable from '../admin/TableActivities';
+import HotlineTable from '../admin/TableHotlines';
+import RequirementTable from '../admin/TableRequirements';
+import OrdinanceTable from '../admin/TableOrdinances';
+import TariffRatesForm from '../components/tariffs/TariffRates';
+import TariffTable from '../admin/TableTariffs';
+import CalendarEventsTable from '../admin/TableCalendarEvents';
 
 // Sidebar link component using onClick to set active content.
 function NavlinkIcon({ icon, title, onClick, active }) {
@@ -138,6 +148,12 @@ export default function AdminDashboard() {
                 <StoriesDataTable></StoriesDataTable>
               </>
             );
+        case 'sustainableTourism':
+          return (
+            <>
+              <SustainableTourismTable></SustainableTourismTable>
+            </>
+          );
       case 'accommodations':
         return (
           <>
@@ -294,6 +310,52 @@ export default function AdminDashboard() {
           ></EnterprisesTable>
         </>
       );
+      case 'attractions':
+        return (
+          <>
+            <AttractionTable ></AttractionTable>
+          </>
+        );
+        case 'activities':
+          return (
+            <>
+              <ActivitiesTable ></ActivitiesTable>
+            </>
+          );
+          case 'hotlines':
+            return (
+              <>
+                <HotlineTable ></HotlineTable>
+              </>
+            );
+            case 'requirements':
+              return (
+                <>
+                  <RequirementTable ></RequirementTable>
+                </>
+              );
+        case 'ordinances':
+        return (
+          <>
+            <OrdinanceTable></OrdinanceTable>
+          </>
+        );
+        case 'tariffs':
+        return (
+          <>
+            <TariffTable></TariffTable>
+          </>
+        );
+        case 'calendarEvents':
+        return (
+          <>
+            <CalendarEventsTable></CalendarEventsTable>
+          </>
+        );
+
+        
+          
+            
       
       // Add more cases for other pages as needed.
       default:
@@ -344,8 +406,8 @@ export default function AdminDashboard() {
         <NavlinkIcon
           icon={faLeaf}
           title="Sustainable Travel"
-          onClick={() => { setActivePage('sustainable'); handleClose(); }}
-          active={activePage === 'sustainable'}
+          onClick={() => { setActivePage('sustainableTourism'); handleClose(); }}
+          active={activePage === 'sustainableTourism'}
         />
         <ExpandableNavItem title="Experience" className="ms-lg-2 mb-2 navlink">
           <ExpandableNavItem title="Hospitality & Lodging" className="ms-lg-2 mb-2 me-lg-2 navlink">
@@ -502,7 +564,7 @@ export default function AdminDashboard() {
                 active={activePage === 'ordinances'}
             />
             <NavlinkIcon
-                icon={faUmbrellaBeach}
+                icon={faTag}
                 title="Tariff Rates"
                 onClick={() => { setActivePage('tariffs'); handleClose(); }}
                 active={activePage === 'tariffs'}
@@ -510,8 +572,8 @@ export default function AdminDashboard() {
             <NavlinkIcon
                 icon={faCalendarCheck}
                 title="Calendar of Events"
-                onClick={() => { setActivePage('events'); handleClose(); }}
-                active={activePage === 'events'}
+                onClick={() => { setActivePage('calendarEvents'); handleClose(); }}
+                active={activePage === 'calendarEvents'}
             />
             <NavlinkIcon
                 icon={faLink}

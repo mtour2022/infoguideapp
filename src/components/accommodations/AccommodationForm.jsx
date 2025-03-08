@@ -267,6 +267,15 @@ export default function AccommodationForm({}) {
     setSelectedSubcategory("");
   };
 
+  const removeBodyImage = (index) => {
+    setAccommodationFormData((prev) => {
+    const newBody = [...prev.body];
+    if (!newBody[index]) return prev;
+    newBody[index] = { ...newBody[index], image: null };
+    return { ...prev, body: newBody };
+    });
+  };
+
 
   return (
     
@@ -355,7 +364,7 @@ export default function AccommodationForm({}) {
 
         <Row >
           <Col  md={6}>
-            <Form.Group controlId="name" className="mb-3">
+            <Form.Group controlId="logo" className="mb-3">
               <Form.Label className="label">Business Logo</Form.Label>
                     <LogoImageDropzone
                     storyForm={accommodationFormData}

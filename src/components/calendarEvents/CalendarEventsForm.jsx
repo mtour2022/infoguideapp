@@ -9,10 +9,9 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrash, faPlus, faCirclePlay, faCirclePlus, faCancel} from '@fortawesome/free-solid-svg-icons';
 import RichTextEditor from '../TextEditor'; // adjust the path as needed
 import HeaderImageDropzone from '../HeaderImageDropzone';
-import DealsFormData from "../../datamodel/deals_model"; 
-import {dealsAndPromotionsCategoryOptions} from "../../datamodel/deals_model"; 
+import CalendarEventsFormData from "../../datamodel/calendarevents_model"; 
+import {calendarEventsCategoryOptions} from "../../datamodel/calendarevents_model"; 
 import TextGroupInputField from "../TextGroupInputField";
-
 
 const BodyMediaDropzone = ({
   index,
@@ -62,44 +61,18 @@ const BodyMediaDropzone = ({
 
   
   
-export default function EditDealsForm({editingItem, toAddForm}) {
-    const [dealsFormData, setDealsFormData] = useState(new DealsFormData());
+export default function CalendarEventsForm() {
+    const [calendarEventsFormData, setCalendarEventsFormData] = useState(new CalendarEventsFormData());
     const [resetKey, setResetKey] = useState(0); // Reset trigger
 
 
+    // Populate form data if exists
     useEffect(() => {
-        if (editingItem) {
-          // Update recreationalResortFormData with properties from editingItem
-          setDealsFormData(prevState => ({
-            ...prevState,
-            id: editingItem.id || "",
-            dateTimeStart: editingItem.dateTimeStart || "",
-            dateTimeEnd: editingItem.dateTimeEnd || "",
-            category: editingItem.category || "", // Default category if not provided
-            title: editingItem.title || "",
-            headerImage: editingItem.headerImage || "",
-            headerImageSource: editingItem.headerImageSource || [],
-            body: editingItem.body.map((section, index) => ({
-                        subtitle: section.subtitle || "",
-                        body: section.body || "",
-                        image: section.image || "",
-                        image_source: section.image_source || "", 
-                    })),
-            tags: editingItem.tags || [],
-            references: editingItem.references || [],
-            socials: editingItem.socials || [],
-            origin: editingItem.origin || [],
-          }));
-      
-          // Update selected category if editingItem has a category
-          if (editingItem.category) {
-            setSelectedCategory(editingItem.category || "");
-          } 
-        }
-      }, [editingItem]); // Dependency array includes editingItem
-      
+    }, []);
+
+
     const resetForm = () => {
-        setDealsFormData({
+        setCalendarEventsFormData({
             id:"",
             dateTimeStart: "",
             dateTimeEnd: "",
@@ -109,9 +82,7 @@ export default function EditDealsForm({editingItem, toAddForm}) {
             headerImageSource: [],
             body: [{ subtitle: "", body: "", image: null, image_source: ""}],
             tags: [],
-            references: [],
-            socials: [],
-            origin: []
+            thingsToDo: [],
         });
 
         setResetKey(prevKey => prevKey + 1); // Change key to trigger reset
@@ -124,20 +95,20 @@ export default function EditDealsForm({editingItem, toAddForm}) {
     const handleChange = (e, field) => {
         if (Array.isArray(e)) {
             // If `e` is an array, it's coming from TextGroupInputField
-            setDealsFormData((prev) => ({
+            setCalendarEventsFormData((prev) => ({
                 ...prev,
                 [field]: e, // Directly set the array value
             }));
         } else if (typeof e === "string") {
             // If `e` is a string, it's from ReactQuill (rich text editor)
-            setDealsFormData((prev) => ({
+            setCalendarEventsFormData((prev) => ({
                 ...prev,
                 [field]: e,
             }));
         } else {
             // Standard form fields
             const { name, value } = e.target;
-            setDealsFormData((prev) => ({
+            setCalendarEventsFormData((prev) => ({
                 ...prev,
                 [name]: value,
             }));
@@ -145,7 +116,7 @@ export default function EditDealsForm({editingItem, toAddForm}) {
     };
 
     const handleBodyChange = (index, field, value) => {
-        setDealsFormData((prev) => {
+        setCalendarEventsFormData((prev) => {
         const newBody = [...prev.body];
         newBody[index] = { ...newBody[index], [field]: value };
         return { ...prev, body: newBody };
@@ -156,7 +127,7 @@ export default function EditDealsForm({editingItem, toAddForm}) {
         const file = acceptedFiles[0]; // Take the first file
 
         if (file) {
-            setDealsFormData((prevState) => {
+            setCalendarEventsFormData((prevState) => {
                 const updatedBody = [...prevState.body];
                 updatedBody[index] = {
                     ...updatedBody[index],
@@ -172,14 +143,14 @@ export default function EditDealsForm({editingItem, toAddForm}) {
     }
 
     const addBodySection = () => {
-        setDealsFormData((prev) => ({
+        setCalendarEventsFormData((prev) => ({
         ...prev,
         body: [...prev.body, { subtitle: "", body: "", image: null, image_source: ""}],
         }));
     };
 
     const deleteBodySection = (index) => {
-        setDealsFormData((prev) => {
+        setCalendarEventsFormData((prev) => {
         const newBody = prev.body.filter((_, i) => i !== index);
         return { ...prev, body: newBody };
         });
@@ -204,14 +175,14 @@ export default function EditDealsForm({editingItem, toAddForm}) {
     });
 
     const resetHeaderImage = () => {
-        setDealsFormData((prev) => ({
+        setCalendarEventsFormData((prev) => ({
             ...prev,
             headerImage: null,
         }));
     };
 
     const resetBodyImage = () => {
-        setDealsFormData((prev) => ({
+        setCalendarEventsFormData((prev) => ({
             ...prev,
             body: [{ subtitle: "", body: "", image: null, image_source: ""}],
         }));
@@ -222,7 +193,7 @@ export default function EditDealsForm({editingItem, toAddForm}) {
         if (acceptedFiles.length > 0) {
         const file = acceptedFiles[0];
         if (["image/png", "image/jpeg", "image/jpg"].includes(file.type)) {
-            setDealsFormData((prev) => {
+            setCalendarEventsFormData((prev) => {
             const newBody = [...prev.body];
             if (!newBody[index]) return prev;
             newBody[index] = { ...newBody[index], image: file };
@@ -239,7 +210,7 @@ export default function EditDealsForm({editingItem, toAddForm}) {
     };
 
     const removeBodyImage = (index) => {
-        setDealsFormData((prev) => {
+        setCalendarEventsFormData((prev) => {
         const newBody = [...prev.body];
         if (!newBody[index]) return prev;
         newBody[index] = { ...newBody[index], image: null };
@@ -257,160 +228,133 @@ export default function EditDealsForm({editingItem, toAddForm}) {
 
 
     // Submit the form data
-    // Update the story data
-        const handleSubmit = async (e) => {
-            e.preventDefault();
-          
-            // Show SweetAlert2 loading screen for update
-            Swal.fire({
-              title: 'Updating...',
-              text: 'Please wait while we update the deals.',
-              allowOutsideClick: false,
-              didOpen: () => {
-                Swal.showLoading();
-              },
-            });
-          
-            try {
-              // Handle header image replacement
-              let headerImageURL;
-              if (storyFormData.headerImage instanceof File) {
-                // If a new header image is provided, delete the old one (if it exists)
-                if (editingItem && editingItem.headerImage) {
-                  await deleteImageFromFirebase(editingItem.headerImage);
-                }
-                headerImageURL = await uploadImageToFirebase(
-                  storyFormData.headerImage,
-                  `deals/${Date.now()}_${storyFormData.headerImage.name}`
-                );
-              } else {
-                headerImageURL = storyFormData.headerImage;
-              }
-          
-              // Handle body images replacement
-              const bodyImagesURLs = await Promise.all(
-                storyFormData.body.map(async (section, index) => {
-                  if (section.image instanceof File) {
-                    // If a new body image is provided, delete the old one (if it exists)
-                    if (
-                      editingItem &&
-                      editingItem.body &&
-                      editingItem.body[index] &&
-                      editingItem.body[index].image
-                    ) {
-                      await deleteImageFromFirebase(editingItem.body[index].image);
-                    }
-                    return await uploadImageToFirebase(
-                      section.image,
-                      `deals/${Date.now()}_${section.image.name}`
-                    );
-                  }
-                  return section.image;
-                })
-              );
-          
-              // Prepare the updated story object for Firestore
+    const handleSubmit = async (e) => {
+        e.preventDefault();
 
-              const dealData = {
-                dateTimeStart: dealsFormData.dateTimeStart,
-                dateTimeEnd: dealsFormData.dateTimeEnd,
-                category: dealsFormData.category,
-                title: dealsFormData.title,
-                headerImage: headerImageURL,
-                headerImageSource: dealsFormData.headerImageSource,
-                body: dealsFormData.body.map((section, index) => ({
-                  subtitle: section.subtitle,
-                  body: section.body,
-                  image: bodyImagesURLs[index] || "",
-                  image_source: section.image_source,
-                })),
-                tags: dealsFormData.tags,
-                references: dealsFormData.references,
-                socials: dealsFormData.socials,
-                origin: dealsFormData.origin,
-              };
-          
-              // Update the existing document using the story's id
-              const storyDocRef = doc(db, "deals", storyFormData.id);
-              await updateDoc(storyDocRef, dealData);
-          
-              Swal.fire({
-                title: "Deals Posted",
-                text: "Your deals has been edited successfully!",
-                icon: "success",
-              });
-          
-              // Optionally reset form data after a successful deals
-              setBodyImages([]);
-              resetHeaderImage();
-              toAddForm();
-            } catch (error) {
-              console.error("Error updating data:", error);
-              Swal.fire({
-                title: "Error",
-                text: "There was an issue updating your data. Please try again.",
-                icon: "error",
-              });
+        // Show SweetAlert2 loading screen
+        Swal.fire({
+            title: 'Submitting...',
+            text: 'Please wait while we submit your calendar event.',
+            allowOutsideClick: false,
+            didOpen: () => {
+            Swal.showLoading();
             }
-          };
-          
+        });
+
+        try {
+            // Upload header image if available
+            let headerImageURL = await uploadImageToFirebase(
+                calendarEventsFormData.headerImage,
+                `calendarEvents/${Date.now()}_${calendarEventsFormData.headerImage}`
+            );
+
+            // Upload body images if available
+            const bodyImagesURLs = await Promise.all(
+                calendarEventsFormData.body.map(async (section, index) => {
+                    if (section.image) {
+                        const imageURL = await uploadImageToFirebase(section.image, `calendarEvents/${Date.now()}_${section.image.name}`);
+                        return imageURL;
+                    }
+                    return "";
+                })
+            );
+
+            // Prepare the story obje
+            // ct to send to Firebase Firestore
+            const calendarEvents = {
+                id: "",
+                dateTimeStart: calendarEventsFormData.dateTimeStart,
+                dateTimeEnd: calendarEventsFormData.dateTimeEnd,
+                category: calendarEventsFormData.category,
+                title: calendarEventsFormData.title,
+                headerImage: headerImageURL,
+                headerImageSource: calendarEventsFormData.headerImageSource,
+                body: calendarEventsFormData.body.map((section, index) => ({
+                    subtitle: section.subtitle,
+                    body: section.body,
+                    image: bodyImagesURLs[index] || "",
+                    image_source: section.image_source, 
+                })),
+                tags: calendarEventsFormData.tags,
+                thingsToDo: calendarEventsFormData.thingsToDo,
+            };
+
+            const docRef = await addDoc(collection(db, "calendarEvents"), calendarEvents);
+            const calendarEventDoc = doc(db, "calendarEvents", docRef.id);
+            await calendarEventDoc(calendarEventDoc, { id: docRef.id });
+
+            Swal.fire({
+                title: "Calendar Events Submitted",
+                text: "Your Calendar Events has been submitted successfully!",
+                icon: "success",
+            });
+
+            // Reset form data after successful submission
+            resetForm();
+            resetHeaderImage();
+        } catch (error) {
+            console.error("Error submitting Calendar Events:", error);
+            Swal.fire({
+                title: "Error",
+                text: "There was an issue submitting your Calendar Events. Please try again.",
+                icon: "error",
+            });
+        }
+    };
 
     const textareaRef = useRef(null);
 
     return (
               <Form className="custom-form body-container"  onSubmit={handleSubmit}  onKeyDown={(e) => e.key === "Enter" && e.preventDefault()}>
                 <Row>
-                    <Col md={6}>
-                        <Form.Group controlId="category" className="mb-3">
-                                    <Form.Label className="label">Category</Form.Label>
-                                    <Form.Select
-                                      name="category"
-                                      value={dealsFormData.category}
-                                      onChange={handleChange}
-                                    >
-                                      <option value="" disabled>Select Category</option>
-                                      {dealsAndPromotionsCategoryOptions.map((option, index) => (
-                                        <option key={index} value={option}>
-                                          {option}
-                                        </option>
-                                      ))}
-                                    </Form.Select>
-                                  </Form.Group>
-                    </Col>
-                    <Col md={6}>
-                        <Container className="empty-container"></Container>
-                    </Col>
-                </Row>
+                <Col md={6}>
+                    <Form.Group controlId="category" className="mb-3">
+                                <Form.Label className="label">Category</Form.Label>
+                                <Form.Select
+                                    name="category"
+                                    value={calendarEventsFormData.category}
+                                    onChange={handleChange}
+                                >
+                                    <option value="" disabled>Select Category</option>
+                                    {calendarEventsCategoryOptions.map((option, index) => (
+                                    <option key={index} value={option}>
+                                        {option}
+                                    </option>
+                                    ))}
+                                </Form.Select>
+                                </Form.Group>
+                </Col>
+                <Col md={6}>
+                    <Container className="empty-container"></Container>
+                </Col>
+            </Row>
                 <Row>
-                                    <Col md={6}>
-                                    <Form.Group className="mb-3">
-                                        <Form.Label className="label">Start Date & Time</Form.Label>
-                                        <Form.Control
-                                            type="datetime-local"
-                                            name="dateTimeStart"
-                                            value={dealsFormData.dateTimeStart}
-                                            onChange={handleChange}
-                                            required
-                                        />
-                                    </Form.Group>
-                
-                
-                
-                                    </Col>
-                                    <Col md={6}>
-                                    <Form.Group className="mb-3">
-                                      <Form.Label className="label">End Date & Time</Form.Label>
-                                      <Form.Control
-                                        type="datetime-local"
-                                        name="dateTimeEnd"
-                                        value={dealsFormData.dateTimeEnd}
-                                        onChange={handleChange}
-                                        min={dealsFormData.dateTimeStart} // Prevents selecting an earlier date
-                                        disabled={!dealsFormData.dateTimeStart} // Disable if Start Date is empty
-                                        required
-                                      />
-                                    </Form.Group>
-                                    </Col>
+                    <Col md={6}>
+                    <Form.Group className="mb-3">
+                        <Form.Label className="label">Start Date & Time</Form.Label>
+                        <Form.Control
+                            type="datetime-local"
+                            name="dateTimeStart"
+                            value={calendarEventsFormData.dateTimeStart}
+                            onChange={handleChange}
+                            required
+                        />
+                    </Form.Group>
+                    </Col>
+                    <Col md={6}>
+                    <Form.Group className="mb-3">
+                        <Form.Label className="label">End Date & Time</Form.Label>
+                        <Form.Control
+                            type="datetime-local"
+                            name="dateTimeEnd"
+                            value={calendarEventsFormData.dateTimeEnd}
+                            onChange={handleChange}
+                            min={calendarEventsFormData.dateTimeStart} // Prevents selecting an earlier date
+                            disabled={!calendarEventsFormData.dateTimeStart} // Disable if Start Date is empty
+                            required
+                        />
+                        </Form.Group>
+                    </Col>
                 </Row>
                 <Row>
                     <Col md={12}>
@@ -420,7 +364,7 @@ export default function EditDealsForm({editingItem, toAddForm}) {
                             type="text"
                             name="title"
                             className="fw-bold"
-                            value={dealsFormData.title}
+                            value={calendarEventsFormData.title}
                             onChange={handleChange}
                             placeholder="Enter title"
                             required
@@ -435,8 +379,8 @@ export default function EditDealsForm({editingItem, toAddForm}) {
                             Upload Header Image (800x400)
                         </Form.Label>
                         <HeaderImageDropzone
-                        storyForm={dealsFormData}
-                        setStoryForm={setDealsFormData}
+                        storyForm={calendarEventsFormData}
+                        setStoryForm={setCalendarEventsFormData}
                         dropzoneName="dropzone-container-big"
                         previewName="dropzone-uploaded-image-big"
                         
@@ -468,19 +412,24 @@ export default function EditDealsForm({editingItem, toAddForm}) {
                     <TextGroupInputField
                         onChange={(value) => handleChange(value, "headerImageSource")}
                         label={"Header Image Sources (Type & Enter)"}
-                        editingItems={dealsFormData.headerImageSource}
+                        editingItems={calendarEventsFormData.headerImageSource}
                         resetKey={resetKey} 
                         />
                     </Col>
                 </Row>
+
+                
+                
                 <Container className="empty-container"></Container>
                 <hr></hr>
                 <Container className="empty-container"></Container>
+
                 {/* Body Sections */}
+                
                <Row>
                 <Col md={12}>
                     <p className="label mb-2">Body Sections</p>
-                    {dealsFormData.body.map((section, index) => (
+                    {calendarEventsFormData.body.map((section, index) => (
                                 <Row key={index} className="d-flex flex-md-row flex-column">
                                 <Container className="empty-container"></Container>
                                 <Form.Group className="mb-3 m-0 p-0">
@@ -535,7 +484,7 @@ export default function EditDealsForm({editingItem, toAddForm}) {
                                             />
                                     </Form.Group>
                                 </Col>
-                                {dealsFormData.body.length > 1 && (
+                                {calendarEventsFormData.body.length > 1 && (
                                     <Container className="mb-4 d-flex justify-content-end">
                                         <Button
                                         variant="outline-danger"
@@ -559,36 +508,15 @@ export default function EditDealsForm({editingItem, toAddForm}) {
                 </Col>
                </Row>
                 <Container className="empty-container"></Container>
-                <Row>
-                    <Col md={12}>
-                    <TextGroupInputField
-                        onChange={(value) => handleChange(value, "origin")}
-                        label={"Origin Office (Type & Enter)"}
-                        editingItems={dealsFormData.origin}
-                        resetKey={resetKey} 
-                        caption="the office where the deals originated or referring to"
-                        />
-                    </Col>
-                </Row>
-                <Row>
-                    <Col md={12}>
-                    <TextGroupInputField
-                        onChange={(value) => handleChange(value, "references")}
-                        label={"References (Type & Enter)"}
-                        caption="postings or website links to redirect users"
-                        editingItems={dealsFormData.references}
-                        resetKey={resetKey} 
-                        />
-                    </Col>
-                </Row>
+               
                 <Container className="empty-container"></Container>
                 <Row>
                     <Col md={12}>
                     <TextGroupInputField
-                        onChange={(value) => handleChange(value, "socials")}
-                        label={"Social Media Link (Type & Enter)"}
-                        caption="social media links of subject"
-                        editingItems={dealsFormData.socials}
+                        onChange={(value) => handleChange(value, "thingsToDo")}
+                        label={"Things To Do (Type & Enter)"}
+                        caption="notable activities during the event"
+                        editingItems={calendarEventsFormData.thingsToDo}
                         resetKey={resetKey} 
                         />
                     </Col>
@@ -598,7 +526,7 @@ export default function EditDealsForm({editingItem, toAddForm}) {
                     <TextGroupInputField
                         onChange={(value) => handleChange(value, "tags")}
                         label={"Tags (Type & Enter)"}
-                        editingItems={dealsFormData.tags}
+                        editingItems={calendarEventsFormData.tags}
                         resetKey={resetKey} 
                         caption="imporant tags for Optimization"
                         />
@@ -616,7 +544,7 @@ export default function EditDealsForm({editingItem, toAddForm}) {
                         className="w-full" 
                         onClick={handleSubmit}
                     >
-                        Submit Update
+                        Submit Event Calendar
                     </Button>
                 </Container>
             </Form>

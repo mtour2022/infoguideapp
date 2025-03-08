@@ -9,8 +9,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrash, faPlus, faCirclePlay, faCirclePlus, faCancel} from '@fortawesome/free-solid-svg-icons';
 import RichTextEditor from '../TextEditor'; // adjust the path as needed
 import HeaderImageDropzone from '../HeaderImageDropzone';
-import DealsFormData from "../../datamodel/deals_model"; 
-import {dealsAndPromotionsCategoryOptions} from "../../datamodel/deals_model"; 
+import SustainableFormData from "../../datamodel/sustainable_model"; 
+import {sustainableTourismCategoryOptions} from "../../datamodel/sustainable_model"; 
 import TextGroupInputField from "../TextGroupInputField";
 
 
@@ -62,19 +62,17 @@ const BodyMediaDropzone = ({
 
   
   
-export default function EditDealsForm({editingItem, toAddForm}) {
-    const [dealsFormData, setDealsFormData] = useState(new DealsFormData());
+export default function EditSustainableTourismForm({editingItem, toAddForm}) {
+    const [sustainableTourismFormData, setsustainableTourismFormData] = useState(new SustainableFormData());
     const [resetKey, setResetKey] = useState(0); // Reset trigger
 
 
     useEffect(() => {
         if (editingItem) {
           // Update recreationalResortFormData with properties from editingItem
-          setDealsFormData(prevState => ({
+          setsustainableTourismFormData(prevState => ({
             ...prevState,
             id: editingItem.id || "",
-            dateTimeStart: editingItem.dateTimeStart || "",
-            dateTimeEnd: editingItem.dateTimeEnd || "",
             category: editingItem.category || "", // Default category if not provided
             title: editingItem.title || "",
             headerImage: editingItem.headerImage || "",
@@ -87,8 +85,6 @@ export default function EditDealsForm({editingItem, toAddForm}) {
                     })),
             tags: editingItem.tags || [],
             references: editingItem.references || [],
-            socials: editingItem.socials || [],
-            origin: editingItem.origin || [],
           }));
       
           // Update selected category if editingItem has a category
@@ -99,10 +95,8 @@ export default function EditDealsForm({editingItem, toAddForm}) {
       }, [editingItem]); // Dependency array includes editingItem
       
     const resetForm = () => {
-        setDealsFormData({
+        setsustainableTourismFormData({
             id:"",
-            dateTimeStart: "",
-            dateTimeEnd: "",
             category: "",
             title: "",
             headerImage: null,
@@ -110,8 +104,6 @@ export default function EditDealsForm({editingItem, toAddForm}) {
             body: [{ subtitle: "", body: "", image: null, image_source: ""}],
             tags: [],
             references: [],
-            socials: [],
-            origin: []
         });
 
         setResetKey(prevKey => prevKey + 1); // Change key to trigger reset
@@ -124,20 +116,20 @@ export default function EditDealsForm({editingItem, toAddForm}) {
     const handleChange = (e, field) => {
         if (Array.isArray(e)) {
             // If `e` is an array, it's coming from TextGroupInputField
-            setDealsFormData((prev) => ({
+            setsustainableTourismFormData((prev) => ({
                 ...prev,
                 [field]: e, // Directly set the array value
             }));
         } else if (typeof e === "string") {
             // If `e` is a string, it's from ReactQuill (rich text editor)
-            setDealsFormData((prev) => ({
+            setsustainableTourismFormData((prev) => ({
                 ...prev,
                 [field]: e,
             }));
         } else {
             // Standard form fields
             const { name, value } = e.target;
-            setDealsFormData((prev) => ({
+            setsustainableTourismFormData((prev) => ({
                 ...prev,
                 [name]: value,
             }));
@@ -145,7 +137,7 @@ export default function EditDealsForm({editingItem, toAddForm}) {
     };
 
     const handleBodyChange = (index, field, value) => {
-        setDealsFormData((prev) => {
+        setsustainableTourismFormData((prev) => {
         const newBody = [...prev.body];
         newBody[index] = { ...newBody[index], [field]: value };
         return { ...prev, body: newBody };
@@ -156,7 +148,7 @@ export default function EditDealsForm({editingItem, toAddForm}) {
         const file = acceptedFiles[0]; // Take the first file
 
         if (file) {
-            setDealsFormData((prevState) => {
+            setsustainableTourismFormData((prevState) => {
                 const updatedBody = [...prevState.body];
                 updatedBody[index] = {
                     ...updatedBody[index],
@@ -172,14 +164,14 @@ export default function EditDealsForm({editingItem, toAddForm}) {
     }
 
     const addBodySection = () => {
-        setDealsFormData((prev) => ({
+        setsustainableTourismFormData((prev) => ({
         ...prev,
         body: [...prev.body, { subtitle: "", body: "", image: null, image_source: ""}],
         }));
     };
 
     const deleteBodySection = (index) => {
-        setDealsFormData((prev) => {
+        setsustainableTourismFormData((prev) => {
         const newBody = prev.body.filter((_, i) => i !== index);
         return { ...prev, body: newBody };
         });
@@ -204,14 +196,14 @@ export default function EditDealsForm({editingItem, toAddForm}) {
     });
 
     const resetHeaderImage = () => {
-        setDealsFormData((prev) => ({
+        setsustainableTourismFormData((prev) => ({
             ...prev,
             headerImage: null,
         }));
     };
 
     const resetBodyImage = () => {
-        setDealsFormData((prev) => ({
+        setsustainableTourismFormData((prev) => ({
             ...prev,
             body: [{ subtitle: "", body: "", image: null, image_source: ""}],
         }));
@@ -222,7 +214,7 @@ export default function EditDealsForm({editingItem, toAddForm}) {
         if (acceptedFiles.length > 0) {
         const file = acceptedFiles[0];
         if (["image/png", "image/jpeg", "image/jpg"].includes(file.type)) {
-            setDealsFormData((prev) => {
+            setsustainableTourismFormData((prev) => {
             const newBody = [...prev.body];
             if (!newBody[index]) return prev;
             newBody[index] = { ...newBody[index], image: file };
@@ -239,7 +231,7 @@ export default function EditDealsForm({editingItem, toAddForm}) {
     };
 
     const removeBodyImage = (index) => {
-        setDealsFormData((prev) => {
+        setsustainableTourismFormData((prev) => {
         const newBody = [...prev.body];
         if (!newBody[index]) return prev;
         newBody[index] = { ...newBody[index], image: null };
@@ -264,7 +256,7 @@ export default function EditDealsForm({editingItem, toAddForm}) {
             // Show SweetAlert2 loading screen for update
             Swal.fire({
               title: 'Updating...',
-              text: 'Please wait while we update the deals.',
+              text: 'Please wait while we update the sustainable tourism.',
               allowOutsideClick: false,
               didOpen: () => {
                 Swal.showLoading();
@@ -281,7 +273,7 @@ export default function EditDealsForm({editingItem, toAddForm}) {
                 }
                 headerImageURL = await uploadImageToFirebase(
                   storyFormData.headerImage,
-                  `deals/${Date.now()}_${storyFormData.headerImage.name}`
+                  `sustainableTourism/${Date.now()}_${storyFormData.headerImage.name}`
                 );
               } else {
                 headerImageURL = storyFormData.headerImage;
@@ -302,7 +294,7 @@ export default function EditDealsForm({editingItem, toAddForm}) {
                     }
                     return await uploadImageToFirebase(
                       section.image,
-                      `deals/${Date.now()}_${section.image.name}`
+                      `sustainableTourism/${Date.now()}_${section.image.name}`
                     );
                   }
                   return section.image;
@@ -311,36 +303,32 @@ export default function EditDealsForm({editingItem, toAddForm}) {
           
               // Prepare the updated story object for Firestore
 
-              const dealData = {
-                dateTimeStart: dealsFormData.dateTimeStart,
-                dateTimeEnd: dealsFormData.dateTimeEnd,
-                category: dealsFormData.category,
-                title: dealsFormData.title,
+              const sustainbleData = {
+                category: sustainableTourismFormData.category,
+                title: sustainableTourismFormData.title,
                 headerImage: headerImageURL,
-                headerImageSource: dealsFormData.headerImageSource,
-                body: dealsFormData.body.map((section, index) => ({
+                headerImageSource: sustainableTourismFormData.headerImageSource,
+                body: sustainableTourismFormData.body.map((section, index) => ({
                   subtitle: section.subtitle,
                   body: section.body,
                   image: bodyImagesURLs[index] || "",
                   image_source: section.image_source,
                 })),
-                tags: dealsFormData.tags,
-                references: dealsFormData.references,
-                socials: dealsFormData.socials,
-                origin: dealsFormData.origin,
+                tags: sustainableTourismFormData.tags,
+                references: sustainableTourismFormData.references,
               };
           
               // Update the existing document using the story's id
-              const storyDocRef = doc(db, "deals", storyFormData.id);
-              await updateDoc(storyDocRef, dealData);
+              const storyDocRef = doc(db, "sustainableTourism", storyFormData.id);
+              await updateDoc(storyDocRef, sustainbleData);
           
               Swal.fire({
-                title: "Deals Posted",
-                text: "Your deals has been edited successfully!",
+                title: "Sustainable Tourism Events Posted",
+                text: "Your Sustainable Tourism events has been edited successfully!",
                 icon: "success",
               });
           
-              // Optionally reset form data after a successful deals
+              // Optionally reset form data after a successful sustainable tourism
               setBodyImages([]);
               resetHeaderImage();
               toAddForm();
@@ -365,11 +353,11 @@ export default function EditDealsForm({editingItem, toAddForm}) {
                                     <Form.Label className="label">Category</Form.Label>
                                     <Form.Select
                                       name="category"
-                                      value={dealsFormData.category}
+                                      value={sustainableTourismFormData.category}
                                       onChange={handleChange}
                                     >
                                       <option value="" disabled>Select Category</option>
-                                      {dealsAndPromotionsCategoryOptions.map((option, index) => (
+                                      {sustainableTourismCategoryOptions.map((option, index) => (
                                         <option key={index} value={option}>
                                           {option}
                                         </option>
@@ -388,7 +376,7 @@ export default function EditDealsForm({editingItem, toAddForm}) {
                                         <Form.Control
                                             type="datetime-local"
                                             name="dateTimeStart"
-                                            value={dealsFormData.dateTimeStart}
+                                            value={sustainableTourismFormData.dateTimeStart}
                                             onChange={handleChange}
                                             required
                                         />
@@ -403,10 +391,10 @@ export default function EditDealsForm({editingItem, toAddForm}) {
                                       <Form.Control
                                         type="datetime-local"
                                         name="dateTimeEnd"
-                                        value={dealsFormData.dateTimeEnd}
+                                        value={sustainableTourismFormData.dateTimeEnd}
                                         onChange={handleChange}
-                                        min={dealsFormData.dateTimeStart} // Prevents selecting an earlier date
-                                        disabled={!dealsFormData.dateTimeStart} // Disable if Start Date is empty
+                                        min={sustainableTourismFormData.dateTimeStart} // Prevents selecting an earlier date
+                                        disabled={!sustainableTourismFormData.dateTimeStart} // Disable if Start Date is empty
                                         required
                                       />
                                     </Form.Group>
@@ -420,7 +408,7 @@ export default function EditDealsForm({editingItem, toAddForm}) {
                             type="text"
                             name="title"
                             className="fw-bold"
-                            value={dealsFormData.title}
+                            value={sustainableTourismFormData.title}
                             onChange={handleChange}
                             placeholder="Enter title"
                             required
@@ -435,8 +423,8 @@ export default function EditDealsForm({editingItem, toAddForm}) {
                             Upload Header Image (800x400)
                         </Form.Label>
                         <HeaderImageDropzone
-                        storyForm={dealsFormData}
-                        setStoryForm={setDealsFormData}
+                        storyForm={sustainableTourismFormData}
+                        setStoryForm={setsustainableTourismFormData}
                         dropzoneName="dropzone-container-big"
                         previewName="dropzone-uploaded-image-big"
                         
@@ -468,7 +456,7 @@ export default function EditDealsForm({editingItem, toAddForm}) {
                     <TextGroupInputField
                         onChange={(value) => handleChange(value, "headerImageSource")}
                         label={"Header Image Sources (Type & Enter)"}
-                        editingItems={dealsFormData.headerImageSource}
+                        editingItems={sustainableTourismFormData.headerImageSource}
                         resetKey={resetKey} 
                         />
                     </Col>
@@ -480,7 +468,7 @@ export default function EditDealsForm({editingItem, toAddForm}) {
                <Row>
                 <Col md={12}>
                     <p className="label mb-2">Body Sections</p>
-                    {dealsFormData.body.map((section, index) => (
+                    {sustainableTourismFormData.body.map((section, index) => (
                                 <Row key={index} className="d-flex flex-md-row flex-column">
                                 <Container className="empty-container"></Container>
                                 <Form.Group className="mb-3 m-0 p-0">
@@ -535,7 +523,7 @@ export default function EditDealsForm({editingItem, toAddForm}) {
                                             />
                                     </Form.Group>
                                 </Col>
-                                {dealsFormData.body.length > 1 && (
+                                {sustainableTourismFormData.body.length > 1 && (
                                     <Container className="mb-4 d-flex justify-content-end">
                                         <Button
                                         variant="outline-danger"
@@ -559,46 +547,26 @@ export default function EditDealsForm({editingItem, toAddForm}) {
                 </Col>
                </Row>
                 <Container className="empty-container"></Container>
-                <Row>
-                    <Col md={12}>
-                    <TextGroupInputField
-                        onChange={(value) => handleChange(value, "origin")}
-                        label={"Origin Office (Type & Enter)"}
-                        editingItems={dealsFormData.origin}
-                        resetKey={resetKey} 
-                        caption="the office where the deals originated or referring to"
-                        />
-                    </Col>
-                </Row>
+
                 <Row>
                     <Col md={12}>
                     <TextGroupInputField
                         onChange={(value) => handleChange(value, "references")}
                         label={"References (Type & Enter)"}
                         caption="postings or website links to redirect users"
-                        editingItems={dealsFormData.references}
+                        editingItems={sustainableTourismFormData.references}
                         resetKey={resetKey} 
                         />
                     </Col>
                 </Row>
                 <Container className="empty-container"></Container>
-                <Row>
-                    <Col md={12}>
-                    <TextGroupInputField
-                        onChange={(value) => handleChange(value, "socials")}
-                        label={"Social Media Link (Type & Enter)"}
-                        caption="social media links of subject"
-                        editingItems={dealsFormData.socials}
-                        resetKey={resetKey} 
-                        />
-                    </Col>
-                </Row>
+                
                 <Row>
                     <Col md={12}>
                     <TextGroupInputField
                         onChange={(value) => handleChange(value, "tags")}
                         label={"Tags (Type & Enter)"}
-                        editingItems={dealsFormData.tags}
+                        editingItems={sustainableTourismFormData.tags}
                         resetKey={resetKey} 
                         caption="imporant tags for Optimization"
                         />

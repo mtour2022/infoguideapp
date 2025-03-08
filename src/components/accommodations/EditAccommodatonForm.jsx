@@ -274,6 +274,10 @@ export default function EditingAccommodationForm({editingItem, toAddForm}) {
               text: "Your accommodation has been updated successfully!",
               icon: "success",
             });
+            // Reset form data after successful submission
+            resetForm();
+            resetHeaderImage();
+            toAddForm();
           } catch (error) {
             console.error("Error updating accommodation:", error);
             Swal.fire({
@@ -285,10 +289,7 @@ export default function EditingAccommodationForm({editingItem, toAddForm}) {
           
 
     
-        // Reset form data after successful submission
-        resetForm();
-        resetHeaderImage();
-        toAddForm();
+        
 
       } catch (error) {
         console.error("Error submitting accommodation:", error);
@@ -376,6 +377,15 @@ export default function EditingAccommodationForm({editingItem, toAddForm}) {
    const handleEditMapClick = () => {
     setIsEditingMap(!isEditingMap); // Toggle the isEditing state
    };
+
+   const removeBodyImage = (index) => {
+    setAccommodationFormData((prev) => {
+    const newBody = [...prev.body];
+    if (!newBody[index]) return prev;
+    newBody[index] = { ...newBody[index], image: null };
+    return { ...prev, body: newBody };
+    });
+};
 
 
   return (
