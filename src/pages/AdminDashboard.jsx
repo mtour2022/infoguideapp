@@ -47,6 +47,7 @@ import {
   faSignHanging,
   faRibbon,
   faTag,
+  faShop,
 
 } from '@fortawesome/free-solid-svg-icons';
 import { Container, Row, Col, Button, Nav, Offcanvas, Collapse } from 'react-bootstrap';
@@ -69,16 +70,27 @@ import OrdinanceTable from '../admin/TableOrdinances';
 import TariffRatesForm from '../components/tariffs/TariffRates';
 import TariffTable from '../admin/TableTariffs';
 import CalendarEventsTable from '../admin/TableCalendarEvents';
+import HelpfulLinksTable from '../admin/TableHelpfulLinks';
+import LifeStyleTable from '../admin/TableLifeStyles';
+import TouristFAQTable from '../admin/TableTouristFAQ';
+import VirtualTourGuideTable from '../admin/TableVirtuaTourGuide';
+import AwardsAndRecognitionsTable from '../admin/TableAwardsAndRecognitions';
+import TravelExposTable from '../admin/TableTravelExpos';
+import TourismProjectsTable from '../admin/TableTourismProjects';
+import CruiseShipsTable from '../admin/TableCruiseShips';
+import TourismMarketsForm from '../components/tourismMarkets/TourismMarket';
+import TourismMarketsTable from '../admin/TableTourismMarkets';
 
 // Sidebar link component using onClick to set active content.
 function NavlinkIcon({ icon, title, onClick, active }) {
   return (
     <Nav.Link 
-      className={`ms-lg-2 mb-2 navlink ${active ? 'active' : ''}`} 
+      className={`ms-lg-2 mb-2 ${active ? 'active' : ''}`} 
+      id="basic-nav-sidebar-item"
       onClick={onClick}
       style={{ cursor: 'pointer' }}
     >
-      <FontAwesomeIcon icon={icon} size="xs" fixedWidth /> {title}
+      <FontAwesomeIcon icon={icon} size="sm" fixedWidth /> {title}
     </Nav.Link>
   );
 }
@@ -92,8 +104,9 @@ function ExpandableNavItem({ title, children, className }) {
       <Nav.Link
         as="div"
         onClick={() => setOpen(!open)}
-        className={className || 'navlink'}
+        className={className}
         style={{ cursor: 'pointer' }}
+        id="basic-nav-sidebar"
       >
         {title}
         <span style={{ float: 'right' }}>{open ? '-' : '+'}</span>
@@ -352,10 +365,62 @@ export default function AdminDashboard() {
             <CalendarEventsTable></CalendarEventsTable>
           </>
         );
-
-        
-          
-            
+        case 'helpfulLinks':
+          return (
+            <>
+              <HelpfulLinksTable></HelpfulLinksTable>
+            </>
+          );
+          case 'lifeStyles':
+            return (
+              <>
+                <LifeStyleTable></LifeStyleTable>
+              </>
+            );
+            case 'touristFAQs':
+              return (
+                <>
+                  <TouristFAQTable></TouristFAQTable>
+                </>
+              );
+              case 'virtualTourGuides':
+                return (
+                  <>
+                    <VirtualTourGuideTable></VirtualTourGuideTable>
+                  </>
+                );
+                case 'awardsAndRecognitions':
+                  return (
+                    <>
+                      <AwardsAndRecognitionsTable></AwardsAndRecognitionsTable>
+                    </>
+                  );        
+                  case 'travelExpos':
+                    return (
+                      <>
+                        <TravelExposTable></TravelExposTable>
+                      </>
+                    );  
+                    case 'tourismProjects':
+                      return (
+                        <>
+                          <TourismProjectsTable></TourismProjectsTable>
+                        </>
+                      );  
+                      case 'tourismMarkets':
+                        return (
+                          <>
+                            <TourismMarketsTable></TourismMarketsTable>
+                          </>
+                        );           
+                                    
+                      case 'cruiseShips':
+                        return (
+                          <>
+                            <CruiseShipsTable></CruiseShipsTable>
+                          </>
+                        );           
+                
       
       // Add more cases for other pages as needed.
       default:
@@ -370,314 +435,318 @@ export default function AdminDashboard() {
 
   // Sidebar content extracted to reuse in both main sidebar and offcanvas.
   const sidebarContent = (
-    <div className="sidebar-sticky p-3">
+    <div className="sidebar-sticky p-3  pt-5">
       <h4>Admin</h4>
       <Nav className="flex-column sidebar">
         <NavlinkIcon
           icon={faDashboard}
-          title="Dashboard"
+          title="DASHBOARD"
           onClick={() => { setActivePage('dashboard'); handleClose(); }}
           active={activePage === 'dashboard'}
         />
         <NavlinkIcon
           icon={faBell}
-          title="Updates"
+          title="UPDATES"
           onClick={() => { setActivePage('updates'); handleClose(); }}
           active={activePage === 'updates'}
         />
         <NavlinkIcon
           icon={faFire}
-          title="Deals & Promotions"
+          title="DEALS & PROMOTIONS"
           onClick={() => { setActivePage('deals'); handleClose(); }}
           active={activePage === 'deals'}
         />
         <NavlinkIcon
           icon={faCalendarDay}
-          title="Incoming Events"
+          title="INCOMING EVENTS"
           onClick={() => { setActivePage('incomingEvents'); handleClose(); }}
           active={activePage === 'incomingEvents'}
         />
         <NavlinkIcon
           icon={faBookReader}
-          title="Tourism Stories"
+          title="TOURISM STORIES"
           onClick={() => { setActivePage('stories'); handleClose(); }}
           active={activePage === 'stories'}
         />
         <NavlinkIcon
           icon={faLeaf}
-          title="Sustainable Travel"
+          title="SUSTAINABLE TRAVEL"
           onClick={() => { setActivePage('sustainableTourism'); handleClose(); }}
           active={activePage === 'sustainableTourism'}
         />
-        <ExpandableNavItem title="Experience" className="ms-lg-2 mb-2 navlink">
-          <ExpandableNavItem title="Hospitality & Lodging" className="ms-lg-2 mb-2 me-lg-2 navlink">
+        <ExpandableNavItem title="EXPERIENCE" className="ms-lg-2 mb-2">
+          <ExpandableNavItem title="HOSPITALITY & LODGING" className="ms-lg-2 mb-2 me-lg-2">
             <NavlinkIcon
               icon={faHotel}
-              title="Accommodations"
+              title="ACCOMMODATIONS"
               onClick={() => { setActivePage('accommodations'); handleClose(); }}
               active={activePage === 'accommodations'}
             />
             <NavlinkIcon
               icon={faLadderWater}
-              title="Recreational Resorts"
+              title="RECREATIONAL RESORTS"
               onClick={() => { setActivePage('resorts'); handleClose(); }}
               active={activePage === 'resorts'}
             />
           </ExpandableNavItem>
-          <ExpandableNavItem title="Food & Beverages" className="ms-lg-2 mb-2 me-lg-2 navlink">
+          <ExpandableNavItem title="FOODS & BEVERAGES" className="ms-lg-2 mb-2 me-lg-2 navlink">
             <NavlinkIcon
               icon={faUtensils}
-              title="Restaurants"
+              title="RESTAURANTS"
               onClick={() => { setActivePage('restaurants'); handleClose(); }}
               active={activePage === 'restaurants'}
             />
             <NavlinkIcon
               icon={faWineGlass}
-              title="Bars & Party Club"
+              title="BARS & PARTY CLUB"
               onClick={() => { setActivePage('barsAndPartyClubs'); handleClose(); }}
               active={activePage === 'barsAndPartyClubs'}
             />
             <NavlinkIcon
               icon={faCoffee}
-              title="Cafés & Coworking"
+              title="CAFES & COWORKING"
               onClick={() => { setActivePage('cafeAndCoworking'); handleClose(); }}
               active={activePage === 'cafeAndCoworking'}
             />
           </ExpandableNavItem>
-          <ExpandableNavItem title="Tourism & Leisure" className="ms-lg-2 mb-2 me-lg-2 navlink">
+          <ExpandableNavItem title="TOURISM & LEISURE" className="ms-lg-2 mb-2 me-lg-2 navlink">
             <NavlinkIcon
               icon={faBullhorn}
-              title="Tour Guides"
+              title="TOUR GUIDES"
               onClick={() => { setActivePage('tourguides'); handleClose(); }}
               active={activePage === 'tourguides'}
             />
             <NavlinkIcon
               icon={faFlag}
-              title="Travel & Tours Operators"
+              title="TRAVEL & TOUR OPERATORS"
               onClick={() => { setActivePage('travelAndTourOperators'); handleClose(); }}
               active={activePage === 'travelAndTourOperators'}
             />
             <NavlinkIcon
               icon={faSwimmer}
-              title="Tourist Activity Provider"
+              title="TOURIST ACTIVITY PROVIDER"
               onClick={() => { setActivePage('touristActivityProviders'); handleClose(); }}
               active={activePage === 'touristActivityProviders'}
             />
             <NavlinkIcon
               icon={faPeopleGroup}
-              title="M.I.C.E. Facilities"
+              title="M.I.C.E. FACILITIES"
               onClick={() => { setActivePage('MICEFacilities'); handleClose(); }}
               active={activePage === 'MICEFacilities'}
             />
             <NavlinkIcon
               icon={faCalendarXmark}
-              title="Events Planning Companies"
+              title="EVENTS PLANNING COMPANIES"
               onClick={() => { setActivePage('eventsPlanningCompanies'); handleClose(); }}
               active={activePage === 'eventsPlanningCompanies'}
             />
             <NavlinkIcon
               icon={faShoppingBag}
-              title="Tourist & Specialty Shops"
+              title="TOURIST & SPECIALTY SHOPS"
               onClick={() => { setActivePage('touristAndSpecialtyShops'); handleClose(); }}
               active={activePage === 'touristAndSpecialtyShops'}
             />
           </ExpandableNavItem>
-          <ExpandableNavItem title="Health & Wellness" className="ms-lg-2 mb-2 me-lg-2 navlink">
+          <ExpandableNavItem title="HEATH & WELLNESS" className="ms-lg-2 mb-2 me-lg-2 navlink">
             <NavlinkIcon
               icon={faSpa}
-              title="Spa & Wellness Centres"
+              title="SPA & WELLNESS CENTERS"
               onClick={() => { setActivePage('spaAndWellnessCentres'); handleClose(); }}
               active={activePage === 'spaAndWellnessCentres'}
             />
             <NavlinkIcon
               icon={faDumbbell}
-              title="Gyms & Fitness Clubs"
+              title="GYMS & FITNESS CLUBS"
               onClick={() => { setActivePage('gymnsAndFitnessClubs'); handleClose(); }}
               active={activePage === 'gymnsAndFitnessClubs'}
             />
           </ExpandableNavItem>
-          <ExpandableNavItem title="Transport & Parking" className="ms-lg-2 mb-2 me-lg-2 navlink">
+          <ExpandableNavItem title="TRANSPORT & PARKING" className="ms-lg-2 mb-2 me-lg-2 navlink">
             <NavlinkIcon
               icon={faBus}
-              title="Tourist Land Transport Operators"
+              title="TOURIST LAND TRANSPORT OPERATORS"
               onClick={() => { setActivePage('touristLandTransportOperators'); handleClose(); }}
               active={activePage === 'touristLandTransportOperators'}
             />
             <NavlinkIcon
               icon={faPlaneArrival}
-              title="Tourst Air Transport Operators"
+              title="TOURIST AIR TRANSPORT OPERATORS"
               onClick={() => { setActivePage('touristAirTransportOperators'); handleClose(); }}
               active={activePage === 'touristAirTransportOperators'}
             />
             <NavlinkIcon
               icon={faFerry}
-              title="Passenger Ship Lines"
+              title="PASSSENGER SHIP LINES"
               onClick={() => { setActivePage('passengerShipLines'); handleClose(); }}
               active={activePage === 'passengerShipLines'}
             />
             <NavlinkIcon
               icon={faParking}
-              title="Parking Spaces"
+              title="PARKING SPACES"
               onClick={() => { setActivePage('parkingSpaces'); handleClose(); }}
               active={activePage === 'parkingSpaces'}
             />
           </ExpandableNavItem>
-          <ExpandableNavItem title="Healthcare Facilities" className="ms-lg-2 mb-2 me-lg-2 navlink">
+          <ExpandableNavItem title="HEALTHCARE FACILTIES" className="ms-lg-2 mb-2 me-lg-2 navlink">
             <NavlinkIcon
               icon={faHospital}
-              title="Hospitals & Clinics"
+              title="HOSPITALS & CLINICS"
               onClick={() => { setActivePage('hospitalsAndClinics'); handleClose(); }}
               active={activePage === 'hospitalsAndClinics'}
             />
           </ExpandableNavItem>
           <NavlinkIcon
             icon={faSwimmer}
-            title="Activities"
+            title="ACTIVITIES"
             onClick={() => { setActivePage('activities'); handleClose(); }}
             active={activePage === 'activities'}
           />
           <NavlinkIcon
             icon={faBinoculars}
-            title="Attractions"
+            title="ATTRACTIONS"
             onClick={() => { setActivePage('attractions'); handleClose(); }}
             active={activePage === 'attractions'}
           />
           
         </ExpandableNavItem>
-        <ExpandableNavItem title="Essentials" className="ms-lg-2 mb-2 navlink">
+        <ExpandableNavItem title="ESSENTIALS" className="ms-lg-2 mb-2"  id="basic-nav-sidebar-item">
             <NavlinkIcon
                 icon={faAmbulance}
-                title="Emergency Hotlines"
+                title="EMERGENCY HOTLINES"
                 onClick={() => { setActivePage('hotlines'); handleClose(); }}
                 active={activePage === 'hotlines'}
             />
             <NavlinkIcon
                 icon={faPassport}
-                title="Tourist Requirements"
+                title="TOURIST REQUIREMENTS"
                 onClick={() => { setActivePage('requirements'); handleClose(); }}
                 active={activePage === 'requirements'}
             />
             <NavlinkIcon
                 icon={faUmbrellaBeach}
-                title="Beach Ordinances"
+                title="BEACH ORDINANCES"
                 onClick={() => { setActivePage('ordinances'); handleClose(); }}
                 active={activePage === 'ordinances'}
             />
             <NavlinkIcon
                 icon={faTag}
-                title="Tariff Rates"
+                title="TARIFF RATES"
                 onClick={() => { setActivePage('tariffs'); handleClose(); }}
                 active={activePage === 'tariffs'}
             />
             <NavlinkIcon
                 icon={faCalendarCheck}
-                title="Calendar of Events"
+                title="CALENDAR OF EVENTS"
                 onClick={() => { setActivePage('calendarEvents'); handleClose(); }}
                 active={activePage === 'calendarEvents'}
             />
             <NavlinkIcon
                 icon={faLink}
-                title="Helpful Links"
-                onClick={() => { setActivePage('links'); handleClose(); }}
-                active={activePage === 'links'}
+                title="HELPFUL LINKS"
+                onClick={() => { setActivePage('helpfulLinks'); handleClose(); }}
+                active={activePage === 'helpfulLinks'}
             />
             <NavlinkIcon
                 icon={faWalking}
-                title="Life Style & Facilities"
-                onClick={() => { setActivePage('facilities'); handleClose(); }}
-                active={activePage === 'facilities'}
+                title="LIFESTYLE & FACILITIES"
+                onClick={() => { setActivePage('lifeStyles'); handleClose(); }}
+                active={activePage === 'lifeStyles'}
             />
             <NavlinkIcon
                 icon={faCommenting}
-                title="Tourist FAQ"
-                onClick={() => { setActivePage('faq'); handleClose(); }}
-                active={activePage === 'faq'}
+                title="TOURIST FAQ"
+                onClick={() => { setActivePage('touristFAQs'); handleClose(); }}
+                active={activePage === 'touristFAQs'}
             />
-            <NavlinkIcon
-                icon={faPrint}
-                title="Printable Materials"
-                onClick={() => { setActivePage('materials'); handleClose(); }}
-                active={activePage === 'materials'}
-            />
+
             <NavlinkIcon
                 icon={faVideoCamera}
-                title="Virtual Tour Guide"
-                onClick={() => { setActivePage('virtual+guide'); handleClose(); }}
-                active={activePage === 'virtual+guide'}
+                title="VIRTUAL TOUR GUIDE"
+                onClick={() => { setActivePage('virtualTourGuides'); handleClose(); }}
+                active={activePage === 'virtualTourGuides'}
             />
         </ExpandableNavItem>
-        <ExpandableNavItem title="Toursim Data" className="ms-lg-2 mb-2 navlink">
+        <ExpandableNavItem title="TOURISM DATA" className="ms-lg-2 mb-2"  id="basic-nav-sidebar-item">
             <NavlinkIcon
                 icon={faBarChart}
-                title="Tourist Arrivals"
+                title="TOURIST ARRIVALS"
                 onClick={() => { setActivePage('arrivals'); handleClose(); }}
                 active={activePage === 'arrivals'}
             />
             <NavlinkIcon
                 icon={faShip}
-                title="Cruise Arrivals"
-                onClick={() => { setActivePage('cruises'); handleClose(); }}
-                active={activePage === 'cruise'}
+                title="CRUISE SHIPS ARRIVALS"
+                onClick={() => { setActivePage('cruiseShips'); handleClose(); }}
+                active={activePage === 'cruiseShips'}
             />
             <NavlinkIcon
                 icon={faPlane}
-                title="Flights Data"
+                title="FLIGHT DATA"
                 onClick={() => { setActivePage('flights'); handleClose(); }}
                 active={activePage === 'flights'}
             />
             <NavlinkIcon
                 icon={faUserGroup}
-                title="M.I.C.E. Reports"
+                title="M.I.C.E. REPORTS"
                 onClick={() => { setActivePage('mice+reports'); handleClose(); }}
                 active={activePage === 'mice+reports'}
             />
         </ExpandableNavItem>
-        <ExpandableNavItem title="Achievements" className="ms-lg-2 mb-2 navlink">
+        <ExpandableNavItem title="ACHIEVEMENTS" className="ms-lg-2 mb-2"  id="basic-nav-sidebar">
             <NavlinkIcon
                 icon={faMedal}
-                title="Awards & Recognitions"
-                onClick={() => { setActivePage('awards'); handleClose(); }}
-                active={activePage === 'awards'}
+                title="AWARDS & RECOGNITIONS"
+                onClick={() => { setActivePage('awardsAndRecognitions'); handleClose(); }}
+                active={activePage === 'awardsAndRecognitions'}
             />
             <NavlinkIcon
                 icon={faSignHanging}
-                title="Travel Expos, Conventions, & B2B"
-                onClick={() => { setActivePage('awards'); handleClose(); }}
-                active={activePage === 'awards'}
+                title="TRAVEL EXPOS, EXHIBITS, CONFERENCES, CONVENTIONS, B2B & ROADSHOWS"
+                onClick={() => { setActivePage('travelExpos'); handleClose(); }}
+                active={activePage === 'travelExpos'}
             />
             <NavlinkIcon
                 icon={faHandshake}
-                title="Tourism Projects"
-                onClick={() => { setActivePage('awards'); handleClose(); }}
-                active={activePage === 'awards'}
+                title="TOURISM PROJECTS"
+                onClick={() => { setActivePage('tourismProjects'); handleClose(); }}
+                active={activePage === 'tourismProjects'}
+            />
+            <NavlinkIcon
+                icon={faShop}
+                title="TOURISM MARKETS"
+                onClick={() => { setActivePage('tourismMarkets'); handleClose(); }}
+                active={activePage === 'tourismMarkets'}
             />
         </ExpandableNavItem>
         <Nav.Link
-          className="ms-lg-2 navlink"
+          className="ms-lg-2"
+          id="basic-nav-sidebar-item"
           onClick={() => { setActivePage('complaints'); handleClose(); }}
           style={{ cursor: 'pointer' }}
         >
-          Complaints
+          COMPLAINTS
         </Nav.Link>
         <Nav.Link
-          className="ms-lg-2 navlink"
+          className="ms-lg-2"
+          id="basic-nav-sidebar-item"
           onClick={() => { setActivePage('feedbacks'); handleClose(); }}
           style={{ cursor: 'pointer' }}
         >
-          Feedback
+          FEEDBACK
         </Nav.Link>
+       
         
       </Nav>
     </div>
   );
 
   return (
-    <Container fluid className="grey-container">
+    <Container fluid  className="grey-container ">
       <Row>
         {/* Persistent sidebar: Visible only on large screens and up */}
         <Col
           xs={3}
-          className="p-0 d-none d-lg-block white-container"
+          className="p-0 d-none d-lg-block white-container content-wrapper"
           style={{
             minHeight: '100vh',
             maxHeight: '100vh',
@@ -690,7 +759,7 @@ export default function AdminDashboard() {
         </Col>
 
         {/* Main Content Area */}
-        <Col xs={12} md={12} lg={9} className="p-4">
+        <Col xs={12} md={12} lg={9} className="p-4 pt-5">
           {/* Menu button visible on small and medium screens */}
           <Button variant="outline-primary" className="d-lg-none mb-3" onClick={handleShow}>
             Menu
@@ -700,7 +769,7 @@ export default function AdminDashboard() {
       </Row>
 
       {/* Offcanvas Sidebar for small and medium screens */}
-      <Offcanvas show={show} onHide={handleClose} placement="start" className="d-lg-none">
+      <Offcanvas show={show} onHide={handleClose} placement="start" className="d-lg-none content-wrapper">
         <Offcanvas.Header closeButton>
           <Offcanvas.Title>Menu</Offcanvas.Title>
         </Offcanvas.Header>

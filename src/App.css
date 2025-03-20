@@ -1,5 +1,12 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet');
 
+@font-face {
+  font-family: "BARABARA-final";
+  src: local("BARABARA-final"),
+    url("./assets/fonts/BARABARA-final.otf") format("opentype");
+  font-weight: normal;
+}
+
 /* Body Reset */
 * {
   margin: 0;
@@ -40,6 +47,10 @@ body {
 }
 
 /* containers */
+.content-wrapper {
+  padding-top: 100px !important; /* Adjust based on your navbar height */
+}
+
 .container,
 .container-fluid {
   padding: 0 !important;
@@ -167,6 +178,7 @@ body {
   background-color: #FFF !important;
 }
 .sidebar .navlink {
+  font-family: BARABARA-FINAL;
   font-size: 16px !important;
   color: rgb(39, 38, 38)!important;
   font-weight: 500 !important;
@@ -177,93 +189,270 @@ body {
 
 }
 
+
+
 /* AppNavBar.css */
 .navbar {
   background-color: white !important;
-  border-bottom: 1px solid #E1E1E1 !important;
-  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1) !important;
-  font-family: 'Poppins', sans-serif !important;
-  color: black !important;
-  font-size: small !important;
 } 
 
-.navbar-brand img {
-  height: 30px !important;
+
+.logo-top {
+  height: 41px !important;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  filter: drop-shadow(0px 0px 4px rgba(255, 255, 255, 1)) !important; /* White glow with 50% transparency */
 }
+
+
 
 .navbar-toggler {
   border: none !important;
 }
 
 .navbar .navlink {
-  font-size: small !important;
-  color: black !important;
+  font-size: x-small !important;
+  color: white !important;
   font-weight: 500 !important;
+  font-family: BARABARA-FINAL;
+  letter-spacing: 2px; /* Adjust as needed */
 }
 
-.navbar .navlink:hover {
-  color: #1F89B2 !important; /* Blue hover effect */
-
+#navlink-top {
+  font-size: x-small !important;
+  color: #1F89B2 !important;
+  font-weight: 500 !important;
+  font-family: BARABARA-FINAL !important;
+  letter-spacing: 2px !important;
 }
+
+
+.navbar .navlink:hover,
+.navbar .navlink:hover .sustainable,
+.navbar .navlink:hover .notification,
+.navbar .navlink:hover .deals,
+.navbar .navlink:hover .events {
+  color: #fcda42 !important;
+  transition: transform 0.2s ease-in-out, color 0.2s ease-in-out;
+  transform: scale(1.1); /* Slight pop effect */
+}
+
+
 
 .sustainable {
-  color: rgb(15, 147, 65) !important;
+  color: rgb(95, 246, 138) !important;
   font-weight: 500 !important;
 }
 
-.sustainable:hover {
-  color: #1F89B2 !important; /* Blue hover effect */
-
-}
 
 .notification {
-  color: rgb(236, 178, 6) !important;
+  color: rgb(249, 222, 143) !important;
   font-weight: 500 !important;
 }
 
-.notification:hover {
-  color: #1F89B2 !important; /* Blue hover effect */
-
+.deals {
+  color: rgb(226, 124, 124) !important;
+  font-weight: 500 !important;
 }
 
 
+.events {
+  color: rgb(239, 168, 227) !important;
+  font-weight: 500 !important;
+}
+
+/* EXPERIENCE dropdown */
+#basic-nav-dropdown {
+  font-size: x-small !important;
+  font-family: BARABARA-FINAL !important;
+  color: white !important;
+  letter-spacing: 2px !important;
+}
+
+#basic-nav-dropdown:hover {
+  color: #fcda42 !important;
+  transform: scale(1.1);
+}
 
 
+#basic-nav-sidebar {
+  font-size: x-small !important;
+  font-family: BARABARA-FINAL !important;
+  color: rgb(39, 38, 38) !important;
+  letter-spacing: 2px !important;
+}
 
-.navlink-inner {
+/* sidebar */
+
+#basic-nav-sidebar {
   font-size: small !important;
-  color: black !important;
-  background-color: white !important;
-  font-weight: 500 !important;
+  font-family: BARABARA-FINAL !important;
+  color: rgb(39, 38, 38) !important;
+  letter-spacing: 2px !important;
 }
 
-/* Change dropdown title color */
-.navbar .nav-item .nav-link.dropdown-toggle {
-  color: black !important; /* Default color */
-  font-weight: 500 !important;
-}
-
-/* Change dropdown title color on hover */
-.navbar .nav-item .nav-link.dropdown-toggle:hover {
-  color: #1F89B2 !important; /* Blue hover effect */
-}
-
-
-.navlink-inner:hover {
-  color: #1F89B2 !important; /* Darker blue on hover */
-}
-
-.navlink-title {
+#basic-nav-sidebar-item {
   font-size: small !important;
-  color: black !important;
+  font-family: BARABARA-FINAL !important;
   background-color: white !important;
-  font-weight: 500 !important;
+  color: rgb(39, 38, 38) !important;
+  letter-spacing: 2px !important;
 }
 
-.navlink-title:hover {
-  color: #1F89B2 !important; /* Darker blue on hover */
+#basic-nav-sidebar:hover {
+  color: #1F89B2 !important;
 }
 
+#basic-nav-sidebar-item:hover {
+  color: #1F89B2 !important;
+}
+
+
+
+
+
+/* HOSPITALITY AND LODGING (Nested Dropdown) */
+#basic-nav-dropdown-title {
+  font-size: x-small !important;
+  font-family: BARABARA-FINAL !important;
+  background-color: white !important;
+  color: #1F89B2 !important;
+  letter-spacing: 2px !important;
+}
+
+/* Add padding-left for small screens */
+@media (max-width: 768px) { /* Adjust the breakpoint as needed */
+  #basic-nav-dropdown-title {
+    padding-left: 10px !important;
+  }
+  .navbar{
+    padding-top: 10px !important;
+    padding-left: 10px !important;
+  }
+}
+
+/* HOSPITALITY AND LODGING (Nested Dropdown) */
+#basic-nav-dropdown-title:hover {
+  color: rgb(39, 38, 38) !important;
+}
+
+
+/* ACCOMMODATIONS & RECREATIONAL RESORTS (Nested Items) */
+#basic-nav-dropdown-item {
+  font-size: x-small !important;
+  font-family: BARABARA-FINAL !important;
+  background-color: white !important;
+  color: #1F89B2 !important;
+  letter-spacing: 2px !important;
+}
+
+#basic-nav-dropdown-item:hover {
+  color: rgb(39, 38, 38)!important;
+}
+
+
+/* Remove hover and transition effects on medium to small screens */
+@media (max-width: 768px) {
+  .navbar .navlink:hover,
+  .navbar .navlink:hover .sustainable,
+  .navbar .navlink:hover .notification,
+  .navbar .navlink:hover .deals,
+  .navbar .navlink:hover .events,
+  #basic-nav-dropdown:hover {
+    color: inherit !important; /* Keep original color */
+    transform: none !important;
+    transition: none !important;
+  }
+
+}
+
+/* navbar */
+.app-navbar {
+  position: fixed;
+  width: 100%;
+  top: 0;
+  left: 0;
+  background: white;
+  z-index: 1000;
+}
+
+.app-navbar.shrink {
+  padding: 5px 0;
+}
+
+.navbar-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 15px;
+  background-image: url('./assets/images/logo-background.png') !important;
+  background-size: cover !important; /* Ensures the image covers the entire navbar */
+  background-position: center !important; /* Centers the image */
+  background-repeat: no-repeat !important; /* Prevents repetition */
+  width: 100% !important; /* Ensures the navbar spans the full width */
+
+}
+
+
+
+
+
+.app-navbar.shrink .navbar-top {
+  opacity: 0;
+  height: 0;
+  overflow: hidden;
+}
+
+.navbar-collapse {
+  background: #1F89B2 !important;
+}
+
+
+.notification {
+  color: #ff4d4d;
+}
+
+/* Wrapper for both navbars */
+.navbar-wrapper {
+  position: fixed;
+  width: 100%;
+  top: 0;
+  left: 0;
+  z-index: 1000;
+}
+
+/* First Row (Top Bar) */
+.navbar-top {
+  background: white;
+  padding: 10px 15px;
+}
+
+/* Hide first row when scrolling */
+.navbar-top.hide {
+  height: 0;
+  opacity: 0;
+  overflow: hidden;
+  padding: 0;
+
+}
+
+/* Second Row (Main Navbar) - Always Fixed */
+.app-navbar {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  background: #1F89B2 !important;
+  padding: 10px 0;
+  box-shadow: 0px 2px 3px rgba(0, 0, 0, 0.1); /* More visible shadow below */
+  z-index: 999; /* Ensure it's above content */
+}
+.app-navbar .navbar-brand {
+  display: none; /* Hide logo by default */
+}
+
+.app-navbar.scrolled .navbar-brand {
+  display: block; /* Show logo when scrolling */
+}
 
 
 /* Remove dropdown borders for md (768px) and sm (576px) screens */
@@ -275,47 +464,416 @@ body {
 }
 
 
+.weather-text {
+  font-family: BARABARA-FINAL;
+  font-size: x-small !important;
+  color: #1F89B2 !important;
+  font-weight: 500 !important;
+  letter-spacing: 2px; /* Adjust as needed */
+}
 
-/* NEW CODES UP HERE */
-/* #root {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
+.weather-text:hover {
+  color: rgb(39, 38, 38) !important;
+}
+
+/* Change font-size to small for lg and smaller screens */
+@media (max-width: 992px) { /* lg and below */
+  .weather-text {
+    font-size: small !important;
+    color: rgb(39, 38, 38) !important;
+  }
+
+  .weather-text:hover {
+    color: #1F89B2 !important;
+  }
+}
+
+/* Expanding Sidebar */
+
+.customized-sidebar {
+  background-color: white;
+  transition: width 0.3s ease;
+  box-shadow: 2px 0px 5px rgba(0, 0, 0, 0.1);
+  position: fixed; /* Keep sidebar fixed */
+  left: 0;
+  top: 0;
+  height: 100vh; /* Full height of the screen */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  z-index: 100;
+  overflow-y: auto; /* Enables scrolling when content overflows */
+  overflow-x: hidden; /* Prevents horizontal scrolling */
+}
+
+.customized-sidebar.closed {
+  width: 40px;
+  padding: 10px 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.customized-sidebar.open {
+  width: 30%;
+  padding: 10px;
+}
+
+.customized-toggle-btn {
+  position: absolute;
+  right: 2px;
+  top: 55%;
+  transform: translateY(-50%);
+  border-radius: 50%;
+  width: 35px;
+  height: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: white !important; 
+  border: none !important; /* Removed border */
+  box-shadow: none !important; /* Removed shadow */
+  z-index: 1000;
+  cursor: pointer; /* Ensures it remains clickable */
+}
+
+/* Ensuring the icon remains visible */
+.customized-toggle-btn svg {
+  color: #1F89B2;
+}
+
+.customized-toggle-text {
+  font-weight: 500 !important;
+  font-family: 'BARABARA-final', sans-serif !important;
+  font-size: x-small ;
+  letter-spacing: 2px;
+  font-size: small !important;
+  text-align: center !important;
+  line-height: 1 !important;
+  writing-mode: vertical-rl !important; /* Rotate text vertically */
+  transform: rotate(180deg) !important; /* Ensure correct orientation */
+  color: #1F89B2 !important;
+}
+/* slideshow */
+
+.slideshow-title {
+  font-family: 'BARABARA-final', sans-serif;
+  font-size: 3rem;
+  font-style: normal;
+  letter-spacing: 2px;
   text-align: center;
+  text-transform: uppercase;
+  position: relative; /* Ensure positioning context for absolute children */
+  display: inline-block;
+  background: linear-gradient(to bottom, rgba(255, 255, 255, 1) 33%, rgba(255, 255, 255, 0.8) 66%, rgba(255, 255, 255, 0.2) 100%);
+  -webkit-background-clip: text;
+  color: transparent; /* Makes the text itself transparent to show the gradient */
+  -webkit-text-stroke-width: 0.3px;
+
+  -webkit-text-stroke-color: #FFF;
 }
 
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
+
+.slideshow-title::before {
+  content: attr(data-text); /* Copies the text content */
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.4); /* Stronger shadow effect */
+  background: none; /* No background gradient for the shadow */
+  color: transparent;
 }
 
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.slideshow-title::after {
+  content: attr(data-text); /* Copies the text content again for the gradient */
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(to bottom, rgba(255, 255, 255, 1) 33%, rgba(255, 255, 255, 0.8) 66%, rgba(255, 255, 255, 0.2) 100%);
+  -webkit-background-clip: text;
+  color: transparent;
+  -webkit-text-stroke-width: 0.3px;
+  -webkit-text-stroke-color: #FFF;
+
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
-  }
+.slideshow {
+  position: relative;
+  width: 100%;
+  height: 84vh;
+  overflow: hidden;
 }
 
-.card {
-  padding: 2em;
+.slide {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background-size: cover;
+  background-position: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 1s ease-in-out;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  flex-direction: column; /* Stack elements in a column */
 }
 
-.read-the-docs {
-  color: #888;
+
+.slide.active {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+
+/* Video Styling */
+.slide-video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.video-control {
+  margin-right: 10px;
+  background: transparent;
+  border: none;
+  color: white;
+  height: 35px;
+  width: 35px;
+  font-size: 1.5rem;
+  display: flex;  /* Enables flexbox */
+  align-items: center; /* Centers vertically */
+  justify-content: center; /* Centers horizontally */
+  padding: 0; /* Remove padding to ensure perfect centering */
+  border-radius: 50%;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.video-control svg {
+  height: 20px;
+  width: 20px;
+}
+
+.video-control:hover {
+  box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.5); /* Soft black shadow */
+}
+
+/* Ensure image backgrounds are still supported */
+.slide-image {
+  width: 100%;
+  height: 100%;
+  background-size: cover;
+  background-position: center;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+/* New container to center title and button */
+.slide-content {
+  display: flex;
+  flex-direction: column; /* Stack title and button vertically */
+  align-items: center; /* Center horizontally */
+  justify-content: center; /* Ensure vertical centering */
+  text-align: center;
+  gap: 10px; /* Adds spacing between title and button */
+}
+
+.slideshow-shadow {
+  position: absolute;
+  top: 0;
+  width: 15%;
+  height: 100%;
+  z-index: 1;
+}
+
+.left-shadow {
+  left: 0;
+  background: linear-gradient(to right, rgba(0, 0, 0, 0.7), transparent);
+}
+
+.right-shadow {
+  right: 0;
+  background: linear-gradient(to left, rgba(0, 0, 0, 0.7), transparent);
+}
+
+.nav-button {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  color: white;
+  background: transparent;
+  border: none;
+  padding: 10px;
+  width: 50px; /* Set width */
+  height: 50px; /* Set height to match width for a circle */
+  border-radius: 50%; /* Makes the button circular */
+  cursor: pointer;
+  z-index: 2;
+  font-size: 20px;
+  transition: background 0.3s ease, transform 0.3s ease; /* Adding transition for scale */
+
+}
+
+
+
+.nav-button.left {
+  left: 25px;
+}
+
+.nav-button.right {
+  right: 10px;
+}
+
+.nav-button:hover {
+  background: rgba(255, 255, 255, 0.3);
+  text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.3); /* Very soft black text shadow */
+  box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.5); /* Soft black shadow */
+}
+
+.bottom-row {
+  
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  position: absolute;
+  bottom: 20px;
+  padding-right: 10px;
+  padding-left: 30px;
+  padding-top: 0;
+  padding-bottom: 10px;
+  z-index: 2;
+}
+
+.read-more {
+  font-family: 'BARABARA-final', sans-serif;
+  font-size: small;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: white;
+  background: rgba(255, 255, 255, 0.1); /* Light transparent white */
+  border: 0.3px solid rgba(255, 255, 255, 0.7); /* Slightly stronger border */
+  border-radius: 20px; /* Rounded corners */
+  padding: 8px 16px; /* More padding for better appearance */
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
+  text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.3); /* Very soft black text shadow */
+  box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.5); /* Soft black shadow */
+  backdrop-filter: blur(10px); /* Gaussian blur effect */
+  -webkit-backdrop-filter: blur(10px); /* Safari compatibility */
+}
+
+/* Hover effect */
+.read-more:hover {
+  background: rgba(255, 255, 255, 0.3); /* More visible white tint */
+  border: 0.3px solid rgba(255, 255, 255, 1); /* Brighter border */
+  box-shadow: 2px 2px 20px rgba(0, 0, 0, 0.5); /* Brighter glow effect */
+  color: #fff; /* Ensure text remains visible */
+  transform: scale(1.05); /* Slight scaling effect */
+}
+
+
+
+/* .read-more:hover {
+  background: rgba(255, 255, 255, 0.8);
 } */
+
+.dots {
+  display: flex;
+}
+
+.dot {
+  width: 8px;
+  height: 8px;
+  margin: 0 5px;
+  background: rgba(255, 255, 255, 0.5);
+  border-radius: 50%;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.dot.active {
+  background: rgba(255, 255, 255, 0.9);
+}
+
+/* Hide shadows, navigation buttons, and dots by default */
+.slideshow-shadow,
+.nav-button,
+.dots {
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
+}
+
+/* Show them only when hovering over the slideshow */
+.slideshow:hover .slideshow-shadow,
+.slideshow:hover .nav-button,
+.slideshow:hover .dots {
+  opacity: 1;
+  visibility: visible;
+}
+
+
+@media (max-width: 768px) { /* Targets tablets and smaller screens */
+  .customized-sidebar {
+    display: none; /* Hides sidebar */
+  }
+
+  .customized-main-content {
+    width: 100% !important; /* Expands main content fully */
+  }
+
+  .slideshow{
+    height: 50vh;
+  }
+
+  .nav-button.left {
+    left: 10px;
+  }
+
+   /* Adjust nav button background to transparent for smaller screens */
+   .nav-button {
+    background: transparent; /* Makes the background transparent */
+    color: white;
+  }
+
+   /* Add hover effect */
+   .nav-button:hover {
+    background: rgba(0, 0, 0, 0.1);
+  }
+
+  .slideshow-title {
+    font-size: 2rem;
+  }
+
+  .dot {
+    width: 5px;
+    height: 5px;
+  }
+
+
+  .slideshow-title {
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+  .slideshow-title::after {
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+  .slideshow-title::before {
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+
+}
+

@@ -1,15 +1,44 @@
 import React, { useState, useEffect } from "react";
-import { Container, Row, Col, Button, Card, Form, InputGroup, Dropdown} from "react-bootstrap";
-
-
+import { Container, Button } from "react-bootstrap";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faChevronLeft, faChevronRight } from "@fortawesome/free-solid-svg-icons"; // Import necessary icons
+import Slideshow from "../components/slideshow/SlideShowComponent";
 
 export default function Home() {
+    const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+    const [isSmallScreen, setIsSmallScreen] = useState(window.innerWidth <= 768);
+
+    // Function to update state when screen resizes
+    useEffect(() => {
+        const handleResize = () => {
+            setIsSmallScreen(window.innerWidth <= 768);
+        };
+
+        window.addEventListener("resize", handleResize);
+        return () => window.removeEventListener("resize", handleResize);
+    }, []);
+
+    const toggleSidebar = () => {
+        setIsSidebarOpen(!isSidebarOpen);
+    };
 
     return (
-        <>
-            <Container fluid>
-                <p className="subtitle">Login to generate QR codes before proceeding to activity areas. QR codes generated are proactively checked during scanning. Track your guests and ensure seamless entry and safety throughout their tour experience.</p>
-            </Container>
-        </>
+        <Container fluid className="main-container">
+            {/* Conditionally render sidebar */}
+            {!isSmallScreen && (
+                <div className={`customized-sidebar ${isSidebarOpen ? "open" : "closed"} pt-5`} onClick={toggleSidebar}>
+                    <Button className="customized-toggle-btn" onClick={toggleSidebar}>
+                    <FontAwesomeIcon icon={isSidebarOpen ? faChevronLeft : faChevronRight} />
+                    <span className="customized-toggle-text mt-2">QUICK CHECK</span>
+                    </Button>
+                    {isSidebarOpen && <p>Sidebar Content</p>}
+                </div>
+            )}
+
+            {/* Main Content */}
+            <div className={`customized-main-content ${isSidebarOpen ? "shrink" : "expand"} pt-4 ${!isSmallScreen ? "ps-4" : ""}`}>
+                <Slideshow />
+            </div>
+        </Container>
     );
 }

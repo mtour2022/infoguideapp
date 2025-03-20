@@ -15,6 +15,7 @@ import { faTrash, faPlus, faCirclePlay, faCirclePlus, faCancel} from '@fortaweso
 import { useDropzone } from "react-dropzone"; // Dropzone for image upload
 import ReactQuill from 'react-quill-new';
 import LogoImageDropzone from "../LogoImageDrop";
+import { deleteImageFromFirebase } from "../../config/firestorage";
 
 
   

@@ -15,6 +15,7 @@ import SelectionFieldWidget from "../SelectionField";
 import TextGroupInputField from "../TextGroupInputField";
 import MultiImageDropzone from "../MultiImageDropzone";
 import GoogleMapComponent from "../map/MapLocation";
+import { deleteImageFromFirebase } from "../../config/firestorage";
 
 
 import {

@@ -25,12 +25,16 @@ const AddressForm = ({ groupData, setGroupData }) => {
         regions().then(setRegionList);
     }, []);
 
+
+    
+
     useEffect(() => {
         if (selectedRegion.code) {
             provinces(selectedRegion.code).then(setProvinceList);
         } else {
             setProvinceList([]);
         }
+        setCountry("Philippines");
         setSelectedProvince({ name: "", code: "" });
         setSelectedCity({ name: "", code: "" });
         setSelectedBarangay("");
@@ -44,6 +48,7 @@ const AddressForm = ({ groupData, setGroupData }) => {
         } else {
             setCityList([]);
         }
+        setCountry("Philippines");
         setSelectedCity({ name: "", code: "" });
         setSelectedBarangay("");
         setBarangayList([]);
@@ -55,16 +60,19 @@ const AddressForm = ({ groupData, setGroupData }) => {
         } else {
             setBarangayList([]);
         }
+        setCountry("Philippines");
         setSelectedBarangay("");
     }, [selectedCity]);
 
     const handleRegionChange = (e) => {
         const region = regionList.find(r => r.region_code === e.target.value);
         setSelectedRegion({ name: region.region_name, code: region.region_code });
+        setCountry("Philippines");
         setGroupData((prevData) => ({
             ...prevData,
             address: {
                 ...prevData.address,
+                
                 region: region.region_name,
                 province: "",
                 town: "",
@@ -77,6 +85,7 @@ const AddressForm = ({ groupData, setGroupData }) => {
     const handleProvinceChange = (e) => {
         const province = provinceList.find(p => p.province_code === e.target.value);
         setSelectedProvince({ name: province.province_name, code: province.province_code });
+        setCountry("Philippines");
         setGroupData((prevData) => ({
             ...prevData,
             address: {
@@ -92,6 +101,7 @@ const AddressForm = ({ groupData, setGroupData }) => {
     const handleCityChange = (e) => {
         const city = cityList.find(c => c.city_code === e.target.value);
         setSelectedCity({ name: city.city_name, code: city.city_code });
+        setCountry("Philippines");
         setGroupData((prevData) => ({
             ...prevData,
             address: {
@@ -105,6 +115,7 @@ const AddressForm = ({ groupData, setGroupData }) => {
 
     const handleBarangayChange = (e) => {
         setSelectedBarangay(e.target.value);
+        setCountry("Philippines");
         setGroupData((prevData) => ({
             ...prevData,
             address: {
@@ -117,6 +128,7 @@ const AddressForm = ({ groupData, setGroupData }) => {
 
     const handleStreetChange = (e) => {
         setStreet(e.target.value);
+        setCountry("Philippines");
         setGroupData((prevData) => ({
             ...prevData,
             address: {

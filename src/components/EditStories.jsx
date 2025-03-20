@@ -9,60 +9,65 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrash, faPlus, faCirclePlay, faCirclePlus, faCancel} from '@fortawesome/free-solid-svg-icons';
 import RichTextEditor from './TextEditor'; // adjust the path as needed
 import HeaderImageDropzone from './HeaderImageDropzone';
+import TextGroupInputField from "./TextGroupInputField";
+
+import { deleteImageFromFirebase } from "../config/firestorage";
 
 
 
 
+const BodyImageDropzone = ({
+  index,
+  section,
+  onBodyImageDrop,
+  dropzoneName = "dropzone-container-small",
+  previewName = "dropzone-uploaded-image-small"
+}) => {
+  const { getRootProps, getInputProps } = useDropzone({
+      onDrop: (acceptedFiles) => onBodyImageDrop(acceptedFiles, index),
+      accept: "image/png, image/jpeg, image/jpg, video/mp4, video/webm, video/ogg",
+  });
 
+  // Handle both File objects and URLs
+  const imagePreview = section.image 
+      ? section.image instanceof File 
+          ? URL.createObjectURL(section.image) 
+          : section.image  // If it's a URL, use it directly
+      : null;
 
-const BodyMediaDropzone = ({
-    index,
-    section,
-    onBodyMediaDrop,
-    dropzoneName = "dropzone-container-small",
-    previewName = "dropzone-uploaded-media-small"
-  }) => {
-    const { getRootProps, getInputProps } = useDropzone({
-        onDrop: (acceptedFiles) => onBodyMediaDrop(acceptedFiles, index),
-        accept: "image/png, image/jpeg, image/jpg, video/mp4, video/webm, video/ogg",
-    });
-  
-    // Use the new uploaded media if available
-    const mediaPreview = section.media
-        ? URL.createObjectURL(section.media)
-        : null;
-  
-    return (
-        <Container
-            {...getRootProps()}
-            className={`${dropzoneName} text-center w-100 ${mediaPreview ? "border-success" : ""}`}
-        >
-            <input {...getInputProps()} accept="image/*,video/*" />
-            {mediaPreview ? (
-                section.media.type.startsWith("video/") ? (
-                    <video controls className={previewName}>
-                        <source src={mediaPreview} type={section.media.type} />
-                        Your browser does not support the video tag.
-                    </video>
-                ) : (
-                    <img
-                        src={mediaPreview}
-                        alt="Body Media Preview"
-                        className={previewName}
-                    />
-                )
-            ) : (
-                <p className="text-muted">
-                    Drag & Drop Image/Video Here or {" "}
-                    <span className="text-primary text-decoration-underline">Choose File</span>
-                </p>
-            )}
-        </Container>
-    );
-  };
+  return (
+      <Container
+          {...getRootProps()}
+          className={`${dropzoneName} text-center w-100 ${imagePreview ? "border-success" : ""}`}
+      >
+          <input {...getInputProps()} accept="image/*,video/*" />
+          {imagePreview ? (
+              section.image instanceof File && section.image.type.startsWith("video/")
+              ? (
+                  <video controls className={previewName}>
+                      <source src={imagePreview} type={section.image.type} />
+                      Your browser does not support the video tag.
+                  </video>
+              ) : (
+                  <img
+                      src={imagePreview}
+                      alt="Body Image Preview"
+                      className={previewName}
+                  />
+              )
+          ) : (
+              <p className="text-muted">
+                  Drag & Drop Image/Video Here or{" "}
+                  <span className="text-primary text-decoration-underline">Choose File</span>
+              </p>
+          )}
+      </Container>
+  );
+};
   
   
 export default function EditStoryForm({editingItem, toAddForm}) {
+
     const [storyFormData, setStoryFormData] = useState({
         id:"",
         title: "",
@@ -77,7 +82,9 @@ export default function EditStoryForm({editingItem, toAddForm}) {
         email: "",
         social: "",
     });
-        
+                // Local state for selections
+                const [selectedCategory, setSelectedCategory] = useState("");
+                const [selectedSubcategory, setSelectedSubcategory] = useState("");
     // Populate form data if exists
     useEffect(() => {
         if (editingItem) {
@@ -98,6 +105,12 @@ export default function EditStoryForm({editingItem, toAddForm}) {
             email: editingItem.email || "",
             social: editingItem.social || "",
           });
+
+          
+            if (editingItem.category) {
+                setSelectedCategory(editingItem.classification || "");
+                setSelectedSubcategory(editingItem.purpose || "");
+            } 
         } else {
           setStoryFormData({
             id: "",
@@ -114,54 +127,82 @@ export default function EditStoryForm({editingItem, toAddForm}) {
             social: "",
           });
         }
+
+
       }, [editingItem]);
       
 
 
-    const classificationOptions = ["Informative", "Inspirational", "Promotional and Marketing", "Educational", "Opinions and Review"];
+      const classificationOptions = ["Informative", "Inspirational", "Ranking", "Tourism Awards and Recognitions", "Promotional and Marketing", "Educational", "Opinions and Review"];
     
-    const purposeOptions = {
-        Informative: ["Statistical Reports", "News", "Awards and Recognitions", "Tourism Projects", "Tourism Trends", "Popularity Ranking", "Technology"],
-        "Promotional and Marketing": ["Travel Deals and Promotions", "Itinerary-Based", "Cultural Exploration", "Events or Festival Coverage", "Destination Highlight"],
-        Inspirational: ["Story-Telling", "Sustainable Tourism", "Biography"],
-        Educational: ["Travel Tips", "Practical or How-To", "Budgeting and Financial Planning", "Safety and Health"],
-        "Opinions and Review": ["Product and Service Reviews", "Case Study"]
-    };
-
-    const deleteImageFromFirebase = async (imageUrl) => {
-        if (!imageUrl) return;
-        const storageRef = ref(storage, imageUrl);
-        try {
-          await deleteObject(storageRef);
-        } catch (error) {
-          console.error("Error deleting image:", error);
-        }
+      const purposeOptions = {
+          Informative: ["Statistical Reports", "News", "Awards and Recognitions", "Tourism Projects", "Tourism Trends", "Popularity Ranking", "Technology"],
+          "Promotional and Marketing": ["Travel Deals and Promotions", "Itinerary-Based", "Cultural Exploration", "Events or Festival Coverage", "Destination Highlight"],
+          "Tourism Awards and Recognitions": ["Tourism Enterprises Awards", "International Awards and Recognition", "National Awards and Recognitions", "Sports Tourism Awards"],
+          Ranking: ["Best Hotels", "Best Restaurants", "Best Tourism Frontliners", "Best Spa and Wellness Centers", "Best Tourism Shops", "Best Bars and Party Clubs", "Best Buffet Restaurants"],
+          Inspirational: ["Story-Telling", "Sustainable Tourism", "Biography"],
+          Educational: ["Travel Tips", "Practical or How-To", "Budgeting and Financial Planning", "Safety and Health"],
+          "Opinions and Review": ["Product and Service Reviews", "Case Study"]
       };
+
+    // const deleteImageFromFirebase = async (imageUrl) => {
+    //     if (!imageUrl) return;
+    //     const storageRef = ref(storage, imageUrl);
+    //     try {
+    //       await deleteObject(storageRef);
+    //     } catch (error) {
+    //       console.error("Error deleting image:", error);
+    //     }
+    //   };
 
    
     const [bodyImages, setBodyImages] = useState([]);
 
-    // const resetForm = () => {
-    //     setStoryFormData({
-    //         id:"",
-    //         title: "",
-    //         classification: "",
-    //         purpose: "",
-    //         date: "",
-    //         headerImage: null,
-    //         body: [{ subtitle: "", body: "", image: null, image_source: ""}],
-    //         tags: [],
-    //         references: [],
-    //         name: "",
-    //         email: "",
-    //         social: "",
-    //     });
-    // };
+     const [resetKey, setResetKey] = useState(0); // Reset trigger
+    
+        const resetForm = () => {
+            setStoryFormData({
+                id:"",
+                title: "",
+                classification: "",
+                purpose: "",
+                date: "",
+                headerImage: null,
+                body: [{ subtitle: "", body: "", image: null, image_source: ""}],
+                tags: [],
+                references: [],
+                name: "",
+                email: "",
+                social: "",
+            });
+            setResetKey(prevKey => prevKey + 1); // Change key to trigger reset    setSelectedCategory("");
+    
+        };
 
-    const handleChange = (e) => {
-        const { name, value } = e.target;
-        setStoryFormData((prev) => ({ ...prev, [name]: value }));
+     // Generic change handler for form fields.
+     const handleChange = (e, field) => {
+        if (Array.isArray(e)) {
+            // If `e` is an array, it's coming from TextGroupInputField
+            setStoryFormData((prev) => ({
+                ...prev,
+                [field]: e, // Directly set the array value
+            }));
+        } else if (typeof e === "string") {
+            // If `e` is a string, it's from ReactQuill (rich text editor)
+            setStoryFormData((prev) => ({
+                ...prev,
+                [field]: e,
+            }));
+        } else {
+            // Standard form fields
+            const { name, value } = e.target;
+            setStoryFormData((prev) => ({
+                ...prev,
+                [name]: value,
+            }));
+        }
     };
+
 
     const handleBodyChange = (index, field, value) => {
         setStoryFormData((prev) => {
@@ -575,7 +616,7 @@ export default function EditStoryForm({editingItem, toAddForm}) {
                             <Col className="col me-lg-2 me-md-1">
                                 <Form.Group className="mb-3">
                                 <Form.Label className="label">Image (Optional)</Form.Label>
-                                <BodyMediaDropzone 
+                                <BodyImageDropzone 
                                     index={index} 
                                     section={section} 
                                     editingItem={editingItem}
@@ -639,36 +680,23 @@ export default function EditStoryForm({editingItem, toAddForm}) {
                 </Container>
                 <Container className="empty-container"></Container>
                 <Row className="d-flex flex-md-row flex-column">
-                    <Col className="col me-lg-2 me-md-1">
-                        <Form.Group className="mb-3">
-                            <Form.Label className="label">General References</Form.Label>
-                            <p className="subtitle">Note: Important sources. Seperate using comma (,)</p>
-                            <Form.Control
-                                rows = {4}
-                                as="textarea"
-                                name="references"
-                                placeholder="e.g: www.articleabcd.com/boracay+world+best+beach, www.data.com/boracay+tourist+arrival"
-                                value={storyFormData.references.join(", ")}
-                                onChange={(e) => setStoryFormData({ ...storyFormData, references: e.target.value.split(",").map(ref => ref.trim()) })}
-                            />
-                        </Form.Group>
-                    </Col>
-                    <Col className="col ms-lg-2 ms-md-1">
-                        <Form.Group className="mb-3">
-                            <Form.Label className="label">Tags</Form.Label>
-                            <p className="subtitle">Note: Tags for Search Optimization. Seperate using comma (,)</p>
-                            <Form.Control
-                                rows = {4}
-                                as="textarea"
-                                name="tags"
-                                required
-                                placeholder="e.g: world class beach, white beach, tourist destination, award-winning"
-                                value={storyFormData.tags.join(", ")}
-                                onChange={(e) => setStoryFormData({ ...storyFormData, tags: e.target.value.split(",").map(tag => tag.trim()) })}
-                            />
-                        </Form.Group>
-                    </Col>
-                </Row>
+                                    <Col className="col me-lg-2 me-md-1">
+                                    <TextGroupInputField
+                                            onChange={(value) => handleChange(value, "references")}
+                                            label={"References and Links (Type & Enter)"}
+                                            editingItems={storyFormData.references}
+                                            resetKey={resetKey} 
+                                        />
+                                    </Col>
+                                    <Col className="col ms-lg-2 ms-md-1">
+                                    <TextGroupInputField
+                                            onChange={(value) => handleChange(value, "tags")}
+                                            label={"Important Tags (Type & Enter)"}
+                                            editingItems={storyFormData.tags}
+                                            resetKey={resetKey} 
+                                        />
+                                    </Col>
+                                </Row>
                 <Container className="empty-container"></Container>
                 <hr></hr>
                 <Container className="empty-container"></Container>

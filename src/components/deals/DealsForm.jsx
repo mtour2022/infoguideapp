@@ -14,53 +14,55 @@ import {dealsAndPromotionsCategoryOptions} from "../../datamodel/deals_model";
 import TextGroupInputField from "../TextGroupInputField";
 
 
-const BodyMediaDropzone = ({
+
+const BodyImageDropzone = ({
   index,
   section,
-  onBodyMediaDrop,
+  onBodyImageDrop,
   dropzoneName = "dropzone-container-small",
-  previewName = "dropzone-uploaded-media-small"
+  previewName = "dropzone-uploaded-image-small"
 }) => {
   const { getRootProps, getInputProps } = useDropzone({
-      onDrop: (acceptedFiles) => onBodyMediaDrop(acceptedFiles, index),
+      onDrop: (acceptedFiles) => onBodyImageDrop(acceptedFiles, index),
       accept: "image/png, image/jpeg, image/jpg, video/mp4, video/webm, video/ogg",
   });
 
-  // Use the new uploaded media if available
-  const mediaPreview = section.media
-      ? URL.createObjectURL(section.media)
+  // Handle both File objects and URLs
+  const imagePreview = section.image 
+      ? section.image instanceof File 
+          ? URL.createObjectURL(section.image) 
+          : section.image  // If it's a URL, use it directly
       : null;
 
   return (
       <Container
           {...getRootProps()}
-          className={`${dropzoneName} text-center w-100 ${mediaPreview ? "border-success" : ""}`}
+          className={`${dropzoneName} text-center w-100 ${imagePreview ? "border-success" : ""}`}
       >
           <input {...getInputProps()} accept="image/*,video/*" />
-          {mediaPreview ? (
-              section.media.type.startsWith("video/") ? (
+          {imagePreview ? (
+              section.image instanceof File && section.image.type.startsWith("video/")
+              ? (
                   <video controls className={previewName}>
-                      <source src={mediaPreview} type={section.media.type} />
+                      <source src={imagePreview} type={section.image.type} />
                       Your browser does not support the video tag.
                   </video>
               ) : (
                   <img
-                      src={mediaPreview}
-                      alt="Body Media Preview"
+                      src={imagePreview}
+                      alt="Body Image Preview"
                       className={previewName}
                   />
               )
           ) : (
               <p className="text-muted">
-                  Drag & Drop Image/Video Here or {" "}
+                  Drag & Drop Image/Video Here or{" "}
                   <span className="text-primary text-decoration-underline">Choose File</span>
               </p>
           )}
       </Container>
   );
 };
-
-
   
   
 export default function DealsForm() {
@@ -450,7 +452,7 @@ export default function DealsForm() {
                                 <Col className="col me-lg-2 me-md-1">
                                     <Form.Group className="mb-3">
                                     <Form.Label className="label">Image (Optional)</Form.Label>
-                                    <BodyMediaDropzone 
+                                    <BodyImageDropzone 
                                         index={index} 
                                         section={section} 
                                         onBodyImageDrop={handleImageDrop} 

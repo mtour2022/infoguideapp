@@ -143,7 +143,9 @@ export const categoryOptions = [
     'Private Road',
     'Coastal Area',
     'Riverside',
-    'Hillside',
+    'Hillside (With Road Access)',
+    'Forest Area (Trail Walk)',
+    'Forest Area (With Community Guide)',
   ];
   
 

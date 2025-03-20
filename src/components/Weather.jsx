@@ -33,7 +33,7 @@ export default function WeatherNav() {
     <>
       {/* Weather Link */}
       <NavLink 
-        className="ms-lg-2 me-lg-2 navlink d-flex align-items-center text-decoration-none" 
+        className="ms-lg-2 me-lg-2 weather-text d-flex align-items-center text-decoration-none" 
         to="#"
         onClick={() => setShowModal(true)}
       >
@@ -44,7 +44,7 @@ export default function WeatherNav() {
           width={25}
           className="me-2"
         />
-        {formattedWeather} in {weather.location}
+        {formattedWeather.toUpperCase()} IN {weather.location.toUpperCase()}
       </NavLink>
 
       {/* Weather Modal */}

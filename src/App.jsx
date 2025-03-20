@@ -28,16 +28,18 @@ function App() {
     < AuthProvider>
       <Router>  
         <AppNavBar />
-          <Container fluid>
+          <div className='content-wrapper'>
+          <Container fluid >
             <Routes>
-              <Route path="/" element={<AdminDashboard />}/>
-              {/* <Route path="/" element={<Home />}/> */}
+              <Route path="/" element={<Home />}/>
+              <Route path="/admin" element={<AdminDashboard />}/>
               <Route path="/home" element={<Home />}/>
               <Route path="*" element={<NotFound />}/>
               {/* to be private */}
               <Route path="/stories+form" element={<AddStories />}/>
             </Routes>
           </Container >
+          </div>
       </Router>
     </AuthProvider>
   );  

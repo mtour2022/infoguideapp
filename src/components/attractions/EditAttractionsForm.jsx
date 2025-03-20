@@ -18,6 +18,8 @@ import RichTextEditor from '../TextEditor'; // adjust the path as needed
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrash, faPlus, faCirclePlay, faCirclePlus, faCancel} from '@fortawesome/free-solid-svg-icons';
 import { useDropzone } from "react-dropzone"; // Dropzone for image upload
+import { deleteImageFromFirebase } from "../../config/firestorage";
+import GoogleMapComponent from "../map/MapLocation";
 
 import {
   attractionsCategoryOptions,
@@ -30,45 +32,49 @@ import {
 } from '../../datamodel/accommodation_model';
 
 
-const BodyMediaDropzone = ({
+
+const BodyImageDropzone = ({
   index,
   section,
-  onBodyMediaDrop,
+  onBodyImageDrop,
   dropzoneName = "dropzone-container-small",
-  previewName = "dropzone-uploaded-media-small"
+  previewName = "dropzone-uploaded-image-small"
 }) => {
   const { getRootProps, getInputProps } = useDropzone({
-      onDrop: (acceptedFiles) => onBodyMediaDrop(acceptedFiles, index),
+      onDrop: (acceptedFiles) => onBodyImageDrop(acceptedFiles, index),
       accept: "image/png, image/jpeg, image/jpg, video/mp4, video/webm, video/ogg",
   });
 
-  // Use the new uploaded media if available
-  const mediaPreview = section.media
-      ? URL.createObjectURL(section.media)
+  // Handle both File objects and URLs
+  const imagePreview = section.image 
+      ? section.image instanceof File 
+          ? URL.createObjectURL(section.image) 
+          : section.image  // If it's a URL, use it directly
       : null;
 
   return (
       <Container
           {...getRootProps()}
-          className={`${dropzoneName} text-center w-100 ${mediaPreview ? "border-success" : ""}`}
+          className={`${dropzoneName} text-center w-100 ${imagePreview ? "border-success" : ""}`}
       >
           <input {...getInputProps()} accept="image/*,video/*" />
-          {mediaPreview ? (
-              section.media.type.startsWith("video/") ? (
+          {imagePreview ? (
+              section.image instanceof File && section.image.type.startsWith("video/")
+              ? (
                   <video controls className={previewName}>
-                      <source src={mediaPreview} type={section.media.type} />
+                      <source src={imagePreview} type={section.image.type} />
                       Your browser does not support the video tag.
                   </video>
               ) : (
                   <img
-                      src={mediaPreview}
-                      alt="Body Media Preview"
+                      src={imagePreview}
+                      alt="Body Image Preview"
                       className={previewName}
                   />
               )
           ) : (
               <p className="text-muted">
-                  Drag & Drop Image/Video Here or {" "}
+                  Drag & Drop Image/Video Here or{" "}
                   <span className="text-primary text-decoration-underline">Choose File</span>
               </p>
           )}
@@ -84,8 +90,6 @@ export default function EditAttractionsForm({editingItem, toAddForm}) {
   const [attractionFormData, setAttractionFormData] = useState(new AttractionFormData());
 
 
-    // Local state for selections
-    const [selectedCategory, setSelectedCategory] = useState("");
 
   // Generic change handler for form fields.
   const handleChange = (e, field) => {
@@ -117,7 +121,7 @@ export default function EditAttractionsForm({editingItem, toAddForm}) {
           ...prevState,
           id: editingItem.id || "",
           name: editingItem.name || "",
-          category: editingItem.category || "", // Default category if not provided
+          category: editingItem.category || [], // Default category if not provided
           body: editingItem.body.map((section, index) => ({
             subtitle: section.subtitle || "",
             body: section.body || "",
@@ -134,7 +138,7 @@ export default function EditAttractionsForm({editingItem, toAddForm}) {
             town: editingItem.address.town || "",
             region: editingItem.address.region || "",
             province: editingItem.address.province || "",
-            country: editingItem.address.country || "",
+            country: editingItem.address.country || "Philippines",
             lat: editingItem.address.lat || "",
             long: editingItem.address.long || "",
           },
@@ -146,24 +150,20 @@ export default function EditAttractionsForm({editingItem, toAddForm}) {
           tags: editingItem.tags || []
         }));
     
-        // Update selected category if editingItem has a category
-        if (editingItem.category) {
-          setSelectedCategory(editingItem.category || "");
-        } else {
-          setSelectedCategory(category);
-        }
+
       }
     }, [editingItem]); // Dependency array includes editingItem
     
 
   
-  const handleBodyChange = (index, field, value) => {
-    attractionFormData((prev) => {
-    const newBody = [...prev.body];
-    newBody[index] = { ...newBody[index], [field]: value };
-    return { ...prev, body: newBody };
-    });
-};
+
+    const handleBodyChange = (index, field, value) => {
+      setAttractionFormData((prev) => {
+      const newBody = [...prev.body];
+      newBody[index] = { ...newBody[index], [field]: value };
+      return { ...prev, body: newBody };
+      });
+  };
 
 const handleImageDrop = (acceptedFiles, index) => {
     const file = acceptedFiles[0]; // Take the first file
@@ -280,7 +280,7 @@ const deleteBodySection = (index) => {
 
             // Handle body images replacement
             const bodyImagesURLs = await Promise.all(
-              storyFormData.body.map(async (section, index) => {
+              attractionFormData.body.map(async (section, index) => {
                 if (section.image instanceof File) {
                   // If a new body image is provided, delete the old one (if it exists)
                   if (
@@ -304,7 +304,7 @@ const deleteBodySection = (index) => {
             const updateAttractionData = {
               id: editingItem ? editingItem.id : "", // Use existing ID for updates
               name: attractionFormData.name,
-              category: attractionFormData.category || selectedCategory,
+              category: attractionFormData.category || [],
               body: attractionFormData.body.map((section, index) => ({
                 subtitle: section.subtitle,
                 body: section.body,
@@ -325,7 +325,7 @@ const deleteBodySection = (index) => {
             };
         
              // Update the existing document using the story's id
-            const attractionDocRef = doc(db, "attractions", storyFormData.id);
+            const attractionDocRef = doc(db, "attractions", attractionFormData.id);
             await updateDoc(attractionDocRef, updateAttractionData);
         
             Swal.fire({
@@ -358,7 +358,7 @@ const deleteBodySection = (index) => {
     setAttractionFormData({
       id : "",
       name : "",
-      category : "",
+      category : [],
       body: [{ subtitle: "", body: "", image: null, image_source: ""}],
       images : [],
       operatinghours : [],
@@ -382,7 +382,6 @@ const deleteBodySection = (index) => {
       howToGetThere: ""
     });
     setResetKey(prevKey => prevKey + 1); // Change key to trigger reset
-    setSelectedCategory("");
   };
 
   const removeBodyImage = (index) => {
@@ -394,32 +393,40 @@ const deleteBodySection = (index) => {
     });
   };
 
+  // Initialize the isEditing state to false
+     const [isEditingAddress, setIsEditingAddress] = useState(false);
+  
+     // Function to handle the Edit button click
+     const handleEditAddressClick = () => {
+       setIsEditingAddress(!isEditingAddress); // Toggle the isEditing state
+     };
+  
+     // Initialize the isEditing state to false
+     const [isEditingMap, setIsEditingMap] = useState(false);
+  
+     // Function to handle the Edit button click
+     const handleEditMapClick = () => {
+      setIsEditingMap(!isEditingMap); // Toggle the isEditing state
+     };
+  
+
 
   return (
     
       <Form className="custom-form body-container" onSubmit={handleSubmit}  onKeyDown={(e) => e.key === "Enter" && e.preventDefault()}>
-        <Row>
-                                    <Col md={6}>
-                                        <Form.Group controlId="category" className="mb-3">
-                                                    <Form.Label className="label">Category</Form.Label>
-                                                    <Form.Select
-                                                      name="category"
-                                                      value={attractionFormData.category}
-                                                      onChange={handleChange}
-                                                    >
-                                                      <option value="" disabled>Select Category</option>
-                                                      {attractionsCategoryOptions.map((option, index) => (
-                                                        <option key={index} value={option}>
-                                                          {option}
-                                                        </option>
-                                                      ))}
-                                                    </Form.Select>
-                                                  </Form.Group>
-                                    </Col>
-                                    <Col md={6}>
-                                        <Container className="empty-container"></Container>
-                                    </Col>
-                </Row>
+         <Row>
+        <Col md={6}>
+          <SelectionFieldWidget
+              onChange={(value) => handleChange(value, "category")}
+              options={attractionsCategoryOptions}
+              resetKey={resetKey} // Pass reset trigger
+              editingItems={attractionFormData.category}
+              label="Categories" 
+            />
+          </Col>
+      
+        </Row>
+       
         <Container className="empty-container"></Container>
         <hr></hr>
         <Container className="empty-container"></Container>
@@ -438,6 +445,19 @@ const deleteBodySection = (index) => {
                 />
               </Form.Group>
           </Col>
+        </Row>
+        <Row className="mt-2">
+            <Col  md={12}>
+            <Form.Group controlId="name" className="mb-3">
+              <Form.Label className="label">Cover Photo</Form.Label>
+              <HeaderImageDropzone
+                    storyForm={attractionFormData}
+                    setStoryForm={setAttractionFormData}
+                    dropzoneName="dropzone-container-big"
+                    previewName="dropzone-uploaded-image-big"
+                    />
+            </Form.Group>
+            </Col>
         </Row>
            {/* Body Sections */}
                            <Container className="empty-container"></Container>
@@ -461,7 +481,7 @@ const deleteBodySection = (index) => {
                                 <Col className="col me-lg-2 me-md-1">
                                     <Form.Group className="mb-3">
                                     <Form.Label className="label">Image (Optional)</Form.Label>
-                                    <BodyMediaDropzone 
+                                    <BodyImageDropzone 
                                         index={index} 
                                         section={section} 
                                         onBodyImageDrop={handleImageDrop} 
@@ -525,18 +545,94 @@ const deleteBodySection = (index) => {
                 </Col>
                </Row>
                 <Container className="empty-container"></Container>
-        <Row className="mt-2">
+                <Row className="mt-2">
           <Col md={12} >
-            <AddressInput groupData={attractionFormData} setGroupData={setAttractionFormData} resetKey={resetKey}></AddressInput>
+
+           
+              {isEditingAddress ? (
+                <AddressInput groupData={attractionFormData} setGroupData={setAttractionFormData} resetKey={resetKey}></AddressInput>
+              ) : (
+                <Form.Group className="mt-3 mb-3">
+                <div className="d-flex justify-content-between align-items-center">
+                  <Form.Label className="label mb-2">Local Business Address</Form.Label>
+                  <Button variant="outline-danger" className="mb-2" onClick={handleEditAddressClick}>
+                    {isEditingAddress ? 'Cancel' : 'Edit Address'}
+                  </Button>
+                </div>
+                <>
+                  <Form.Control
+                    className="mb-3"
+                    type="text"
+                    name="address.country"
+                    placeholder="Country"
+                    value={attractionFormData.address.country}
+                    readOnly
+                  />
+                  <Form.Control
+                    className="my-3"
+                    type="text"
+                    name="address.region"
+                    placeholder="Region"
+                    value={attractionFormData.address.region}
+                    readOnly
+                  />
+                  <Form.Control
+                    className="my-3"
+                    type="text"
+                    name="address.province"
+                    placeholder="Province"
+                    value={attractionFormData.address.province}
+                    readOnly
+                  />
+                  <Form.Control
+                    className="my-3"
+                    type="text"
+                    name="address.city"
+                    placeholder="City/Municipality/Town"
+                    value={attractionFormData.address.town}
+                    readOnly
+                  />
+                  <Form.Control
+                    className="my-3"
+                    type="text"
+                    name="address.barangay"
+                    placeholder="Barangay"
+                    value={attractionFormData.address.barangay}
+                    readOnly
+                  />
+                  <Form.Control
+                    className="my-3"
+                    type="text"
+                    name="address.street"
+                    placeholder="Street Name / Zone (Optional)"
+                    value={attractionFormData.address.street}
+                    readOnly
+                  />
+                </>
+                </Form.Group>
+              )}
           </Col>
         </Row>
         <Row className="mt-2">
           <Col md={12}>
-          <MapWidgetFormGroup
-            onLocationSelect={handleLocationSelect}
-             name={attractionFormData.name || ""}
-             resetKey={resetKey}
-          />
+              {isEditingMap ? (
+                  <MapWidgetFormGroup
+                  onLocationSelect={handleLocationSelect}
+                  name={attractionFormData.name || ""}
+                  resetKey={resetKey}
+                  editingItems={attractionFormData.address}
+                />
+              ) : (
+                <Form.Group className="mt-3 mb-3">
+                <div className="d-flex justify-content-between align-items-center">
+                  <Form.Label className="label mb-2">Local Business Address</Form.Label>
+                  <Button variant="outline-danger" className="mb-2" onClick={handleEditMapClick}>
+                    {isEditingMap ? 'Cancel' : 'Edit Map Location'}
+                  </Button>
+                </div>
+                <GoogleMapComponent latitude={attractionFormData.address.lat} longitude={attractionFormData.address.long} />
+                </Form.Group>
+              )}
           </Col>
         </Row>
         <Row className="mt-2">
@@ -623,19 +719,7 @@ const deleteBodySection = (index) => {
         <hr></hr>
         <Container className="empty-container"></Container>
 
-        <Row className="mt-2">
-            <Col  md={12}>
-            <Form.Group controlId="name" className="mb-3">
-              <Form.Label className="label">Cover Photo</Form.Label>
-              <HeaderImageDropzone
-                    storyForm={attractionFormData}
-                    setStoryForm={setAttractionFormData}
-                    dropzoneName="dropzone-container-big"
-                    previewName="dropzone-uploaded-image-big"
-                    />
-            </Form.Group>
-            </Col>
-        </Row>
+      
         <Row className="mt-2">
             <Col  md={12}>
             <Form.Group controlId="name" >

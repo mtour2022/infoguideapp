@@ -29,45 +29,48 @@ import {
 import AttractionFormData from "../../datamodel/attractions_model"; 
 import { setDataInElement } from "ckeditor5";
 
-const BodyMediaDropzone = ({
+const BodyImageDropzone = ({
   index,
   section,
-  onBodyMediaDrop,
+  onBodyImageDrop,
   dropzoneName = "dropzone-container-small",
-  previewName = "dropzone-uploaded-media-small"
+  previewName = "dropzone-uploaded-image-small"
 }) => {
   const { getRootProps, getInputProps } = useDropzone({
-      onDrop: (acceptedFiles) => onBodyMediaDrop(acceptedFiles, index),
+      onDrop: (acceptedFiles) => onBodyImageDrop(acceptedFiles, index),
       accept: "image/png, image/jpeg, image/jpg, video/mp4, video/webm, video/ogg",
   });
 
-  // Use the new uploaded media if available
-  const mediaPreview = section.media
-      ? URL.createObjectURL(section.media)
+  // Handle both File objects and URLs
+  const imagePreview = section.image 
+      ? section.image instanceof File 
+          ? URL.createObjectURL(section.image) 
+          : section.image  // If it's a URL, use it directly
       : null;
 
   return (
       <Container
           {...getRootProps()}
-          className={`${dropzoneName} text-center w-100 ${mediaPreview ? "border-success" : ""}`}
+          className={`${dropzoneName} text-center w-100 ${imagePreview ? "border-success" : ""}`}
       >
           <input {...getInputProps()} accept="image/*,video/*" />
-          {mediaPreview ? (
-              section.media.type.startsWith("video/") ? (
+          {imagePreview ? (
+              section.image instanceof File && section.image.type.startsWith("video/")
+              ? (
                   <video controls className={previewName}>
-                      <source src={mediaPreview} type={section.media.type} />
+                      <source src={imagePreview} type={section.image.type} />
                       Your browser does not support the video tag.
                   </video>
               ) : (
                   <img
-                      src={mediaPreview}
-                      alt="Body Media Preview"
+                      src={imagePreview}
+                      alt="Body Image Preview"
                       className={previewName}
                   />
               )
           ) : (
               <p className="text-muted">
-                  Drag & Drop Image/Video Here or {" "}
+                  Drag & Drop Image/Video Here or{" "}
                   <span className="text-primary text-decoration-underline">Choose File</span>
               </p>
           )}
@@ -85,8 +88,6 @@ export default function AttractionsForm({}) {
   const [attractionFormData, setAttractionFormData] = useState(new AttractionFormData());
 
 
-    // Local state for selections
-    const [selectedCategory, setSelectedCategory] = useState("");
 
   // Generic change handler for form fields.
   const handleChange = (e, field) => {
@@ -227,7 +228,7 @@ const deleteBodySection = (index) => {
             const attractionData = new AttractionFormData();
             attractionData.id = ""; // Firestore will generate this
             attractionData.name = attractionFormData.name;
-            attractionData.category = attractionFormData.category || selectedCategory;
+            attractionData.category = attractionFormData.category || [];
             attractionData.body = attractionFormData.body.map((section, index) => ({
               subtitle: section.subtitle || "",
               body: section.body || "",
@@ -281,7 +282,7 @@ const deleteBodySection = (index) => {
     setAttractionFormData({
       id : "",
       name : "",
-      category : "",
+      category : [],
       body: [{ subtitle: "", body: "", image: null, image_source: ""}],
       images : [],
       operatinghours : [],
@@ -305,7 +306,6 @@ const deleteBodySection = (index) => {
       howToGetThere: "",
     });
     setResetKey(prevKey => prevKey + 1); // Change key to trigger reset
-    setSelectedCategory("");
   };
 
   const removeBodyImage = (index) => {
@@ -321,28 +321,21 @@ const deleteBodySection = (index) => {
   return (
     
       <Form className="custom-form body-container" onSubmit={handleSubmit}  onKeyDown={(e) => e.key === "Enter" && e.preventDefault()}>
-        <Row>
-                            <Col md={6}>
-                                <Form.Group controlId="category" className="mb-3">
-                                            <Form.Label className="label">Category</Form.Label>
-                                            <Form.Select
-                                              name="category"
-                                              value={attractionFormData.category}
-                                              onChange={handleChange}
-                                            >
-                                              <option value="" disabled>Select Category</option>
-                                              {attractionsCategoryOptions.map((option, index) => (
-                                                <option key={index} value={option}>
-                                                  {option}
-                                                </option>
-                                              ))}
-                                            </Form.Select>
-                                          </Form.Group>
-                            </Col>
-                            <Col md={6}>
-                                <Container className="empty-container"></Container>
-                            </Col>
+         <Row>
+        <Col md={6}>
+          <SelectionFieldWidget
+
+              onChange={(value) => handleChange(value, "category")}
+              options={attractionsCategoryOptions}
+              resetKey={resetKey} // Pass reset trigger
+              editingItems={attractionFormData.category}
+
+              label="Categories"
+            />
+          </Col>
+      
         </Row>
+       
         <Container className="empty-container"></Container>
         <hr></hr>
         <Container className="empty-container"></Container>
@@ -361,6 +354,20 @@ const deleteBodySection = (index) => {
                 />
               </Form.Group>
           </Col>
+        </Row>
+        
+        <Row className="mt-2">
+            <Col  md={12}>
+            <Form.Group controlId="name" className="mb-3">
+              <Form.Label className="label">Cover Photo</Form.Label>
+              <HeaderImageDropzone
+                    storyForm={attractionFormData}
+                    setStoryForm={setAttractionFormData}
+                    dropzoneName="dropzone-container-big"
+                    previewName="dropzone-uploaded-image-big"
+                    />
+            </Form.Group>
+            </Col>
         </Row>
            {/* Body Sections */}
            <Container className="empty-container"></Container>
@@ -384,7 +391,7 @@ const deleteBodySection = (index) => {
                                 <Col className="col me-lg-2 me-md-1">
                                     <Form.Group className="mb-3">
                                     <Form.Label className="label">Image (Optional)</Form.Label>
-                                    <BodyMediaDropzone 
+                                    <BodyImageDropzone 
                                         index={index} 
                                         section={section} 
                                         onBodyImageDrop={handleImageDrop} 
@@ -548,19 +555,6 @@ const deleteBodySection = (index) => {
 
         <Row className="mt-2">
             <Col  md={12}>
-            <Form.Group controlId="name" className="mb-3">
-              <Form.Label className="label">Cover Photo</Form.Label>
-              <HeaderImageDropzone
-                    storyForm={attractionFormData}
-                    setStoryForm={setAttractionFormData}
-                    dropzoneName="dropzone-container-big"
-                    previewName="dropzone-uploaded-image-big"
-                    />
-            </Form.Group>
-            </Col>
-        </Row>
-        <Row className="mt-2">
-            <Col  md={12}>
             <Form.Group controlId="name" >
               <Form.Label className="label me-2">Promotional & Marketing Photos</Form.Label>
               <MultiImageDropzone
@@ -583,7 +577,7 @@ const deleteBodySection = (index) => {
               label={"Operating Hours (Type & Enter)"}
               editingItems={attractionFormData.operatinghours}
               resetKey={resetKey} 
-              caption="format: hh:mm A  | e.g. 08:00 AM"
+              caption="format: hh:mm A  | e.g. 08:00 AM | n/a for not applicable"
             />
           </Col>
         </Row>

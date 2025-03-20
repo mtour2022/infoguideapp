@@ -2,7 +2,7 @@ export default class AttractionsFormData {
     constructor() {
         this.id = "";
         this.name = "";
-        this.category = "";
+        this.category = [];
         this.body= [{ subtitle: "", body: "", image: null, image_source: ""}],
         this.images = [];
         this.operatinghours = [];
@@ -31,7 +31,10 @@ export default class AttractionsFormData {
     }
   }
 
+
+
   export const attractionsCategoryOptions = [
+    "Marvels of Malay",
     "Beaches",
     "Parks & Nature Reserves",
     "Museums & Art Galleries",
@@ -42,7 +45,7 @@ export default class AttractionsFormData {
     "Mountains & Hiking Trails",
     "Caves & Underground Rivers",
     "Religious Sites & Temples",
-    "Lakes & Rivers",
+    "Lakes","Rivers",
     "Cultural Villages",
     "Botanical Gardens",
     "Scenic Viewpoints",
@@ -51,7 +54,12 @@ export default class AttractionsFormData {
     "Diving & Snorkeling Spots",
     "Hot Springs & Wellness Retreats",
     "Festivals & Events",
-    "Food & Culinary Attractions"
+    "Cold Springs",
+    "Camping and Glamping Area",
+    "Food & Culinary Attractions",
+    "Living Museum",
+    "Experiencial Tour"
+
   ];
   
 

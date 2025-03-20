@@ -82,38 +82,34 @@ const AttractionTable = () => {
     });
   };
 
+// Filtering and searching logic
+const filteredData = data.filter((item) => {
+  // Check if categoryFilter is empty or exists in the item's category array
+  const categoryMatch =
+    categoryFilter === "" || item.category.includes(categoryFilter);
 
-  // Filtering and searching logic
-  const filteredData = data.filter((item) => {
-    // Check subcategory filter
-    const categoryMatch = categoryFilter === "" || item.category === categoryFilter;
+  // Check geographic filter
+  const geoMatch = geoFilter === "" || item.geo === geoFilter;
 
-    // Check geographic filter
-    const geoMatch = geoFilter === "" || item.geo === geoFilter;
-  
-    // Check barangay filter
-    const barangayMatch = barangayFilter === "" || item.address.barangay === barangayFilter;
-  
-    // Check search filter
-    const searchTerm = search.toLowerCase();
-    const searchMatch =
-      item.name.toLowerCase().includes(searchTerm) ||
-      item.established.toLowerCase().includes(searchTerm) ||
-      item.category.toLowerCase().includes(searchTerm) ||
-      item.geo.toLowerCase().includes(searchTerm) ||
-      item.address.barangay.toLowerCase().includes(searchTerm) ||
-      item.address.street.toLowerCase().includes(searchTerm)
-  
- 
-    // Return true if all conditions are met
-    return (
-      categoryMatch &&
-      geoMatch &&
-      barangayMatch &&
-      searchMatch 
-    );
-  });
-  
+  // Check barangay filter
+  const barangayMatch =
+    barangayFilter === "" || item.address.barangay === barangayFilter;
+
+  // Check search filter
+  const searchTerm = search.toLowerCase();
+  const searchMatch =
+    item.name.toLowerCase().includes(searchTerm) ||
+    item.established.toLowerCase().includes(searchTerm) ||
+    // For category, check if any element in the array matches the search term
+    item.category.some((cat) => cat.toLowerCase().includes(searchTerm)) ||
+    item.geo.toLowerCase().includes(searchTerm) ||
+    item.address.barangay.toLowerCase().includes(searchTerm) ||
+    item.address.street.toLowerCase().includes(searchTerm);
+
+  // Return true if all conditions are met
+  return categoryMatch && geoMatch && barangayMatch && searchMatch;
+});
+
 
   const getFormattedDate = () => {
     const date = new Date();
@@ -179,7 +175,7 @@ const AttractionTable = () => {
             onChange={(e) => setCategoryFilter(e.target.value)}
           >
             <option value="">All Categories</option>
-            {[...new Set(data.map((item) => item.category))].map((category, index) => (
+            {[...new Set(data.flatMap(item => item.category))].map((category, index) => (
               <option key={index} value={category}>
                 {category}
               </option>
@@ -194,7 +190,7 @@ const AttractionTable = () => {
         <Col md={2} className="mb-1 me-2 col">
                   <Form.Select
                     value={geoFilter}
-                    onChange={(e) => setSubCategoryFilter(e.target.value)}
+                    onChange={(e) => subGeoFilter(e.target.value)}
                   >
                     <option value="">All Geographical Location</option>
                     {[...new Set(data.map((item) => item.geo))].map((geo, index) => (
@@ -247,7 +243,6 @@ const AttractionTable = () => {
         <thead>
           <tr>
             <th>Business Name</th>
-            <th>Established</th>
             <th>Category</th>
             <th>Geo Location</th>
             <th>Barangay</th>
@@ -262,8 +257,7 @@ const AttractionTable = () => {
           {displayedData.map((item) => (
             <tr key={item.id}>
               <td>{item.name}</td>
-              <td>{item.established}</td>
-              <td>{item.category}</td>
+              <td>{Array.isArray(item.category) ? item.category.join(", ") : item.category}</td>
               <td>{item.geo}</td>
               <td>{item.address.barangay}</td>
               <td>{item.address.street}</td>

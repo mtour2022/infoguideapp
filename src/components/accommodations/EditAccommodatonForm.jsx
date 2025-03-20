@@ -15,6 +15,7 @@ import SelectionFieldWidget from "../SelectionField";
 import TextGroupInputField from "../TextGroupInputField";
 import MultiImageDropzone from "../MultiImageDropzone";
 import GoogleMapComponent from "../map/MapLocation";
+import { deleteImageFromFirebase } from "../../config/firestorage";
 
 
 import {
@@ -186,9 +187,9 @@ export default function EditingAccommodationForm({editingItem, toAddForm}) {
     
       try {
         // Initialize URLs
-        let headerImageURL = accommodationFormData.headerImage;
         let logoURL = accommodationFormData.logo;
-    
+        let headerImageURL = accommodationFormData.headerImage;
+
         // Handle header image replacement
         if (accommodationFormData.headerImage instanceof File) {
           // If a new header image is provided, delete the old one (if it exists)

@@ -9,6 +9,7 @@ import AddressInput from '../Address';
 import MapWidgetFormGroup from "../map/MapLocator"; // Adjust the import path as needed
 import LogoImageDropzone from "../LogoImageDrop";
 import TextGroupInputField from "../TextGroupInputField";
+import { deleteImageFromFirebase } from "../../config/firestorage";
 
 
 

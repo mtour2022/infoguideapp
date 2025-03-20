@@ -31,46 +31,48 @@ import {
 import ActivitiesFormData from "../../datamodel/activities_model"; 
 import { setDataInElement } from "ckeditor5";
 
-
-const BodyMediaDropzone = ({
+const BodyImageDropzone = ({
   index,
   section,
-  onBodyMediaDrop,
+  onBodyImageDrop,
   dropzoneName = "dropzone-container-small",
-  previewName = "dropzone-uploaded-media-small"
+  previewName = "dropzone-uploaded-image-small"
 }) => {
   const { getRootProps, getInputProps } = useDropzone({
-      onDrop: (acceptedFiles) => onBodyMediaDrop(acceptedFiles, index),
+      onDrop: (acceptedFiles) => onBodyImageDrop(acceptedFiles, index),
       accept: "image/png, image/jpeg, image/jpg, video/mp4, video/webm, video/ogg",
   });
 
-  // Use the new uploaded media if available
-  const mediaPreview = section.media
-      ? URL.createObjectURL(section.media)
+  // Handle both File objects and URLs
+  const imagePreview = section.image 
+      ? section.image instanceof File 
+          ? URL.createObjectURL(section.image) 
+          : section.image  // If it's a URL, use it directly
       : null;
 
   return (
       <Container
           {...getRootProps()}
-          className={`${dropzoneName} text-center w-100 ${mediaPreview ? "border-success" : ""}`}
+          className={`${dropzoneName} text-center w-100 ${imagePreview ? "border-success" : ""}`}
       >
           <input {...getInputProps()} accept="image/*,video/*" />
-          {mediaPreview ? (
-              section.media.type.startsWith("video/") ? (
+          {imagePreview ? (
+              section.image instanceof File && section.image.type.startsWith("video/")
+              ? (
                   <video controls className={previewName}>
-                      <source src={mediaPreview} type={section.media.type} />
+                      <source src={imagePreview} type={section.image.type} />
                       Your browser does not support the video tag.
                   </video>
               ) : (
                   <img
-                      src={mediaPreview}
-                      alt="Body Media Preview"
+                      src={imagePreview}
+                      alt="Body Image Preview"
                       className={previewName}
                   />
               )
           ) : (
               <p className="text-muted">
-                  Drag & Drop Image/Video Here or {" "}
+                  Drag & Drop Image/Video Here or{" "}
                   <span className="text-primary text-decoration-underline">Choose File</span>
               </p>
           )}
@@ -252,7 +254,7 @@ const deleteBodySection = (index) => {
             activityData.maxPax = activityFormData.maxPax;
             activityData.serviceProviders = activityFormData.serviceProviders;
 
-            // Save accommodation data to Firestore
+            // Save activities data to Firestore
             const docRef = await addDoc(collection(db, `activities`), activityData.toJSON());
             const activityDoc = doc(db, `activities`, docRef.id);
             await updateDoc(activityDoc, { id: docRef.id });
@@ -384,7 +386,92 @@ const deleteBodySection = (index) => {
         <Container className="empty-container"></Container>
         <hr></hr>
         <Container className="empty-container"></Container>
+  {/* Body Sections */}
+  <Container className="empty-container"></Container>
 
+                
+<Row>
+     <Col md={12}>
+         <p className="label mb-2">Body Sections</p>
+         {activityFormData.body.map((section, index) => (
+                     <Row key={index} className="d-flex flex-md-row flex-column">
+                     <Container className="empty-container"></Container>
+                     <Form.Group className="mb-3 m-0 p-0">
+                         <Form.Label className="label">Subtitle (Optional)</Form.Label>
+                         <Form.Control
+                         type="text"
+                         className="fw-bold"
+                         value={section.subtitle}
+                         onChange={(e) => handleBodyChange(index, "subtitle", e.target.value)}
+                         />
+                     </Form.Group>
+                     <Col className="col me-lg-2 me-md-1">
+                         <Form.Group className="mb-3">
+                         <Form.Label className="label">Image (Optional)</Form.Label>
+                         <BodyImageDropzone 
+                             index={index} 
+                             section={section} 
+                             onBodyImageDrop={handleImageDrop} 
+                             dropzoneName="dropzone-container-small"
+                             previewName="dropzone-uploaded-image-small"
+                         />
+
+                         {section.image && (
+                             <Container className="d-flex justify-content-end">
+                                 <Button
+                                 className="mt-2 mb-1"
+                                 variant="outline-danger"
+                                 onClick={() => removeBodyImage(index)}
+                                 >
+                                 <FontAwesomeIcon icon={faCancel} size="xs" fixedWidth /> Remove Image
+                                 </Button>
+                             </Container>
+                         )}
+                         </Form.Group>
+                         <Form.Group className="mb-3 m-0 p-0">
+                             <Form.Label className="label">Image Source (Optional)</Form.Label>
+                             <Form.Control
+                             placeholder="e.g. @boracayphotos or /islanders or #trivago or www.trivago.com"
+                             type="text"
+                             value={section.image_source}
+                             onChange={(e) => handleBodyChange(index, "image_source", e.target.value)}
+                             />
+                         </Form.Group>
+                     </Col>
+                     <Col className="col ms-lg-2 ms-md-1">
+                         <Form.Group className="mb-5">
+                         <Form.Label className="label">Body</Form.Label>
+                             <RichTextEditor
+                                 index={index}
+                                 section={section}
+                                 handleBodyChange={handleBodyChange}
+                                 />
+                         </Form.Group>
+                     </Col>
+                     {activityFormData.body.length > 1 && (
+                         <Container className="mb-4 d-flex justify-content-end">
+                             <Button
+                             variant="outline-danger"
+                             type="button"
+                             onClick={() => deleteBodySection(index)}
+                             className="mt-3 w-full"
+                             >
+                             <FontAwesomeIcon icon={faTrash} size="xs" fixedWidth /> Delete Section
+                             </Button>
+                         </Container>
+                         )}
+                     </Row>
+                 ))}
+         <hr></hr>
+         <Container className="empty-container"></Container>
+         <Container className="d-flex justify-content-end">
+             <Button variant="outline-success" type="button" onClick={addBodySection} className="mb-3">
+                 <FontAwesomeIcon icon={faCirclePlus} size="xs" fixedWidth /> Add Section
+             </Button>
+         </Container>
+     </Col>
+    </Row>
+     <Container className="empty-container"></Container>
         <Row className="mt-2" > 
           <Col md={12}>
             <Form.Group controlId="name" className="mb-3">
@@ -415,92 +502,7 @@ const deleteBodySection = (index) => {
               </Form.Group>
           </Col>
         </Row>                            
-           {/* Body Sections */}
-           <Container className="empty-container"></Container>
-
-                
-           <Row>
-                <Col md={12}>
-                    <p className="label mb-2">Body Sections</p>
-                    {activityFormData.body.map((section, index) => (
-                                <Row key={index} className="d-flex flex-md-row flex-column">
-                                <Container className="empty-container"></Container>
-                                <Form.Group className="mb-3 m-0 p-0">
-                                    <Form.Label className="label">Subtitle (Optional)</Form.Label>
-                                    <Form.Control
-                                    type="text"
-                                    className="fw-bold"
-                                    value={section.subtitle}
-                                    onChange={(e) => handleBodyChange(index, "subtitle", e.target.value)}
-                                    />
-                                </Form.Group>
-                                <Col className="col me-lg-2 me-md-1">
-                                    <Form.Group className="mb-3">
-                                    <Form.Label className="label">Image (Optional)</Form.Label>
-                                    <BodyMediaDropzone 
-                                        index={index} 
-                                        section={section} 
-                                        onBodyImageDrop={handleImageDrop} 
-                                        dropzoneName="dropzone-container-small"
-                                        previewName="dropzone-uploaded-image-small"
-                                    />
-
-                                    {section.image && (
-                                        <Container className="d-flex justify-content-end">
-                                            <Button
-                                            className="mt-2 mb-1"
-                                            variant="outline-danger"
-                                            onClick={() => removeBodyImage(index)}
-                                            >
-                                            <FontAwesomeIcon icon={faCancel} size="xs" fixedWidth /> Remove Image
-                                            </Button>
-                                        </Container>
-                                    )}
-                                    </Form.Group>
-                                    <Form.Group className="mb-3 m-0 p-0">
-                                        <Form.Label className="label">Image Source (Optional)</Form.Label>
-                                        <Form.Control
-                                        placeholder="e.g. @boracayphotos or /islanders or #trivago or www.trivago.com"
-                                        type="text"
-                                        value={section.image_source}
-                                        onChange={(e) => handleBodyChange(index, "image_source", e.target.value)}
-                                        />
-                                    </Form.Group>
-                                </Col>
-                                <Col className="col ms-lg-2 ms-md-1">
-                                    <Form.Group className="mb-5">
-                                    <Form.Label className="label">Body</Form.Label>
-                                        <RichTextEditor
-                                            index={index}
-                                            section={section}
-                                            handleBodyChange={handleBodyChange}
-                                            />
-                                    </Form.Group>
-                                </Col>
-                                {activityFormData.body.length > 1 && (
-                                    <Container className="mb-4 d-flex justify-content-end">
-                                        <Button
-                                        variant="outline-danger"
-                                        type="button"
-                                        onClick={() => deleteBodySection(index)}
-                                        className="mt-3 w-full"
-                                        >
-                                        <FontAwesomeIcon icon={faTrash} size="xs" fixedWidth /> Delete Section
-                                        </Button>
-                                    </Container>
-                                    )}
-                                </Row>
-                            ))}
-                    <hr></hr>
-                    <Container className="empty-container"></Container>
-                    <Container className="d-flex justify-content-end">
-                        <Button variant="outline-success" type="button" onClick={addBodySection} className="mb-3">
-                            <FontAwesomeIcon icon={faCirclePlus} size="xs" fixedWidth /> Add Section
-                        </Button>
-                    </Container>
-                </Col>
-               </Row>
-                <Container className="empty-container"></Container>
+         
         <Row className="mt-2">
           <Col md={12} >
             <AddressInput groupData={activityFormData} setGroupData={setActivityFormData} resetKey={resetKey}></AddressInput>
@@ -649,7 +651,7 @@ const deleteBodySection = (index) => {
                 type="text"
                 placeholder="Enter Lowest Price"
                 name="lowest"
-                value={accommodationFormData.lowest}
+                value={activityFormData.lowest}
                 onChange={(e) => {
                   const value = e.target.value;
                   if (/^\d*\.?\d*$/.test(value)) {
