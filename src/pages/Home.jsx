@@ -3,6 +3,8 @@ import { Container, Button } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChevronLeft, faChevronRight } from "@fortawesome/free-solid-svg-icons"; // Import necessary icons
 import Slideshow from "../components/slideshow/SlideShowComponent";
+import HomeButtons from "../components/homeButtons";
+import AttractionsSlide from "../components/AttractionsSlide";
 
 export default function Home() {
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -37,7 +39,12 @@ export default function Home() {
 
             {/* Main Content */}
             <div className={`customized-main-content ${isSidebarOpen ? "shrink" : "expand"} pt-4 ${!isSmallScreen ? "ps-4" : ""}`}>
+                {/* Slideshow Component */}
                 <Slideshow />
+                {/* Button Components */}
+                <HomeButtons></HomeButtons>
+                {/* attractions */}
+<AttractionsSlide></AttractionsSlide>
             </div>
         </Container>
     );

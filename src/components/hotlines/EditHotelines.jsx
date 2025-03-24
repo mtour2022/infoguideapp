@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect} from "react";
 import { Container, Row, Col, Form, Button } from "react-bootstrap";
 import { db, storage } from "../../config/firebase";
 import {  collection, addDoc, doc, updateDoc  } from "firebase/firestore";
@@ -10,6 +10,7 @@ import MapWidgetFormGroup from "../map/MapLocator"; // Adjust the import path as
 import LogoImageDropzone from "../LogoImageDrop";
 import TextGroupInputField from "../TextGroupInputField";
 import { deleteImageFromFirebase } from "../../config/firestorage";
+import GoogleMapComponent from "../map/MapLocation";
 
 
 
@@ -53,7 +54,7 @@ export default function EditHotlinesForm({editingItem, toAddForm}) {
 
   useEffect(() => {
         if (editingItem) {
-          setActivityFormData(prevState => ({
+          setHotlinesFormData(prevState => ({
             ...prevState,
             id: editingItem.id || "",
             name: editingItem.name || "",
@@ -245,6 +246,8 @@ export default function EditHotlinesForm({editingItem, toAddForm}) {
     setSelectedCategory("");
   };
 
+  
+
 
   return (
     
@@ -315,20 +318,97 @@ export default function EditHotlinesForm({editingItem, toAddForm}) {
 
         </Row>
 
-        <Row className="mt-2">
+        <Container className="empty-container"></Container>
+                <Row className="mt-2">
           <Col md={12} >
-            <AddressInput groupData={hotlinesFormData} setGroupData={setHotlinesFormData} resetKey={resetKey}></AddressInput>
+
+           
+              {isEditingAddress ? (
+                <AddressInput groupData={hotlinesFormData} setGroupData={setHotlinesFormData} resetKey={resetKey}></AddressInput>
+              ) : (
+                <Form.Group className="mt-3 mb-3">
+                <div className="d-flex justify-content-between align-items-center">
+                  <Form.Label className="label mb-2">Local Business Address</Form.Label>
+                  <Button variant="outline-danger" className="mb-2" onClick={handleEditAddressClick}>
+                    {isEditingAddress ? 'Cancel' : 'Edit Address'}
+                  </Button>
+                </div>
+                <>
+                  <Form.Control
+                    className="mb-3"
+                    type="text"
+                    name="address.country"
+                    placeholder="Country"
+                    value={hotlinesFormData.address.country}
+                    readOnly
+                  />
+                  <Form.Control
+                    className="my-3"
+                    type="text"
+                    name="address.region"
+                    placeholder="Region"
+                    value={hotlinesFormData.address.region}
+                    readOnly
+                  />
+                  <Form.Control
+                    className="my-3"
+                    type="text"
+                    name="address.province"
+                    placeholder="Province"
+                    value={hotlinesFormData.address.province}
+                    readOnly
+                  />
+                  <Form.Control
+                    className="my-3"
+                    type="text"
+                    name="address.city"
+                    placeholder="City/Municipality/Town"
+                    value={hotlinesFormData.address.town}
+                    readOnly
+                  />
+                  <Form.Control
+                    className="my-3"
+                    type="text"
+                    name="address.barangay"
+                    placeholder="Barangay"
+                    value={hotlinesFormData.address.barangay}
+                    readOnly
+                  />
+                  <Form.Control
+                    className="my-3"
+                    type="text"
+                    name="address.street"
+                    placeholder="Street Name / Zone (Optional)"
+                    value={hotlinesFormData.address.street}
+                    readOnly
+                  />
+                </>
+                </Form.Group>
+              )}
           </Col>
         </Row>
-        <Row className="mt-2">
-          <Col md={12}>
-          <MapWidgetFormGroup
-            onLocationSelect={handleLocationSelect}
-             name={hotlinesFormData.name || ""}
-             resetKey={resetKey}
-          />
-          </Col>
-        </Row>
+      <Row className="mt-2">
+                <Col md={12}>
+                    {isEditingMap ? (
+                        <MapWidgetFormGroup
+                        onLocationSelect={handleLocationSelect}
+                        name={hotlinesFormData.name || ""}
+                        resetKey={resetKey}
+                        editingItems={hotlinesFormData.address}
+                      />
+                    ) : (
+                      <Form.Group className="mt-3 mb-3">
+                      <div className="d-flex justify-content-between align-items-center">
+                        <Form.Label className="label mb-2">Local Business Address</Form.Label>
+                        <Button variant="outline-danger" className="mb-2" onClick={handleEditMapClick}>
+                          {isEditingMap ? 'Cancel' : 'Edit Map Location'}
+                        </Button>
+                      </div>
+                      <GoogleMapComponent latitude={hotlinesFormData.address.lat} longitude={hotlinesFormData.address.long} />
+                      </Form.Group>
+                    )}
+                </Col>
+              </Row>
         <Row className="mt-2">
             <Col md={12}>
                 <Form.Group controlId="link" className="mb-3">
@@ -403,7 +483,7 @@ export default function EditHotlinesForm({editingItem, toAddForm}) {
             <TextGroupInputField
               onChange={(value) => handleChange(value, "mobile")}
               label={"mobile Number (Type & Enter)"}
-              editingItems={hotlinesFormData.socials}
+              editingItems={hotlinesFormData.mobile}
               resetKey={resetKey} 
             />
           </Col>

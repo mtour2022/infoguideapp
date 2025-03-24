@@ -386,6 +386,49 @@ const deleteBodySection = (index) => {
         <Container className="empty-container"></Container>
         <hr></hr>
         <Container className="empty-container"></Container>
+        <Row className="mt-2">
+            <Col  md={12}>
+            <Form.Group controlId="name" className="mb-3">
+              <Form.Label className="label">Cover Photo</Form.Label>
+              <HeaderImageDropzone
+                    storyForm={activityFormData}
+                    setStoryForm={setActivityFormData}
+                    dropzoneName="dropzone-container-big"
+                    previewName="dropzone-uploaded-image-big"
+                    />
+            </Form.Group>
+            </Col>
+        </Row>
+        <Row className="mt-2" > 
+          <Col md={12}>
+            <Form.Group controlId="name" className="mb-3">
+                <Form.Label className="label">Activity Name</Form.Label>
+                <Form.Control
+                  type="text"
+                  placeholder="Enter activity name"
+                  name="name"
+                  value={activityFormData.name}
+                  onChange={handleChange}
+                  required
+                />
+              </Form.Group>
+          </Col>
+        </Row>
+        <Row className="mt-2" > 
+          <Col md={12}>
+            <Form.Group controlId="slogan" className="mb-3">
+                <Form.Label className="label">Catchphrase</Form.Label>
+                <Form.Control
+                  type="text"
+                  placeholder="Enter catchy phrases"
+                  name="slogan"
+                  value={activityFormData.slogan}
+                  onChange={handleChange}
+                  required
+                />
+              </Form.Group>
+          </Col>
+        </Row> 
   {/* Body Sections */}
   <Container className="empty-container"></Container>
 
@@ -472,36 +515,7 @@ const deleteBodySection = (index) => {
      </Col>
     </Row>
      <Container className="empty-container"></Container>
-        <Row className="mt-2" > 
-          <Col md={12}>
-            <Form.Group controlId="name" className="mb-3">
-                <Form.Label className="label">Activity Name</Form.Label>
-                <Form.Control
-                  type="text"
-                  placeholder="Enter activity name"
-                  name="name"
-                  value={activityFormData.name}
-                  onChange={handleChange}
-                  required
-                />
-              </Form.Group>
-          </Col>
-        </Row>
-        <Row className="mt-2" > 
-          <Col md={12}>
-            <Form.Group controlId="slogan" className="mb-3">
-                <Form.Label className="label">Catchphrase</Form.Label>
-                <Form.Control
-                  type="text"
-                  placeholder="Enter catchy phrases"
-                  name="slogan"
-                  value={activityFormData.slogan}
-                  onChange={handleChange}
-                  required
-                />
-              </Form.Group>
-          </Col>
-        </Row>                            
+                                   
          
         <Row className="mt-2">
           <Col md={12} >
@@ -601,19 +615,7 @@ const deleteBodySection = (index) => {
         <hr></hr>
         <Container className="empty-container"></Container>
 
-        <Row className="mt-2">
-            <Col  md={12}>
-            <Form.Group controlId="name" className="mb-3">
-              <Form.Label className="label">Cover Photo</Form.Label>
-              <HeaderImageDropzone
-                    storyForm={activityFormData}
-                    setStoryForm={setActivityFormData}
-                    dropzoneName="dropzone-container-big"
-                    previewName="dropzone-uploaded-image-big"
-                    />
-            </Form.Group>
-            </Col>
-        </Row>
+     
         <Row className="mt-2">
             <Col  md={12}>
             <Form.Group controlId="name" >

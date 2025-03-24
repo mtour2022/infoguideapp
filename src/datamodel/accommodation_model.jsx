@@ -63,6 +63,7 @@ export const categoryOptions = [
   export const subcategoriesOptions = {
     "Hospitality & Lodging": [
       "accommodations",
+      "mainlandMalayHotels",
       "resorts",
     ],
     "Food & Beverages": [
@@ -93,6 +94,7 @@ export const categoryOptions = [
 
   export const classificationOptions= {
     "accommodations": [ "Resort", "Hotel", "Mabuhay Accommodation", "Apartment Hotel/Apartel"],
+    "mainlandMalayHotels": [ "Resort", "Hotel", "Mabuhay Accommodation", "Apartment Hotel/Apartel"],
     "resorts": ["Mainland Activity Resort"],
     "restaurants": [ "Fine Dining", "Buffet", "Casual Dining", "Pop-up", "Fast Foood", "Bistro", "Pub"],
     "barsAndPartyClubs": ["Cocktail Bar", "Live Music Bar", "Lounges", "Sports Bar", "Entertainment Bars", "Dance Clubs", "Rooftop Clubs"],

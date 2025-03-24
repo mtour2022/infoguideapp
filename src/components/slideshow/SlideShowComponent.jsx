@@ -108,6 +108,7 @@ const Slideshow = () => {
                 />
               )}
             </div>
+            
           )}
 
           {/* Dots Indicator & Video Controls */}
@@ -121,7 +122,8 @@ const Slideshow = () => {
                 ></span>
               ))}
             </div>
-            <div className="button-group">
+            {index === 0 && (
+              <div className="button-group">
               <button className="toggle-logo-btn" onClick={toggleLogoVisibility}>
                 <FontAwesomeIcon icon={isLogoVisible ? faEyeSlash : faEye} />
               </button>
@@ -129,6 +131,8 @@ const Slideshow = () => {
                 <FontAwesomeIcon icon={isVideoPlaying ? faPause : faPlay} />
               </button>
             </div>
+          )}
+            
           </div>
         </div>
       ))}

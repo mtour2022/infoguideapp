@@ -312,7 +312,11 @@ export default function AppNavBar() {
                title="EXPERIENCE" id="basic-nav-dropdown">
               <NavDropdown className='ms-lg-2 me-lg-2 ms-md-2 ms-sm-2' title="HOSPITALITY AND LODGING" id="basic-nav-dropdown-title">
                     <NavDropdown.Item as={NavLink} className='' id='basic-nav-dropdown-item'>
-                      ACCOMMODATIONS
+                      BORACAY ACCOMMODATIONS
+                    </NavDropdown.Item>
+                    <NavDropdown.Divider />
+                    <NavDropdown.Item as={NavLink} className='' id='basic-nav-dropdown-item'>
+                      MAINLAND MALAY HOTELS
                     </NavDropdown.Item>
                     <NavDropdown.Divider />
                     <NavDropdown.Item as={NavLink} className=''  id='basic-nav-dropdown-item'>
@@ -362,13 +366,13 @@ export default function AppNavBar() {
               <NavDropdown.Divider />
               <NavDropdown className='ms-lg-2 me-lg-2 ms-md-2 ms-sm-2 '  title="TRANSPORT AND PARKING" id="basic-nav-dropdown-title">
                     <NavDropdown.Item as={NavLink}  id='basic-nav-dropdown-item'>
-                      TOURIST LAND TRANSPORTS
+                      TOURIST LAND AND AIR TRANSPORTS
                     </NavDropdown.Item>
                     <NavDropdown.Divider />
-                    <NavDropdown.Item as={NavLink}  id='basic-nav-dropdown-item'>
+                    {/* <NavDropdown.Item as={NavLink}  id='basic-nav-dropdown-item'>
                       TOURIST AIR TRANSPORTS
-                    </NavDropdown.Item>
-                    <NavDropdown.Divider />
+                    </NavDropdown.Item><NavDropdown.Divider /> */}
+                    
                     <NavDropdown.Item as={NavLink}  id='basic-nav-dropdown-item'>
                       PASSENGER SHIPS
                     </NavDropdown.Item>

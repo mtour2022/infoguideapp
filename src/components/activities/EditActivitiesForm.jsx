@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Container, Row, Col, Form, Button, DropdownButton, Dropdown } from "react-bootstrap";
 import { db, storage } from "../../config/firebase";
-import { collection, addDoc, doc, updateDoc } from "firebase/firestore";
+import {  collection, addDoc, doc, updateDoc  } from "firebase/firestore";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 
 import Swal from "sweetalert2";
@@ -19,6 +19,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrash, faPlus, faCirclePlay, faCirclePlus, faCancel } from '@fortawesome/free-solid-svg-icons';
 import { useDropzone } from "react-dropzone"; // Dropzone for image upload
 import { deleteImageFromFirebase } from "../../config/firestorage";
+import GoogleMapComponent from "../map/MapLocation";
 
 import {
   activitiesCategoryOptions,
@@ -45,33 +46,42 @@ const BodyImageDropzone = ({
     accept: "image/png, image/jpeg, image/jpg, video/mp4, video/webm, video/ogg",
   });
 
-  // Handle both File objects and URLs
-  const imagePreview = section.image
-    ? section.image instanceof File
-      ? URL.createObjectURL(section.image)
-      : section.image  // If it's a URL, use it directly
-    : null;
+  const isFile = section.image instanceof File;
+  
+  // Improved regex to detect video URLs even with query parameters
+  const isVideoUrl = typeof section.image === "string" && /\.(mp4|webm|ogg)(\?.*)?$/i.test(section.image);
+  const isImageUrl = typeof section.image === "string" && !isVideoUrl;
+
+  // Separate file and URL previews
+  const filePreview = isFile ? URL.createObjectURL(section.image) : null;
+  const imageUrlPreview = isImageUrl ? section.image : null;
+  const videoUrlPreview = isVideoUrl ? section.image : null;
 
   return (
     <Container
       {...getRootProps()}
-      className={`${dropzoneName} text-center w-100 ${imagePreview ? "border-success" : ""}`}
+      className={`${dropzoneName} text-center w-100 ${
+        filePreview || imageUrlPreview || videoUrlPreview ? "border-success" : ""
+      }`}
     >
       <input {...getInputProps()} accept="image/*,video/*" />
-      {imagePreview ? (
-        section.image instanceof File && section.image.type.startsWith("video/")
-          ? (
-            <video controls className={previewName}>
-              <source src={imagePreview} type={section.image.type} />
-              Your browser does not support the video tag.
-            </video>
-          ) : (
-            <img
-              src={imagePreview}
-              alt="Body Image Preview"
-              className={previewName}
-            />
-          )
+      
+      {filePreview ? (
+        section.image.type.startsWith("video/") ? (
+          <video controls className={previewName}>
+            <source src={filePreview} type={section.image.type} />
+            Your browser does not support the video tag.
+          </video>
+        ) : (
+          <img src={filePreview} alt="Uploaded File Preview" className={previewName} />
+        )
+      ) : videoUrlPreview ? (
+        <video controls className={previewName}>
+          <source src={videoUrlPreview} type="video/mp4" />
+          Your browser does not support the video tag.
+        </video>
+      ) : imageUrlPreview ? (
+        <img src={imageUrlPreview} alt="Image URL Preview" className={previewName} />
       ) : (
         <p className="text-muted">
           Drag & Drop Image/Video Here or{" "}
@@ -81,6 +91,7 @@ const BodyImageDropzone = ({
     </Container>
   );
 };
+
 
 
 
@@ -288,7 +299,7 @@ export default function EditActivitiesForm({ editingItem, toAddForm }) {
 
       // Handle body images replacement
       const bodyImagesURLs = await Promise.all(
-        storyFormData.body.map(async (section, index) => {
+        activityFormData.body.map(async (section, index) => {
           if (section.image instanceof File) {
             // If a new body image is provided, delete the old one (if it exists)
             if (
@@ -327,13 +338,11 @@ export default function EditActivitiesForm({ editingItem, toAddForm }) {
         link: activityFormData.link,
         geo: activityFormData.geo,
         note: activityFormData.note,
-        howToGetThere: activityFormData.howToGetThere,
         tags: activityFormData.tags,
-        thingsToDo: activityFormData.thingsToDo
       };
 
       // Update the existing document using the story's id
-      const activityDocRef = doc(db, "activities", storyFormData.id);
+      const activityDocRef = doc(db, "activities", activityFormData.id);
       await updateDoc(activityDocRef, updateActivityData);
 
       Swal.fire({
@@ -364,14 +373,14 @@ export default function EditActivitiesForm({ editingItem, toAddForm }) {
 
   const resetForm = () => {
     setActivityFormData({
-      id: "",
-      name: "",
-      category: "",
-      body: [{ subtitle: "", body: "", image: null, image_source: "" }],
-      images: [],
-      operatinghours: [],
-      accessibility: [],
-      headerImage: null,
+      id : "",
+      name : "",
+      category : "",
+      body: [{ subtitle: "", body: "", image: null, image_source: ""}],
+      images : [],
+      operatinghours : [],
+      accessibility : [],
+      headerImage : null,
       address: {
         street: "",
         barangay: "",
@@ -382,12 +391,15 @@ export default function EditActivitiesForm({ editingItem, toAddForm }) {
         lat: "",
         long: "",
       },
-      link: "",
-      geo: "",
-      note: "",
-      thingsToDo: [],
+      link : "",
+      geo : "",
+      note : "",
       tags: [],
-      howToGetThere: ""
+      serviceProviders: [],
+      lowest: "",
+      maxPax: "",
+      subcategory: "",
+      slogan: "",
     });
     setResetKey(prevKey => prevKey + 1); // Change key to trigger reset
     setSelectedCategory("");
@@ -401,6 +413,23 @@ export default function EditActivitiesForm({ editingItem, toAddForm }) {
       return { ...prev, body: newBody };
     });
   };
+
+  
+    // Initialize the isEditing state to false
+       const [isEditingAddress, setIsEditingAddress] = useState(false);
+    
+       // Function to handle the Edit button click
+       const handleEditAddressClick = () => {
+         setIsEditingAddress(!isEditingAddress); // Toggle the isEditing state
+       };
+    
+       // Initialize the isEditing state to false
+       const [isEditingMap, setIsEditingMap] = useState(false);
+    
+       // Function to handle the Edit button click
+       const handleEditMapClick = () => {
+        setIsEditingMap(!isEditingMap); // Toggle the isEditing state
+       };
 
 
   return (
@@ -446,6 +475,50 @@ export default function EditActivitiesForm({ editingItem, toAddForm }) {
       <Container className="empty-container"></Container>
       <hr></hr>
       <Container className="empty-container"></Container>
+      
+      <Row className="mt-2">
+        <Col md={12}>
+          <Form.Group controlId="name" className="mb-3">
+            <Form.Label className="label">Cover Photo</Form.Label>
+            <HeaderImageDropzone
+              storyForm={activityFormData}
+              setStoryForm={setActivityFormData}
+              dropzoneName="dropzone-container-big"
+              previewName="dropzone-uploaded-image-big"
+            />
+          </Form.Group>
+        </Col>
+      </Row>
+      <Row className="mt-2" >
+        <Col md={12}>
+          <Form.Group controlId="name" className="mb-3">
+            <Form.Label className="label">Activity Name</Form.Label>
+            <Form.Control
+              type="text"
+              placeholder="Enter activity name"
+              name="name"
+              value={activityFormData.name}
+              onChange={handleChange}
+              required
+            />
+          </Form.Group>
+        </Col>
+      </Row>
+      <Row className="mt-2" >
+        <Col md={12}>
+          <Form.Group controlId="slogan" className="mb-3">
+            <Form.Label className="label">Catchphrase</Form.Label>
+            <Form.Control
+              type="text"
+              placeholder="Enter catchy phrases"
+              name="slogan"
+              value={activityFormData.slogan}
+              onChange={handleChange}
+              required
+            />
+          </Form.Group>
+        </Col>
+      </Row>
       {/* Body Sections */}
       <Container className="empty-container"></Container>
 
@@ -532,51 +605,99 @@ export default function EditActivitiesForm({ editingItem, toAddForm }) {
         </Col>
       </Row>
       <Container className="empty-container"></Container>
-      <Row className="mt-2" >
-        <Col md={12}>
-          <Form.Group controlId="name" className="mb-3">
-            <Form.Label className="label">Activity Name</Form.Label>
-            <Form.Control
-              type="text"
-              placeholder="Enter activity name"
-              name="name"
-              value={activityFormData.name}
-              onChange={handleChange}
-              required
-            />
-          </Form.Group>
-        </Col>
-      </Row>
-      <Row className="mt-2" >
-        <Col md={12}>
-          <Form.Group controlId="slogan" className="mb-3">
-            <Form.Label className="label">Catchphrase</Form.Label>
-            <Form.Control
-              type="text"
-              placeholder="Enter catchy phrases"
-              name="slogan"
-              value={activityFormData.slogan}
-              onChange={handleChange}
-              required
-            />
-          </Form.Group>
-        </Col>
-      </Row>
+      
 
+      <Container className="empty-container"></Container>
+                <Row className="mt-2">
+          <Col md={12} >
+
+           
+              {isEditingAddress ? (
+                <AddressInput groupData={activityFormData} setGroupData={setActivityFormData} resetKey={resetKey}></AddressInput>
+              ) : (
+                <Form.Group className="mt-3 mb-3">
+                <div className="d-flex justify-content-between align-items-center">
+                  <Form.Label className="label mb-2">Local Business Address</Form.Label>
+                  <Button variant="outline-danger" className="mb-2" onClick={handleEditAddressClick}>
+                    {isEditingAddress ? 'Cancel' : 'Edit Address'}
+                  </Button>
+                </div>
+                <>
+                  <Form.Control
+                    className="mb-3"
+                    type="text"
+                    name="address.country"
+                    placeholder="Country"
+                    value={activityFormData.address.country}
+                    readOnly
+                  />
+                  <Form.Control
+                    className="my-3"
+                    type="text"
+                    name="address.region"
+                    placeholder="Region"
+                    value={activityFormData.address.region}
+                    readOnly
+                  />
+                  <Form.Control
+                    className="my-3"
+                    type="text"
+                    name="address.province"
+                    placeholder="Province"
+                    value={activityFormData.address.province}
+                    readOnly
+                  />
+                  <Form.Control
+                    className="my-3"
+                    type="text"
+                    name="address.city"
+                    placeholder="City/Municipality/Town"
+                    value={activityFormData.address.town}
+                    readOnly
+                  />
+                  <Form.Control
+                    className="my-3"
+                    type="text"
+                    name="address.barangay"
+                    placeholder="Barangay"
+                    value={activityFormData.address.barangay}
+                    readOnly
+                  />
+                  <Form.Control
+                    className="my-3"
+                    type="text"
+                    name="address.street"
+                    placeholder="Street Name / Zone (Optional)"
+                    value={activityFormData.address.street}
+                    readOnly
+                  />
+                </>
+                </Form.Group>
+              )}
+          </Col>
+        </Row>
       <Row className="mt-2">
-        <Col md={12} >
-          <AddressInput groupData={activityFormData} setGroupData={setActivityFormData} resetKey={resetKey}></AddressInput>
-        </Col>
-      </Row>
-      <Row className="mt-2">
-        <Col md={12}>
-          <MapWidgetFormGroup
-            onLocationSelect={handleLocationSelect}
-            name={activityFormData.name || ""}
-            resetKey={resetKey}
-          />
-        </Col>
-      </Row>
+                <Col md={12}>
+                    {isEditingMap ? (
+                        <MapWidgetFormGroup
+                        onLocationSelect={handleLocationSelect}
+                        name={activityFormData.name || ""}
+                        resetKey={resetKey}
+                        editingItems={activityFormData.address}
+                      />
+                    ) : (
+                      <Form.Group className="mt-3 mb-3">
+                      <div className="d-flex justify-content-between align-items-center">
+                        <Form.Label className="label mb-2">Local Business Address</Form.Label>
+                        <Button variant="outline-danger" className="mb-2" onClick={handleEditMapClick}>
+                          {isEditingMap ? 'Cancel' : 'Edit Map Location'}
+                        </Button>
+                      </div>
+                      <GoogleMapComponent latitude={activityFormData.address.lat} longitude={activityFormData.address.long} />
+                      </Form.Group>
+                    )}
+                </Col>
+              </Row>
       <Row className="mt-2">
         <Col md={12}>
           <Form.Group controlId="link" className="mb-3">
@@ -661,19 +782,6 @@ export default function EditActivitiesForm({ editingItem, toAddForm }) {
       <hr></hr>
       <Container className="empty-container"></Container>
 
-      <Row className="mt-2">
-        <Col md={12}>
-          <Form.Group controlId="name" className="mb-3">
-            <Form.Label className="label">Cover Photo</Form.Label>
-            <HeaderImageDropzone
-              storyForm={activityFormData}
-              setStoryForm={setActivityFormData}
-              dropzoneName="dropzone-container-big"
-              previewName="dropzone-uploaded-image-big"
-            />
-          </Form.Group>
-        </Col>
-      </Row>
       <Row className="mt-2">
         <Col md={12}>
           <Form.Group controlId="name" >
@@ -779,7 +887,7 @@ export default function EditActivitiesForm({ editingItem, toAddForm }) {
             className="w-full me-3"
             onClick={handleSubmit}
           >
-            Submit Activity
+            Submit Update
           </Button>
         </Container>
       </Row>

@@ -175,6 +175,7 @@ const HotlineTable = () => {
       <Table striped bordered hover responsive>
         <thead>
           <tr>
+          <th>Category</th>
 
             <th>Office Name</th>
             <th>Geo</th>
@@ -182,7 +183,7 @@ const HotlineTable = () => {
             <th>Mobile No.</th>
             <th>Landline</th>
             <th>Satellite</th>
-            <th>Socials</th>
+            <th>Socials and Websites</th>
           </tr>
         </thead>
         <tbody>
@@ -190,8 +191,8 @@ const HotlineTable = () => {
             <tr key={item.id}>
               <td>{item.category}</td>
               <td>{item.name}</td>
-              <td>{item.address.barangay}</td>
               <td>{item.geo}</td>
+              <td>{item.address.barangay}</td>
               <td>{Array.isArray(item.mobile) ? item.mobile.join(", ") : item.mobile}</td>
             <td>{Array.isArray(item.landline) ? item.landline.join(", ") : item.landline}</td>
             <td>{Array.isArray(item.satellite) ? item.satellite.join(", ") : item.satellite}</td>

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect} from "react";
 import { Container, Row, Col, Form, Button } from "react-bootstrap";
 import { db, storage } from "../../config/firebase";
 import {  collection, addDoc, doc, updateDoc  } from "firebase/firestore";
@@ -327,7 +327,7 @@ export default function HotlinesForm({}) {
             <TextGroupInputField
               onChange={(value) => handleChange(value, "mobile")}
               label={"mobile Number (Type & Enter)"}
-              editingItems={hotlinesFormData.socials}
+              editingItems={hotlinesFormData.mobile}
               resetKey={resetKey} 
             />
           </Col>

@@ -11,23 +11,24 @@ import {
   Spinner,
 } from "react-bootstrap";
 import { db } from "../config/firebase";
-import { collection, getDocs, doc, deleteDoc } from "firebase/firestore";
+import { collection, getDocs, doc, updateDoc, deleteDoc } from "firebase/firestore";
 import ReactPaginate from "react-paginate";
 import * as XLSX from "xlsx";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEdit, faPlus, faRefresh, faTrash } from "@fortawesome/free-solid-svg-icons";
-import ActivitiesForm from "../components/activities/ActivitiesForm";
+import MainlandMalayHotelsForm from "../components/mainlandMalayHotels/MainlandMalayHotelForm";
+import EditMainlandMalayHotelsForm from "../components/mainlandMalayHotels/EditMainlandMalayHotelForm";
 import Swal from "sweetalert2";
-import EditActivitiesForm from "../components/activities/EditActivitiesForm";
 
 
-const ActivitiesTable = () => {
+const MainlandMalayHotelsTable = () => {
   const [data, setData] = useState([]);
   const [search, setSearch] = useState("");
-  const [categoryFilter, setCategoryFilter] = useState("");
+  const [classificationFilter, setClassificationFilter] = useState("");
+  const [subCategoryFilter, setSubCategoryFilter] = useState("");
   const [geoFilter, subGeoFilter] = useState("");
   const [barangayFilter, setBarangayFilter] = useState("");
-  const [subCategoryFilter, setSubCategoryFilter] = useState("");
+  const [accreditationFilter, setAccreditationFilter] = useState("");
 
 
   const [sortOrder, setSortOrder] = useState("asc");
@@ -44,7 +45,7 @@ const ActivitiesTable = () => {
 
   const fetchData = async () => {
     try {
-    const querySnapshot = await getDocs(collection(db, "activities"));
+    const querySnapshot = await getDocs(collection(db, "mainlandMalayHotels"));
     const dataList = querySnapshot.docs.map((doc) => ({
       id: doc.id,
       ...doc.data(),
@@ -75,7 +76,7 @@ const ActivitiesTable = () => {
       confirmButtonText: "Yes, delete it!"
     }).then(async (result) => {
       if (result.isConfirmed) {
-        await deleteDoc(doc(db, "activities", id));
+        await deleteDoc(doc(db, "mainlandMalayHotels", id));
         fetchData(); // Refresh data
         Swal.fire("Deleted!", "Your entry has been deleted.", "success");
       }
@@ -86,8 +87,11 @@ const ActivitiesTable = () => {
   // Filtering and searching logic
   const filteredData = data.filter((item) => {
     // Check subcategory filter
-    const categoryMatch = categoryFilter === "" || item.category === categoryFilter;
-
+    const subCategoryMatch = subCategoryFilter === "" || item.subcategory === subCategoryFilter;
+  
+    // Check classification filter
+    const classificationMatch = classificationFilter === "" || item.classification === classificationFilter;
+  
     // Check geographic filter
     const geoMatch = geoFilter === "" || item.geo === geoFilter;
   
@@ -100,17 +104,29 @@ const ActivitiesTable = () => {
       item.name.toLowerCase().includes(searchTerm) ||
       item.established.toLowerCase().includes(searchTerm) ||
       item.category.toLowerCase().includes(searchTerm) ||
+      item.subcategory.toLowerCase().includes(searchTerm) ||
+      item.classification.toLowerCase().includes(searchTerm) ||
       item.geo.toLowerCase().includes(searchTerm) ||
       item.address.barangay.toLowerCase().includes(searchTerm) ||
-      item.address.street.toLowerCase().includes(searchTerm)
+      item.address.street.toLowerCase().includes(searchTerm) ||
+      item.accreditation.toLowerCase().includes(searchTerm) ||
+      item.ratings.toLowerCase().includes(searchTerm);
   
- 
+    // Check accreditation filter
+    const isAccredited = item.accreditation && item.accreditation.trim() !== "";
+    const accreditationMatch =
+      accreditationFilter === "" ||
+      (accreditationFilter === "DOT Accredited" && isAccredited) ||
+      (accreditationFilter === "Not Accredited" && !isAccredited);
+  
     // Return true if all conditions are met
     return (
-      categoryMatch &&
+      subCategoryMatch &&
+      classificationMatch &&
       geoMatch &&
       barangayMatch &&
-      searchMatch 
+      searchMatch &&
+      accreditationMatch
     );
   });
   
@@ -121,12 +137,18 @@ const ActivitiesTable = () => {
   };
   
   const exportToExcel = () => {
-    const flattenedData = data.map(({ name, category, ...rest }) => {
+    const flattenedData = data.map(({ name, established, category, subcategory, classification, ...rest }) => {
       return {
         ...rest,
-        body: Array.isArray(rest.body) ? rest.body.join(", ") : "",
+        facilities: Array.isArray(rest.facilities) ? rest.facilities.join(", ") : "", // Use rest.facilities
+        amenities: Array.isArray(rest.amenities) ? rest.amenities.join(", ") : "",
+        awards: Array.isArray(rest.awards) ? rest.awards.join(", ") : "",
         images: Array.isArray(rest.images) ? rest.images.join(", ") : "",
+        roomtypes: Array.isArray(rest.roomtypes) ? rest.roomtypes.join(", ") : "",
         operatinghours: Array.isArray(rest.operatinghours) ? rest.operatinghours.join(", ") : "",
+        inclusivity: Array.isArray(rest.inclusivity) ? rest.inclusivity.join(", ") : "",
+        socials: Array.isArray(rest.socials) ? rest.socials.join(", ") : "",
+        memberships: Array.isArray(rest.memberships) ? rest.memberships.join(", ") : "",
         address: rest.address ? JSON.stringify(rest.address) : "", // Convert objects to JSON string
       };
     });
@@ -134,7 +156,7 @@ const ActivitiesTable = () => {
     const ws = XLSX.utils.json_to_sheet(flattenedData);
     const wb = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(wb, ws, "Data");
-    XLSX.writeFile(wb, `tourism_activities_infoguide_${getFormattedDate()}.xlsx`);
+    XLSX.writeFile(wb, `tourism_stories_infoguide_${getFormattedDate()}.xlsx`);
   };
   
 
@@ -159,50 +181,61 @@ const ActivitiesTable = () => {
 
   return (
     <Container>
-      <h1 className="text-2xl font-bold mb-1">Activities</h1>
-      <p>List of Activities.</p>
+      <h1 className="text-2xl font-bold mb-1">Mainland Malay Hotels</h1>
+      <p>List of Department of Tourism (DOT) Accredited and LGU-Recognized Mainland Malay Hotels</p>
 
       {/* Search and Filters */}
       <Row>
-        
         <Col md={6} className="mb-1 me-2 col">
           <Form.Control
             type="text"
-            placeholder={`Search up to over ${data.length} accommodations`}
+            placeholder={`Search up to over ${data.length} mainland Malay Hotels`}
             value={search}
             onChange={(e) => setSearch(e.target.value)}
           />
         </Col>
         <Col md={2} className="mb-1 me-2 col">
           <Form.Select
-            value={categoryFilter}
-            onChange={(e) => setCategoryFilter(e.target.value)}
+            value={subCategoryFilter}
+            onChange={(e) => setSubCategoryFilter(e.target.value)}
           >
-            <option value="">All Categories</option>
-            {[...new Set(data.map((item) => item.category))].map((category, index) => (
-              <option key={index} value={category}>
-                {category}
+            <option value="">All Subcategories</option>
+            {[...new Set(data.map((item) => item.subcategory))].map((subcategory, index) => (
+              <option key={index} value={subcategory}>
+                {subcategory}
               </option>
             ))}
           </Form.Select>
         </Col>
-
+        <Col md={2} className="mb-1 me-2 col">
+          <Form.Select
+            value={classificationFilter}
+            onChange={(e) => setClassificationFilter(e.target.value)}
+          >
+            <option value="">All Classifications</option>
+            {[...new Set(data.map((item) => item.classification))].map((classification, index) => (
+              <option key={index} value={classification}>
+                {classification}
+              </option>
+            ))}
+          </Form.Select>
+        </Col>
         
         
       </Row>
       <Row>
-        <Col md={2} className="mb-1 me-2 col">
-                  <Form.Select
-                    value={geoFilter}
-                    onChange={(e) => setSubCategoryFilter(e.target.value)}
-                  >
-                    <option value="">All Geographical Location</option>
-                    {[...new Set(data.map((item) => item.geo))].map((geo, index) => (
-                      <option key={index} value={geo}>
-                        {geo}
-                      </option>
-                    ))}
-                  </Form.Select>
+      <Col md={2} className="mb-1 me-2 col">
+          <Form.Select
+            value={geoFilter}
+            onChange={(e) => setSubCategoryFilter(e.target.value)}
+          >
+            <option value="">All Geographical Location</option>
+            {[...new Set(data.map((item) => item.geo))].map((geo, index) => (
+              <option key={index} value={geo}>
+                {geo}
+              </option>
+            ))}
+          </Form.Select>
         </Col>
         <Col md={2} className="mb-1 me-2 col">
           <Form.Select
@@ -217,7 +250,16 @@ const ActivitiesTable = () => {
             ))}
           </Form.Select>
         </Col>
-
+        <Col md={2} className="mb-1 me-2 col">
+            <Form.Select
+              value={accreditationFilter}
+              onChange={(e) => setAccreditationFilter(e.target.value)}
+            >
+              <option value="">All Accreditations</option>
+              <option value="DOT Accredited">DOT Accredited</option>
+              <option value="Not Accredited">Not Accredited</option>
+            </Form.Select>
+          </Col>
 
         <Container className="d-flex justify-content-end align-items-center mt-2 mb-4">
           <Button variant="outline-secondary" className="me-2" onClick={fetchData}>
@@ -247,10 +289,15 @@ const ActivitiesTable = () => {
         <thead>
           <tr>
             <th>Business Name</th>
+            <th>Established</th>
             <th>Category</th>
+            <th>SubCategory</th>
+            <th>Classification</th>
             <th>Geo Location</th>
             <th>Barangay</th>
             <th>Street</th>
+            <th>Accreditation</th>
+            <th>Rating</th>
             <th>Actions</th>
 
           </tr>
@@ -261,10 +308,15 @@ const ActivitiesTable = () => {
           {displayedData.map((item) => (
             <tr key={item.id}>
               <td>{item.name}</td>
+              <td>{item.established}</td>
               <td>{item.category}</td>
+              <td>{item.subcategory}</td>
+              <td>{item.classification}</td>
               <td>{item.geo}</td>
               <td>{item.address.barangay}</td>
               <td>{item.address.street}</td>
+              <td>{item.accreditation}</td>
+              <td>{item.ratings}</td>
 
               <td>
                 <Container className="d-flex justify-content-center align-items-center">
@@ -310,18 +362,18 @@ const ActivitiesTable = () => {
 
       {/* Conditionally render the Edit or Add form */}
       {editingItem ? (
-        <EditActivitiesForm
+        <EditMainlandMalayHotelsForm
         editingItem={editingItem}
         toAddForm={() => setEditingItem(null)} // This correctly switches back to the add form
         >
 
-        </EditActivitiesForm>
+        </EditMainlandMalayHotelsForm>
       ) : (
-        <ActivitiesForm></ActivitiesForm>
+        <MainlandMalayHotelsForm></MainlandMalayHotelsForm>
       )}
 
     </Container>
   );
 };
 
-export default ActivitiesTable;
+export default MainlandMalayHotelsTable;

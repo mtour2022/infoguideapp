@@ -80,6 +80,7 @@ import TourismProjectsTable from '../admin/TableTourismProjects';
 import CruiseShipsTable from '../admin/TableCruiseShips';
 import TourismMarketsForm from '../components/tourismMarkets/TourismMarket';
 import TourismMarketsTable from '../admin/TableTourismMarkets';
+import MainlandMalayHotelsTable from '../admin/TableMainlandMalayHotels';
 
 // Sidebar link component using onClick to set active content.
 function NavlinkIcon({ icon, title, onClick, active }) {
@@ -278,24 +279,24 @@ export default function AdminDashboard() {
             ></EnterprisesTable>
           </>
         );
-      case 'touristLandTransportOperators':
+      case 'touristLandAndAirTransportOperators':
         return (
           <>
             <EnterprisesTable 
             category={"Transport & Parking"}
-            subcategory={"touristLandTransportOperators"}
+            subcategory={"touristLandAndAirTransportOperators"}
             ></EnterprisesTable>
           </>
         );
-      case 'touristAirTransportOperators':
-      return (
-        <>
-          <EnterprisesTable 
-          category={"Transport & Parking"}
-          subcategory={"touristAirTransportOperators"}
-          ></EnterprisesTable>
-        </>
-      );
+      // case 'touristAirTransportOperators':
+      // return (
+      //   <>
+      //     <EnterprisesTable 
+      //     category={"Transport & Parking"}
+      //     subcategory={"touristAirTransportOperators"}
+      //     ></EnterprisesTable>
+      //   </>
+      // );
       case 'passengerShipLines':
       return (
         <>
@@ -419,8 +420,14 @@ export default function AdminDashboard() {
                           <>
                             <CruiseShipsTable></CruiseShipsTable>
                           </>
-                        );           
-                
+                        );   
+                        case 'mainlandMalayHotels':
+                          return (
+                            <>
+                              <MainlandMalayHotelsTable></MainlandMalayHotelsTable>
+                            </>
+                          );            
+                        
       
       // Add more cases for other pages as needed.
       default:
@@ -478,9 +485,15 @@ export default function AdminDashboard() {
           <ExpandableNavItem title="HOSPITALITY & LODGING" className="ms-lg-2 mb-2 me-lg-2">
             <NavlinkIcon
               icon={faHotel}
-              title="ACCOMMODATIONS"
+              title="BORACAY ACCOMMODATIONS"
               onClick={() => { setActivePage('accommodations'); handleClose(); }}
               active={activePage === 'accommodations'}
+            />
+            <NavlinkIcon
+              icon={faHotel}
+              title="MAINLAND MALAY HOTELS"
+              onClick={() => { setActivePage('mainlandMalayHotels'); handleClose(); }}
+              active={activePage === 'mainlandMalayHotels'}
             />
             <NavlinkIcon
               icon={faLadderWater}
@@ -564,16 +577,16 @@ export default function AdminDashboard() {
           <ExpandableNavItem title="TRANSPORT & PARKING" className="ms-lg-2 mb-2 me-lg-2 navlink">
             <NavlinkIcon
               icon={faBus}
-              title="TOURIST LAND TRANSPORT OPERATORS"
-              onClick={() => { setActivePage('touristLandTransportOperators'); handleClose(); }}
-              active={activePage === 'touristLandTransportOperators'}
+              title="TOURIST LAND AND AIR TRANSPORT OPERATORS"
+              onClick={() => { setActivePage('touristLandAndAirTransportOperators'); handleClose(); }}
+              active={activePage === 'touristLandAndAirTransportOperators'}
             />
-            <NavlinkIcon
+            {/* <NavlinkIcon
               icon={faPlaneArrival}
               title="TOURIST AIR TRANSPORT OPERATORS"
               onClick={() => { setActivePage('touristAirTransportOperators'); handleClose(); }}
               active={activePage === 'touristAirTransportOperators'}
-            />
+            /> */}
             <NavlinkIcon
               icon={faFerry}
               title="PASSSENGER SHIP LINES"

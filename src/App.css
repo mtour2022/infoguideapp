@@ -624,6 +624,19 @@ body {
   flex-direction: column; /* Stack elements in a column */
 }
 
+.loading-image{
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  background-size: cover;
+  background-position: center;
+  position: absolute;
+  top: 0;
+  left: 0;
+  transition: opacity 1.5s ease-in-out;
+}
+
+
 
 .slide.active {
   opacity: 1;
@@ -735,6 +748,7 @@ body {
   top: 0;
   left: 0;
 }
+
 
 /* New container to center title and button */
 .slide-content {
@@ -887,6 +901,161 @@ body {
 }
 
 
+/* Home section layout */
+.home-section {
+  padding-left: 100px;
+  padding-right: 70px;
+  padding-top: 100px;
+  /* padding-bottom: 100px; */
+}
+
+.home-section-title {
+  font-family: 'BARABARA-final', sans-serif;
+  font-size: xx-large;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  font-weight: 500;
+  text-align: center;
+  color: #1F89B2;
+
+}
+
+.home-section-subtitle {
+  text-align: center;
+  color: #6b7280; /* Tailwind gray-500 */
+  margin-bottom: 1.5rem;
+
+}
+
+.home-buttons {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 0.7rem;
+  justify-items: center;
+}
+
+
+/* Home Button Card */
+.home-button-card {
+  width: 100%; /* Auto width based on Bootstrap grid */
+  height: 250px; /* Keep the height fixed or adjust as needed */
+  margin-top: 20px;
+  border-radius: 12px;
+  box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  position: relative;
+  cursor: pointer;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  display: flex;
+  border: 1px solid rgba(255, 255, 255, 0.8);
+  align-items: flex-end;
+}
+
+/* Background image */
+.home-button-bg {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  z-index: 1; /* Push it behind everything */
+}
+
+/* Gradient Overlay */
+.home-button-gradient {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, var(--button-color) 20%, transparent 50%);
+  z-index: 2;
+}
+
+/* Ensure content is stretched at the bottom */
+.home-button-content {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  padding: 12px; /* Space inside */
+  z-index: 3;
+  background: transparent; /* Optional darker overlay */
+}
+
+/* Text - Now fully bottom-left aligned */
+.home-button-name {
+  font-family: 'Poppins', sans-serif;
+  font-size: small;
+  letter-spacing: 2px;
+  font-weight: 700;
+  color: white;
+  text-align: left;
+  margin: 0;
+  text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.3); /* Very soft black text shadow */
+  
+}
+
+.home-button-caption {
+  font-family: 'Poppins', sans-serif;
+  font-size: xx-small;
+  letter-spacing: 2px;
+  font-weight: 500;
+  color: white;
+  text-align: left;
+  margin: 0;
+  text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.3); /* Very soft black text shadow */
+}
+
+
+
+.home-button-logo {
+  height: 25px;
+  width: 25px;
+  color: white; /* Ensure visibility */
+  position: absolute;
+  top: 10px; /* Adjust positioning */
+  left: 10px; /* Keep it on the right */
+  z-index: 3; /* Ensure it is on top */
+  transition: transform 0.2s ease-in-out, opacity 0.2s ease-in-out;
+  
+  /* Add a soft shadow */
+  
+  /* Alternative: Stronger shadow using drop-shadow */
+  filter: drop-shadow(0px 0px 4px rgba(0, 0, 0, 0.4));
+}
+
+.home-button-icon {
+  font-size: 15px; /* Adjust icon size */
+  color: white; /* Ensure visibility */
+  position: absolute;
+  top: 10px; /* Adjust positioning */
+  right: 10px; /* Keep it on the right */
+  z-index: 3; /* Ensure it is on top */
+  transition: transform 0.2s ease-in-out, opacity 0.2s ease-in-out;
+  
+  /* Add a soft shadow */
+  
+  /* Alternative: Stronger shadow using drop-shadow */
+  filter: drop-shadow(0px 0px 4px rgba(0, 0, 0, 0.4));
+}
+
+/* Hover Effects */
+.home-button-card:hover {
+  transform: scale(1.1);
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.15);
+
+}
+
+.home-button-card:hover .home-button-name {
+  text-decoration: none;
+}
+
+/* Remove NavLink default underline */
+.home-buttons a {
+  text-decoration: none;
+}
+
+
+
+
 
 @media (max-width: 768px) { /* Targets tablets and smaller screens */
   .customized-sidebar {
@@ -944,6 +1113,233 @@ body {
   width: 300px; /* Adjust size as needed */
 }
 
+.home-section {
+  padding-left: 10px;
+  padding-right: 10px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+
+.home-section-title {
+  font-size: x-large;
+  font-weight: 500;
+  text-align: start;
+  padding-left: 10px;
+  padding-bottom: 10px;
+  padding-top: 20px;
 
 }
 
+
+.home-section-subtitle {
+  text-align: start;
+  font-size: medium;
+  padding-left: 10px;
+
+}
+
+}
+
+
+/* Ensure the attractions container centers the cards properly */
+.row.justify-content-center {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: start;
+}
+
+/* Ensure the card container maintains a good layout */
+.pagination-component-card {
+  width: 100%;
+  height: 350px;
+  border-radius: 12px;
+  box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  position: relative;
+  cursor: pointer;
+  display: flex;
+  align-items: flex-end;
+  background-size: cover;
+  background-position: center;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Ensure transform only on hover */
+.pagination-component-card:hover {
+  transform: scale(1.05);
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.15);
+}
+
+/* Image slider container */
+.image-slider-container {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  z-index: 1;
+}
+
+/* Individual images in the slider */
+.image-slider {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  opacity: 0;
+  transform: scale(1);
+  transition: opacity 1.4s ease-in-out, transform 1.4s ease-in-out;
+}
+
+/* Active image during transition */
+.image-slider.active {
+  opacity: 1;
+  transform: scale(1.05);
+}
+
+/* Loader (spinner) */
+.image-loader {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.2);
+  z-index: 2;
+  transition: opacity 0.3s ease-in-out;
+}
+
+/* Spinner animation */
+.spinner {
+  width: 40px;
+  height: 40px;
+  border: 4px solid #1F89B2;
+  border-top-color: #ffffff;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* 🚀 Activate slider effect only when hovered */
+.pagination-component-card:hover .image-slider {
+  opacity: 1;
+  transform: scale(1.05);
+}
+
+/* Ensure only one image is shown at a time */
+.image-slider.active {
+  opacity: 1;
+}
+
+/* Adjust text styles */
+.pagination-component-name,
+.home-button-caption {
+  text-decoration: none; /* ✅ Removes underline */
+}
+
+
+
+/* Navigation Icons */
+.nav-icon {
+  font-size: 24px;
+  cursor: pointer;
+  color: #1F89B2;
+  transition: transform 0.2s ease-in-out;
+}
+
+.nav-icon:hover {
+  transform: scale(1.2);
+}
+
+.pagination-component-name {
+  font-family: 'BARABARA-final', sans-serif;
+  font-size: x-large;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  font-weight: 700;
+  color: white;
+  text-align: left;
+  margin: 0;
+  text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.3); /* Very soft black text shadow */
+}
+
+/* Remove underline from links */
+.pagination-component-card-link {
+  text-decoration: none;
+  color: inherit; /* Ensure it keeps the default text color */
+}
+
+.pagination-component-card-link:hover {
+  text-decoration: none;
+}
+
+
+.geo-filter-container {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+}
+
+.geo-filter {
+  background-color: #f0f0f0;
+  border: none;
+  padding: 5px 10px;
+  font-size: 16px;
+  cursor: pointer;
+  border-radius: 10px;
+  font-weight: bold;
+
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.geo-filter.active {
+  background-color: #1F89B2;
+  color: white;
+}
+
+.geo-filter:hover {
+  background-color: #4ba2ff;
+  color: white;
+}
+
+/* Force only 1 row (2 items) on small screens */
+@media (max-width: 767px) {
+  .row .col-sm-12 {
+    flex: 0 0 100%; /* Make each item take full width */
+    max-width: 100%;
+  }
+
+  
+.geo-filter-container {
+  justify-content: start;
+  padding-left: 10px;
+}
+}
+
+/* Add margin-bottom to attraction cards */
+.col-md-6,
+.col-sm-12 {
+  margin-bottom: 20px; /* 🔹 Prevents items from sticking */
+}
+
+.discover-more-btn {
+  display: inline-block;
+  margin-left: 12px;
+  padding: 5px 10px;
+  background-color: #1F89B2; /* Match geo-filter button color */
+  color: white;
+  font-size: 16px;
+  font-weight: bold;
+  border: none;
+  border-radius: 10px;
+  text-decoration: none;
+  transition: background-color 0.3s ease-in-out, transform 0.2s ease-in-out;
+}
+
+.discover-more-btn:hover {
+  background-color: #4ba2ff;
+  transform: scale(1.05);
+}

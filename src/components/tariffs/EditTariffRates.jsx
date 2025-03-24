@@ -16,6 +16,7 @@ import { useDropzone } from "react-dropzone"; // Dropzone for image upload
 import { deleteImageFromFirebase } from "../../config/firestorage";
 
 
+
 const BodyImageDropzone = ({
   index,
   section,
@@ -24,47 +25,56 @@ const BodyImageDropzone = ({
   previewName = "dropzone-uploaded-image-small"
 }) => {
   const { getRootProps, getInputProps } = useDropzone({
-      onDrop: (acceptedFiles) => onBodyImageDrop(acceptedFiles, index),
-      accept: "image/png, image/jpeg, image/jpg, video/mp4, video/webm, video/ogg",
+    onDrop: (acceptedFiles) => onBodyImageDrop(acceptedFiles, index),
+    accept: "image/png, image/jpeg, image/jpg, video/mp4, video/webm, video/ogg",
   });
 
-  // Handle both File objects and URLs
-  const imagePreview = section.image 
-      ? section.image instanceof File 
-          ? URL.createObjectURL(section.image) 
-          : section.image  // If it's a URL, use it directly
-      : null;
+  const isFile = section.image instanceof File;
+  
+  // Improved regex to detect video URLs even with query parameters
+  const isVideoUrl = typeof section.image === "string" && /\.(mp4|webm|ogg)(\?.*)?$/i.test(section.image);
+  const isImageUrl = typeof section.image === "string" && !isVideoUrl;
+
+  // Separate file and URL previews
+  const filePreview = isFile ? URL.createObjectURL(section.image) : null;
+  const imageUrlPreview = isImageUrl ? section.image : null;
+  const videoUrlPreview = isVideoUrl ? section.image : null;
 
   return (
-      <Container
-          {...getRootProps()}
-          className={`${dropzoneName} text-center w-100 ${imagePreview ? "border-success" : ""}`}
-      >
-          <input {...getInputProps()} accept="image/*,video/*" />
-          {imagePreview ? (
-              section.image instanceof File && section.image.type.startsWith("video/")
-              ? (
-                  <video controls className={previewName}>
-                      <source src={imagePreview} type={section.image.type} />
-                      Your browser does not support the video tag.
-                  </video>
-              ) : (
-                  <img
-                      src={imagePreview}
-                      alt="Body Image Preview"
-                      className={previewName}
-                  />
-              )
-          ) : (
-              <p className="text-muted">
-                  Drag & Drop Image/Video Here or{" "}
-                  <span className="text-primary text-decoration-underline">Choose File</span>
-              </p>
-          )}
-      </Container>
+    <Container
+      {...getRootProps()}
+      className={`${dropzoneName} text-center w-100 ${
+        filePreview || imageUrlPreview || videoUrlPreview ? "border-success" : ""
+      }`}
+    >
+      <input {...getInputProps()} accept="image/*,video/*" />
+      
+      {filePreview ? (
+        section.image.type.startsWith("video/") ? (
+          <video controls className={previewName}>
+            <source src={filePreview} type={section.image.type} />
+            Your browser does not support the video tag.
+          </video>
+        ) : (
+          <img src={filePreview} alt="Uploaded File Preview" className={previewName} />
+        )
+      ) : videoUrlPreview ? (
+        <video controls className={previewName}>
+          <source src={videoUrlPreview} type="video/mp4" />
+          Your browser does not support the video tag.
+        </video>
+      ) : imageUrlPreview ? (
+        <img src={imageUrlPreview} alt="Image URL Preview" className={previewName} />
+      ) : (
+        <p className="text-muted">
+          Drag & Drop Image/Video Here or{" "}
+          <span className="text-primary text-decoration-underline">Choose File</span>
+        </p>
+      )}
+    </Container>
   );
 };
-  
+
 
 
 export default function EditTariffRatesForm({editingItem, toAddForm}) {
