@@ -24,7 +24,7 @@ export default class ActivitiesFormData {
         this.tags = [];
         this.slogan = "";
         this.subcategory = "";
-        this.lowest = "";
+        this.lowest = [];
         this.maxPax = "";
         this.serviceProviders = [];
 
@@ -55,6 +55,7 @@ export default class ActivitiesFormData {
       "Wakeboarding",
       "Floatable Rides"
     ],
+
     "Aqua Sports": [
       "Swimming",
       "Scuba Diving",
@@ -63,6 +64,8 @@ export default class ActivitiesFormData {
       "Helmet Diving",
     ],
     "Cruise Activities": [
+      "Sail Boat",
+      "Party Boat",
       "Island Hopping",
       "Sunset Cruise",
       "Luxury Yacht Tour",

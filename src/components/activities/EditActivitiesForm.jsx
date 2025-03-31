@@ -161,7 +161,7 @@ export default function EditActivitiesForm({ editingItem, toAddForm }) {
         subcategory: editingItem.subcategory || "",
         slogan: editingItem.slogan || "",
         maxPax: editingItem.maxPax || "",
-        lowest: editingItem.lowest || "",
+        lowest: editingItem.lowest || [],
         serviceProviders: editingItem.serviceProviders || [],
       }));
 
@@ -177,7 +177,7 @@ export default function EditActivitiesForm({ editingItem, toAddForm }) {
 
 
   const handleBodyChange = (index, field, value) => {
-    activityFormData((prev) => {
+    setActivityFormData((prev) => {
       const newBody = [...prev.body];
       newBody[index] = { ...newBody[index], [field]: value };
       return { ...prev, body: newBody };
@@ -396,7 +396,7 @@ export default function EditActivitiesForm({ editingItem, toAddForm }) {
       note : "",
       tags: [],
       serviceProviders: [],
-      lowest: "",
+      lowest: [],
       maxPax: "",
       subcategory: "",
       slogan: "",
@@ -455,7 +455,7 @@ export default function EditActivitiesForm({ editingItem, toAddForm }) {
         </Col>
         <Col md={6}>
           <Form.Group className="mb-3">
-            <Form.Label className="label">Purpose</Form.Label>
+            <Form.Label className="label">Select Category</Form.Label>
             <Form.Control
               as="select"
               name="purpose"
@@ -812,17 +812,13 @@ export default function EditActivitiesForm({ editingItem, toAddForm }) {
       </Row>
       <Row className="mt-2" >
         <Col md={6}>
-          <Form.Group controlId="lowest" className="mb-3">
-            <Form.Label className="label">Lowest Pricing</Form.Label>
-            <Form.Control
-              type="text"
-              placeholder="Enter Lowest Price"
-              name="lowest"
-              value={activityFormData.lowest}
-              onChange={handleChange}
-              required
+        <TextGroupInputField
+              onChange={(value) => handleChange(value, "lowest")}
+              label={"Price List (Type & Enter)"}
+              editingItems={activityFormData.lowest}
+              resetKey={resetKey} 
+              caption="format: 00000.00 per pax | e.g. 12000.00 per hour"
             />
-          </Form.Group>
         </Col>
         <Col md={6}>
           <Form.Group controlId="maxPax" className="mb-3">

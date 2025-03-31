@@ -250,7 +250,7 @@ const deleteBodySection = (index) => {
             activityData.note = activityFormData.note;
             activityData.tags = activityFormData.tags;
             activityData.slogan = activityFormData.slogan;
-            activityData.lowest = activityFormData.lowest;
+            activityData.lowest = activityFormData.lowest || [];
             activityData.maxPax = activityFormData.maxPax;
             activityData.serviceProviders = activityFormData.serviceProviders;
 
@@ -310,7 +310,7 @@ const deleteBodySection = (index) => {
       note : "",
       tags: [],
       serviceProviders: [],
-      lowest: "",
+      lowest: [],
       maxPax: "",
       subcategory: "",
       slogan: "",
@@ -644,11 +644,19 @@ const deleteBodySection = (index) => {
             />
           </Col>
         </Row>
+       
         <Row className="mt-2" > 
           <Col md={6}>
-            <Form.Group controlId="lowest" className="mb-3">
+          <TextGroupInputField
+              onChange={(value) => handleChange(value, "lowest")}
+              label={"Price List (Type & Enter)"}
+              editingItems={activityFormData.lowest}
+              resetKey={resetKey} 
+              caption="format: 00000.00 per pax | e.g. 12000.00 per hour"
+            />
+            {/* <Form.Group controlId="lowest" className="mb-3">
               <Form.Label className="label">Lowest Price</Form.Label>
-              <p className="subtitle">format: 00000.00 | e.g. 12000.00</p>
+              <p className="subtitle">format: 00000.00 per pax | e.g. 12000.00 per hour</p>
               <Form.Control
                 type="text"
                 placeholder="Enter Lowest Price"
@@ -661,7 +669,7 @@ const deleteBodySection = (index) => {
                   }
                 }}
               />
-            </Form.Group>
+            </Form.Group> */}
           </Col>
           <Col md={6}>
             <Form.Group controlId="maxPax" className="mb-3">
