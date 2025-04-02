@@ -16,8 +16,8 @@ import ReactPaginate from "react-paginate";
 import * as XLSX from "xlsx";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEdit, faPlus, faRefresh, faTrash } from "@fortawesome/free-solid-svg-icons";
-import StoryForm from "../components/AddStories";
-import EditStoryForm from "../components/EditStories";
+import StoryForm from "../components/stories/AddStories";
+import EditStoryForm from "../components/stories/EditStories";
 
 const DataTable = () => {
   const [data, setData] = useState([]);

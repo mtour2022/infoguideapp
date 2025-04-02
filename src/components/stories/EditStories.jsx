@@ -1,5 +1,5 @@
 import React, { useState, useCallback, useEffect, useRef } from "react";
-import { db, storage } from "../config/firebase";
+import { db, storage } from "../../config/firebase";
 import {  collection, addDoc, doc, updateDoc  } from "firebase/firestore";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { Container, Row, Col, Form, Button } from "react-bootstrap";
@@ -7,9 +7,15 @@ import { useDropzone } from "react-dropzone"; // Dropzone for image upload
 import Swal from "sweetalert2";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrash, faPlus, faCirclePlay, faCirclePlus, faCancel} from '@fortawesome/free-solid-svg-icons';
-import RichTextEditor from './TextEditor'; // adjust the path as needed
-import HeaderImageDropzone from './HeaderImageDropzone';
-import TextGroupInputField from "./TextGroupInputField";
+import RichTextEditor from '../TextEditor'; // adjust the path as needed
+import HeaderImageDropzone from '../HeaderImageDropzone';
+import TextGroupInputField from "../TextGroupInputField";
+import TourismStoriesFormData from "../../datamodel/stories_model";
+import { storiesClassificationOptions, storiesPurposeOptions } from "../../datamodel/stories_model";
+
+import { deleteImageFromFirebase } from "../../config/firestorage";
+
+
 
 
 const BodyImageDropzone = ({
@@ -61,61 +67,86 @@ const BodyImageDropzone = ({
   );
 };
   
-export default function StoryForm() {
-    
-    const [storyFormData, setStoryFormData] = useState({
-        id:"",
-        title: "",
-        classification: "",
-        purpose: "",
-        date: "",
-        headerImage: null,
-        body: [{ subtitle: "", body: "", image: null, image_source: ""}],
-        tags: [],
-        references: [],
-        name: "",
-        email: "",
-        social: "",
-    });
-        
+  
+export default function EditStoryForm({editingItem, toAddForm}) {
+
+       const [storyFormData, setStoryFormData] = useState(new TourismStoriesFormData);
+   
+                // Local state for selections
+                const [selectedCategory, setSelectedCategory] = useState("");
+                const [selectedSubcategory, setSelectedSubcategory] = useState("");
     // Populate form data if exists
     useEffect(() => {
-    }, []);
+        if (editingItem) {
+          setStoryFormData({
+            id: editingItem.id || "",
+            title: editingItem.title || "",
+            classification: editingItem.classification || "",
+            purpose: editingItem.purpose || "",
+            date: editingItem.date || "",
+            headerImage: editingItem.headerImage || null,
+            body: editingItem.body.map(section => ({
+              ...section,
+              image: section.image || null, // Only use the image property
+            })),
+            tags: editingItem.tags || [],
+            references: editingItem.references || [],
+            name: editingItem.name || "",
+            email: editingItem.email || "",
+            social: editingItem.social || "",
+          });
 
-    const classificationOptions = ["Informative", "Inspirational", "Ranking", "Tourism Awards and Recognitions", "Promotional and Marketing", "Educational", "Opinions and Review"];
-    
-    const purposeOptions = {
-        Informative: ["Statistical Reports", "News", "Awards and Recognitions", "Tourism Projects", "Tourism Trends", "Popularity Ranking", "Technology"],
-        "Promotional and Marketing": ["Travel Deals and Promotions", "Itinerary-Based", "Cultural Exploration", "Events or Festival Coverage", "Destination Highlight"],
-        "Tourism Awards and Recognitions": ["Tourism Enterprises Awards", "International Awards and Recognition", "National Awards and Recognitions", "Sports Tourism Awards"],
-        Ranking: ["Best Hotels", "Best Restaurants", "Best Tourism Frontliners", "Best Spa and Wellness Centers", "Best Tourism Shops", "Best Bars and Party Clubs", "Best Buffet Restaurants"],
-        Inspirational: ["Story-Telling", "Sustainable Tourism", "Biography"],
-        Educational: ["Travel Tips", "Practical or How-To", "Budgeting and Financial Planning", "Safety and Health"],
-        "Opinions and Review": ["Product and Service Reviews", "Case Study"]
-    };
-
-   
-    const [bodyImages, setBodyImages] = useState([]);
-  const [resetKey, setResetKey] = useState(0); // Reset trigger
-
-    const resetForm = () => {
-        setStoryFormData({
-            id:"",
+          
+            if (editingItem.category) {
+                setSelectedCategory(editingItem.classification || "");
+                setSelectedSubcategory(editingItem.purpose || "");
+            } 
+        } else {
+          setStoryFormData({
+            id: "",
             title: "",
             classification: "",
             purpose: "",
             date: "",
             headerImage: null,
-            body: [{ subtitle: "", body: "", image: null, image_source: ""}],
+            body: [{ subtitle: "", body: "", image: null, image_source: "" }],
             tags: [],
             references: [],
             name: "",
             email: "",
             social: "",
-        });
-        setResetKey(prevKey => prevKey + 1); // Change key to trigger reset    setSelectedCategory("");
+          });
+        }
 
-    };
+
+      }, [editingItem]);
+      
+
+
+
+   
+    const [bodyImages, setBodyImages] = useState([]);
+
+     const [resetKey, setResetKey] = useState(0); // Reset trigger
+    
+        const resetForm = () => {
+            setStoryFormData({
+                id:"",
+                title: "",
+                classification: "",
+                purpose: "",
+                date: "",
+                headerImage: null,
+                body: [{ subtitle: "", body: "", image: null, image_source: ""}],
+                tags: [],
+                references: [],
+                name: "",
+                email: "",
+                social: "",
+            });
+            setResetKey(prevKey => prevKey + 1); // Change key to trigger reset    setSelectedCategory("");
+    
+        };
 
      // Generic change handler for form fields.
      const handleChange = (e, field) => {
@@ -215,6 +246,11 @@ export default function StoryForm() {
         }));
     };
 
+
+
+    
+
+
     // Handler for dropping an image into a specific body section
     const onBodyImageDrop = (acceptedFiles, index) => {
         if (acceptedFiles.length > 0) {
@@ -254,88 +290,108 @@ export default function StoryForm() {
 
 
 
-    // Submit the form data
+    // Update the story data
     const handleSubmit = async (e) => {
         e.preventDefault();
-
-        // Show SweetAlert2 loading screen
+      
+        // Show SweetAlert2 loading screen for update
         Swal.fire({
-            title: 'Submitting...',
-            text: 'Please wait while we submit your story.',
-            allowOutsideClick: false,
-            didOpen: () => {
+          title: 'Updating...',
+          text: 'Please wait while we update your story.',
+          allowOutsideClick: false,
+          didOpen: () => {
             Swal.showLoading();
-            }
+          },
         });
-
+      
         try {
-            // Upload header image if available
-            let headerImageURL = await uploadImageToFirebase(
-                storyFormData.headerImage,
-                `stories/${Date.now()}_${storyFormData.headerImage}`
+          // Handle header image replacement
+          let headerImageURL;
+          if (storyFormData.headerImage instanceof File) {
+            // If a new header image is provided, delete the old one (if it exists)
+            if (editingItem && editingItem.headerImage) {
+              await deleteImageFromFirebase(editingItem.headerImage);
+            }
+            headerImageURL = await uploadImageToFirebase(
+              storyFormData.headerImage,
+              `stories/${Date.now()}_${storyFormData.headerImage.name}`
             );
-
-            // Upload body images if available
-            const bodyImagesURLs = await Promise.all(
-                storyFormData.body.map(async (section, index) => {
-                    if (section.image) {
-                        const imageURL = await uploadImageToFirebase(section.image, `stories/${Date.now()}_${section.image.name}`);
-                        return imageURL;
-                    }
-                    return "";
-                })
-            );
-
-            // Prepare the story object to send to Firebase Firestore
-            const story = {
-                id: "",
-                classification: storyFormData.classification,
-                purpose: storyFormData.purpose,
-                title: storyFormData.title,
-                headerImage: headerImageURL,
-                date: storyFormData.date,
-                body: storyFormData.body.map((section, index) => ({
-                    subtitle: section.subtitle,
-                    body: section.body,
-                    image: bodyImagesURLs[index] || "",
-                    image_source: section.image_source, 
-                })),
-                tags: storyFormData.tags,
-                references: storyFormData.references,
-                name: storyFormData.name,
-                email: storyFormData.email,
-                social: storyFormData.social,
-            };
-
-            const docRef = await addDoc(collection(db, "stories"), story);
-            const storyDoc = doc(db, "stories", docRef.id);
-            await updateDoc(storyDoc, { id: docRef.id });
-
-            Swal.fire({
-                title: "Story Submitted",
-                text: "Your story has been submitted successfully!",
-                icon: "success",
-            });
-
-            // Reset form data after successful submission
-            resetForm();
-            setBodyImages([]);
-            resetHeaderImage();
+          } else {
+            headerImageURL = storyFormData.headerImage;
+          }
+      
+          // Handle body images replacement
+          const bodyImagesURLs = await Promise.all(
+            storyFormData.body.map(async (section, index) => {
+              if (section.image instanceof File) {
+                // If a new body image is provided, delete the old one (if it exists)
+                if (
+                  editingItem &&
+                  editingItem.body &&
+                  editingItem.body[index] &&
+                  editingItem.body[index].image
+                ) {
+                  await deleteImageFromFirebase(editingItem.body[index].image);
+                }
+                return await uploadImageToFirebase(
+                  section.image,
+                  `stories/${Date.now()}_${section.image.name}`
+                );
+              }
+              return section.image;
+            })
+          );
+      
+          // Prepare the updated story object for Firestore
+          const updatedStory = {
+            classification: storyFormData.classification,
+            purpose: storyFormData.purpose,
+            title: storyFormData.title,
+            headerImage: headerImageURL,
+            date: storyFormData.date,
+            body: storyFormData.body.map((section, index) => ({
+              subtitle: section.subtitle,
+              body: section.body,
+              image: bodyImagesURLs[index] || "",
+              image_source: section.image_source,
+            })),
+            tags: storyFormData.tags,
+            references: storyFormData.references,
+            name: storyFormData.name,
+            email: storyFormData.email,
+            social: storyFormData.social,
+          };
+      
+          // Update the existing document using the story's id
+          const storyDocRef = doc(db, "stories", storyFormData.id);
+          await updateDoc(storyDocRef, updatedStory);
+      
+          Swal.fire({
+            title: "Story Updated",
+            text: "Your story has been updated successfully!",
+            icon: "success",
+          });
+      
+          // Optionally reset form data after a successful update
+          setBodyImages([]);
+          resetHeaderImage();
+          toAddForm();
         } catch (error) {
-            console.error("Error submitting story:", error);
-            Swal.fire({
-                title: "Error",
-                text: "There was an issue submitting your story. Please try again.",
-                icon: "error",
-            });
+          console.error("Error updating story:", error);
+          Swal.fire({
+            title: "Error",
+            text: "There was an issue updating your story. Please try again.",
+            icon: "error",
+          });
         }
-    };
+      };
+      
 
     const textareaRef = useRef(null);
 
     return (
               <Form className="custom-form body-container"  onSubmit={handleSubmit}  onKeyDown={(e) => e.key === "Enter" && e.preventDefault()}>
-                <h1 className="mb-4">Add Tourism Story Form</h1>
+                <h1 className="mb-4">Edit Tourism Story Form</h1>
                 <Row className="d-flex flex-md-row flex-column">
                     <Col className="col me-lg-2 me-md-1">
                         <Form.Group className="mb-3">
@@ -348,7 +404,7 @@ export default function StoryForm() {
                                 required
                             >
                                 <option value="">Select Classification</option>
-                                {classificationOptions.map((option) => (
+                                {storiesClassificationOptions.map((option) => (
                                     <option key={option} value={option}>{option}</option>
                                 ))}
                             </Form.Control>
@@ -367,7 +423,7 @@ export default function StoryForm() {
                                     placeholder={storyFormData.classification ? "Select Purpose" : "Select Classification First"}
                                 >
                                     <option value="">{storyFormData.classification ? "Select Purpose" : "Select Classification First"}</option>
-                                    {storyFormData.classification && purposeOptions[storyFormData.classification]?.map((option) => (
+                                    {storyFormData.classification && storiesPurposeOptions[storyFormData.classification]?.map((option) => (
                                         <option key={option} value={option}>{option}</option>
                                     ))}
                                 </Form.Control>
@@ -456,6 +512,7 @@ export default function StoryForm() {
                                 <BodyImageDropzone 
                                     index={index} 
                                     section={section} 
+                                    editingItem={editingItem}
                                     onBodyImageDrop={handleImageDrop} 
                                     dropzoneName="dropzone-container-small"
                                     previewName="dropzone-uploaded-image-small"
@@ -516,23 +573,23 @@ export default function StoryForm() {
                 </Container>
                 <Container className="empty-container"></Container>
                 <Row className="d-flex flex-md-row flex-column">
-                    <Col className="col me-lg-2 me-md-1">
-                    <TextGroupInputField
-                            onChange={(value) => handleChange(value, "references")}
-                            label={"References and Links (Type & Enter)"}
-                            editingItems={storyFormData.references}
-                            resetKey={resetKey} 
-                        />
-                    </Col>
-                    <Col className="col ms-lg-2 ms-md-1">
-                    <TextGroupInputField
-                            onChange={(value) => handleChange(value, "tags")}
-                            label={"Important Tags (Type & Enter)"}
-                            editingItems={storyFormData.tags}
-                            resetKey={resetKey} 
-                        />
-                    </Col>
-                </Row>
+                                    <Col className="col me-lg-2 me-md-1">
+                                    <TextGroupInputField
+                                            onChange={(value) => handleChange(value, "references")}
+                                            label={"References and Links (Type & Enter)"}
+                                            editingItems={storyFormData.references}
+                                            resetKey={resetKey} 
+                                        />
+                                    </Col>
+                                    <Col className="col ms-lg-2 ms-md-1">
+                                    <TextGroupInputField
+                                            onChange={(value) => handleChange(value, "tags")}
+                                            label={"Important Tags (Type & Enter)"}
+                                            editingItems={storyFormData.tags}
+                                            resetKey={resetKey} 
+                                        />
+                                    </Col>
+                                </Row>
                 <Container className="empty-container"></Container>
                 <hr></hr>
                 <Container className="empty-container"></Container>
@@ -551,7 +608,7 @@ export default function StoryForm() {
                 <Row className="d-flex flex-md-row flex-column">
                     <Col className="col me-lg-2 me-md-1">
                         <Form.Group className="mb-3">
-                            <Form.Label className="label">Social Media/References Link</Form.Label>
+                            <Form.Label className="label">Social Media Link</Form.Label>
                             <Form.Control
                                 type="social"
                                 name="social"
@@ -577,15 +634,15 @@ export default function StoryForm() {
                 <Container className="empty-container"></Container>
                 <Container className="empty-container"></Container>
 
-                <Container className="d-flex justify-content-between">
-                    <Button variant="outline-danger" onClick={resetForm}>Reset Form</Button>
+                <Container className="d-flex justify-content-end">
+                  
                     <Button 
                         variant="outline-primary" 
                         type="submit" 
                         className="w-full" 
                         onClick={handleSubmit}
                     >
-                        Submit Article
+                        Submit Update
                     </Button>
                 </Container>
             </Form>

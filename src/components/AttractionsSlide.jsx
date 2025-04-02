@@ -1,4 +1,6 @@
 
+// export default AttractionsSlide;
+
 import { useState, useEffect, useRef } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChevronLeft, faChevronRight } from "@fortawesome/free-solid-svg-icons";
@@ -14,7 +16,7 @@ const AttractionsSlide = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [selectedGeo, setSelectedGeo] = useState("All");
 
-  const itemsPerPage = window.innerWidth < 768 ? 2 : 4; // Mobile-friendly
+  const itemsPerPage = window.innerWidth < 768 ? 2 : 4;
   const totalPages = Math.ceil(filteredAttractions.length / itemsPerPage);
 
   useEffect(() => {
@@ -49,7 +51,6 @@ const AttractionsSlide = () => {
       <h2 className="home-section-title">TOURIST HOT SPOTS</h2>
       <p className="home-section-subtitle">Explore the best places to visit.</p>
 
-      {/* Geo Filters */}
       <div className="geo-filter-container text-center mb-4">
         {geoOptions.map((geo) => (
           <button
@@ -62,7 +63,6 @@ const AttractionsSlide = () => {
         ))}
       </div>
 
-      {/* Attractions Grid */}
       <div className="container">
         {currentAttractions.length > 0 ? (
           <div className="row justify-content-start">
@@ -77,8 +77,7 @@ const AttractionsSlide = () => {
         )}
       </div>
 
-      {/* Pagination & "View All" Button */}
-      <div className="d-flex justify-content-between align-items-center mt-4">
+      <div className="d-flex justify-content-between align-items-center">
         <NavLink to="/attractions" className="discover-more-btn">
           View All
         </NavLink>
@@ -100,7 +99,6 @@ const AttractionsSlide = () => {
   );
 };
 
-// ✅ AttractionCard Component
 const AttractionCard = ({ attraction }) => {
   const [isHovered, setIsHovered] = useState(false);
   const images = [attraction.headerImage, ...(attraction.images?.slice(0, 1) || [])];
@@ -123,13 +121,11 @@ const AttractionCard = ({ attraction }) => {
   );
 };
 
-// ✅ ImageSlider Component (Handles Image Hover Effects)
 const ImageSlider = ({ images, isHovered }) => {
   const [activeIndex, setActiveIndex] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
   const intervalRef = useRef(null);
 
-  // Preload images before showing them
   useEffect(() => {
     let loadedCount = 0;
     images.forEach((src) => {
@@ -164,7 +160,6 @@ const ImageSlider = ({ images, isHovered }) => {
           <div className="spinner"></div>
         </div>
       )}
-
       {images.map((image, index) => (
         <div
           key={index}
@@ -177,3 +172,4 @@ const ImageSlider = ({ images, isHovered }) => {
 };
 
 export default AttractionsSlide;
+

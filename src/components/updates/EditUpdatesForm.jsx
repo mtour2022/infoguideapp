@@ -290,22 +290,22 @@ export default function EditUpdateForm({editingItem, toAddForm}) {
             try {
               // Handle header image replacement
               let headerImageURL;
-              if (storyFormData.headerImage instanceof File) {
+              if (updatesFormData.headerImage instanceof File) {
                 // If a new header image is provided, delete the old one (if it exists)
                 if (editingItem && editingItem.headerImage) {
                   await deleteImageFromFirebase(editingItem.headerImage);
                 }
                 headerImageURL = await uploadImageToFirebase(
-                  storyFormData.headerImage,
-                  `updates/${Date.now()}_${storyFormData.headerImage.name}`
+                  updatesFormData.headerImage,
+                  `updates/${Date.now()}_${updatesFormData.headerImage.name}`
                 );
               } else {
-                headerImageURL = storyFormData.headerImage;
+                headerImageURL = updatesFormData.headerImage;
               }
           
               // Handle body images replacement
               const bodyImagesURLs = await Promise.all(
-                storyFormData.body.map(async (section, index) => {
+                updatesFormData.body.map(async (section, index) => {
                   if (section.image instanceof File) {
                     // If a new body image is provided, delete the old one (if it exists)
                     if (
@@ -347,7 +347,7 @@ export default function EditUpdateForm({editingItem, toAddForm}) {
               };
           
               // Update the existing document using the story's id
-              const updatesDocRef = doc(db, "updates", storyFormData.id);
+              const updatesDocRef = doc(db, "updates", updatesFormData.id);
               await updateDoc(updatesDocRef, updateData);
           
               Swal.fire({

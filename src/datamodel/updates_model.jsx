@@ -31,6 +31,7 @@ export default class UpdateFormData {
       "News",
       "Reminders",
       "Announcements",
+      "Holidays",
       "Events",
       "Guidelines",
       "Policies",

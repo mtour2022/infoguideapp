@@ -19,6 +19,11 @@
     }
     
     export const dealsAndPromotionsCategoryOptions = [
+        "Compilation (Hotels)",
+        "Compilation (Restaurants)",
+        "Compilation (Tour Packages)",
+        "Compilation (Travel Deals)",
+        "Compilation (Local Services)",
         "Discount Offers",
         "Limited-Time Deals",
         "Buy One Get One (BOGO)",
@@ -31,8 +36,6 @@
         "Early Bird Specials",
         "Referral Discounts",
         "Holiday Specials",
-        "Student Discounts",
-        "Senior Citizen Discounts",
         "Weekend Promotions",
         "First-Time Customer Deals",
         "Cashback Offers",

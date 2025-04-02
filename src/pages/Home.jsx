@@ -1,16 +1,29 @@
 import React, { useState, useEffect } from "react";
-import { Container, Button } from "react-bootstrap";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faChevronLeft, faChevronRight } from "@fortawesome/free-solid-svg-icons"; // Import necessary icons
+import { Container } from "react-bootstrap";
 import Slideshow from "../components/slideshow/SlideShowComponent";
 import HomeButtons from "../components/homeButtons";
 import AttractionsSlide from "../components/AttractionsSlide";
-
+import ActivitiesSlide from "../components/ActivitiesSlide";
+import UpdatesCarousel from "../components/QuickCheckSlides";
+import { updatesCategoryOptions } from "../datamodel/updates_model";
+import { storiesClassificationOptions } from "../datamodel/stories_model";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faBuilding,
+  faBell,
+  faBook,
+  faFire,
+  faBinoculars,
+  faGlasses,
+  faPersonSwimming,
+  faBookBible,
+  faBookMedical,
+  faBookOpen,
+} from "@fortawesome/free-solid-svg-icons";
 export default function Home() {
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
     const [isSmallScreen, setIsSmallScreen] = useState(window.innerWidth <= 768);
 
-    // Function to update state when screen resizes
     useEffect(() => {
         const handleResize = () => {
             setIsSmallScreen(window.innerWidth <= 768);
@@ -24,27 +37,65 @@ export default function Home() {
         setIsSidebarOpen(!isSidebarOpen);
     };
 
+    const scrollToSection = (id) => {
+        const section = document.getElementById(id);
+        if (section) {
+            section.scrollIntoView({ behavior: "smooth" });
+        }
+    };
+
     return (
         <Container fluid className="main-container">
-            {/* Conditionally render sidebar */}
-            {!isSmallScreen && (
-                <div className={`customized-sidebar ${isSidebarOpen ? "open" : "closed"} pt-5`} onClick={toggleSidebar}>
-                    <Button className="customized-toggle-btn" onClick={toggleSidebar}>
-                    <FontAwesomeIcon icon={isSidebarOpen ? faChevronLeft : faChevronRight} />
-                    <span className="customized-toggle-text mt-2">QUICK CHECK</span>
-                    </Button>
-                    {isSidebarOpen && <p>Sidebar Content</p>}
-                </div>
-            )}
-
-            {/* Main Content */}
-            <div className={`customized-main-content ${isSidebarOpen ? "shrink" : "expand"} pt-4 ${!isSmallScreen ? "ps-4" : ""}`}>
-                {/* Slideshow Component */}
+            <div className={`customized-main-content`}>
                 <Slideshow />
-                {/* Button Components */}
-                <HomeButtons></HomeButtons>
-                {/* attractions */}
-<AttractionsSlide></AttractionsSlide>
+                
+                {/* Navigation Buttons */}
+                <div className="text-center mt-4">
+                    <button onClick={() => scrollToSection("home-buttons")} className="discover-more-btn my-2 fw-bold" >
+                        <FontAwesomeIcon icon={faBuilding} className="me-2"/>Enterprises</button>
+                    <button onClick={() => scrollToSection("attractions-slide")} className="discover-more-btn my-2 fw-bold" >
+                        <FontAwesomeIcon icon={faBinoculars} className="me-2"/>Attractions</button>
+                    <button onClick={() => scrollToSection("activities-slide")} className="discover-more-btn my-2 fw-bold">
+                        <FontAwesomeIcon icon={faPersonSwimming} className="me-2"/>Activities</button>
+                    <button onClick={() => scrollToSection("tourism-updates")} className="discover-more-btn my-2 fw-bold" >
+                        <FontAwesomeIcon icon={faBell} className="me-2"/>Updates</button>
+                    <button onClick={() => scrollToSection("tourism-stories")} className="discover-more-btn my-2 fw-bold">
+                        <FontAwesomeIcon icon={faBookOpen} className="me-2"/>Stories</button>
+
+                </div>
+                <p className="home-section-subtitle text-center">Quick Links</p>
+                <div id="home-buttons">
+                    <HomeButtons />
+                </div>
+                <div id="attractions-slide">
+                    <AttractionsSlide />
+                </div>
+                <div id="activities-slide">
+                    <ActivitiesSlide />
+                </div>
+                <div id="tourism-updates">
+                    <UpdatesCarousel
+                        collectionName="updates"
+                        categoryOptions={updatesCategoryOptions}
+                        title="Tourism Updates"
+                        caption="Stay informed with the latest news and announcements."
+                        filterType="category"
+                    />
+                </div>
+                <div id="tourism-stories">
+                    <UpdatesCarousel
+                        collectionName="stories"
+                        classificationOptions={storiesClassificationOptions}
+                        title="Tourism Stories"
+                        caption="Read and be inspired."
+                        filterType="classification"
+                    />
+                </div>
+
+                <Container className="empty-container"></Container>
+                <Container className="empty-container"></Container>
+                <Container className="empty-container"></Container>
+                <Container className="empty-container"></Container>
             </div>
         </Container>
     );

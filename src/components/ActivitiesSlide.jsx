@@ -4,81 +4,95 @@ import { faChevronLeft, faChevronRight } from "@fortawesome/free-solid-svg-icons
 import { collection, getDocs } from "firebase/firestore";
 import { db } from "../config/firebase";
 import { NavLink } from "react-router-dom";
+import { activitiesCategoryOptions } from "../datamodel/activities_model";
 
-const geoOptions = ["All", "Boracay Island", "Mainland Malay"];
-
-const AttractionsPagination = () => {
-  const [attractions, setAttractions] = useState([]);
-  const [filteredAttractions, setFilteredAttractions] = useState([]);
+const ActivitiesSlide = () => {
+  const [activities, setActivities] = useState([]);
+  const [filteredActivities, setFilteredActivities] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const [selectedGeo, setSelectedGeo] = useState("All");
+  const [selectedCategory, setSelectedCategory] = useState("All");
 
-  const itemsPerPage = window.innerWidth < 768 ? 2 : 4; // Mobile-friendly
-  const totalPages = Math.ceil(filteredAttractions.length / itemsPerPage);
+  // const itemsPerPage = 4; // Only 1 row, 4 items per row
+  const [itemsPerPage, setItemsPerPage] = useState(window.innerWidth < 768 ? 2 : 4);
 
   useEffect(() => {
-    const fetchAttractions = async () => {
-      const querySnapshot = await getDocs(collection(db, "attractions"));
-      const attractionsData = querySnapshot.docs.map((doc) => ({
+    const handleResize = () => {
+      setItemsPerPage(window.innerWidth < 768 ? 2 : 4);
+    };
+
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
+  const totalPages = Math.ceil(filteredActivities.length / itemsPerPage);
+
+  // Fetch activities from Firebase
+  useEffect(() => {
+    const fetchActivities = async () => {
+      const querySnapshot = await getDocs(collection(db, "activities"));
+      const activitiesData = querySnapshot.docs.map((doc) => ({
         id: doc.id,
         ...doc.data(),
       }));
-      setAttractions(attractionsData);
+      setActivities(activitiesData);
     };
 
-    fetchAttractions();
+    fetchActivities();
   }, []);
 
+  // Filter activities based on selected category
   useEffect(() => {
     const filtered =
-      selectedGeo === "All"
-        ? attractions
-        : attractions.filter((attraction) => attraction.geo === selectedGeo);
-    setFilteredAttractions(filtered);
+      selectedCategory === "All"
+        ? activities
+        : activities.filter((activity) => activity.category === selectedCategory);
+    setFilteredActivities(filtered);
     setCurrentPage(1);
-  }, [attractions, selectedGeo]);
+  }, [activities, selectedCategory]);
 
-  const currentAttractions = filteredAttractions.slice(
+  // Paginate activities
+  const currentActivities = filteredActivities.slice(
     (currentPage - 1) * itemsPerPage,
     currentPage * itemsPerPage
   );
 
   return (
     <div className="home-section">
-      <h2 className="home-section-title">TOURIST HOT SPOTS</h2>
-      <p className="home-section-subtitle">Explore the best places to visit.</p>
+      <h2 className="home-section-title">TOURIST ACTIVITIES</h2>
+      <p className="home-section-subtitle">Discover exciting activities to enjoy.</p>
 
-      {/* Geo Filters */}
+      {/* Category Filters */}
       <div className="geo-filter-container text-center mb-4">
-        {geoOptions.map((geo) => (
+        {["All", ...activitiesCategoryOptions].map((category) => (
           <button
-            key={geo}
-            className={`geo-filter ${selectedGeo === geo ? "active" : ""}`}
-            onClick={() => setSelectedGeo(geo)}
+            key={category}
+            className={`geo-filter ${selectedCategory === category ? "active" : ""}`}
+            onClick={() => setSelectedCategory(category)}
           >
-            {geo}
+            {category}
           </button>
         ))}
       </div>
 
-      {/* Attractions Grid */}
+      {/* Activities Grid (1 Row, 4 Items) */}
       <div className="container">
-        {currentAttractions.length > 0 ? (
-          <div className="row justify-content-start">
-            {currentAttractions.map((attraction) => (
-              <div className="col-md-6 col-sm-12 mb-4" key={attraction.id}>
-                <AttractionCard attraction={attraction} />
-              </div>
-            ))}
-          </div>
-        ) : (
-          <p className="text-center text-gray-500">No attractions available</p>
-        )}
-      </div>
+      {currentActivities.length > 0 ? (
+        <div className="row justify-content-start">
+          {currentActivities.map((activity) => (
+            <div className="col-lg-3 col-md-6 col-sm-6 mb-4" key={activity.id}>
+              <ActivityCard activity={activity} />
+            </div>
+          ))}
+        </div>
+      ) : (
+        <p className="text-center text-gray-500">No activities available</p>
+      )}
+    </div>
+
 
       {/* Pagination & "View All" Button */}
-      <div className="d-flex justify-content-between align-items-center mt-4">
-        <NavLink to="/attractions" className="discover-more-btn">
+      <div className="d-flex justify-content-between align-items-center">
+        <NavLink to="/activities" className="discover-more-btn">
           View All
         </NavLink>
         <div className="d-flex align-items-center">
@@ -99,10 +113,10 @@ const AttractionsPagination = () => {
   );
 };
 
-// ✅ AttractionCard Component
-const AttractionCard = ({ attraction }) => {
+
+const ActivityCard = ({ activity }) => {
   const [isHovered, setIsHovered] = useState(false);
-  const images = [attraction.headerImage, ...(attraction.images?.slice(0, 1) || [])];
+  const images = [activity.headerImage, ...(activity.images?.slice(0, 1) || [])];
 
   return (
     <div
@@ -113,22 +127,21 @@ const AttractionCard = ({ attraction }) => {
       <ImageSlider images={images} isHovered={isHovered} />
       <div className="pagination-component-gradient"></div>
       <div className="home-button-content">
-        <p className="pagination-component-name">{attraction.name}</p>
-        <p className="home-button-caption">
-          {attraction.geo}, {attraction.address?.barangay}
-        </p>
+        <p className="pagination-component-name">{activity.name}</p>
+        <p className="home-button-caption">{activity.category}</p>
       </div>
     </div>
   );
 };
 
-// ✅ ImageSlider Component (Handles Image Hover Effects)
+
+
+
 const ImageSlider = ({ images, isHovered }) => {
   const [activeIndex, setActiveIndex] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
   const intervalRef = useRef(null);
 
-  // Preload images before showing them
   useEffect(() => {
     let loadedCount = 0;
     images.forEach((src) => {
@@ -163,7 +176,6 @@ const ImageSlider = ({ images, isHovered }) => {
           <div className="spinner"></div>
         </div>
       )}
-
       {images.map((image, index) => (
         <div
           key={index}
@@ -175,4 +187,4 @@ const ImageSlider = ({ images, isHovered }) => {
   );
 };
 
-export default AttractionsPagination;
+export default ActivitiesSlide;

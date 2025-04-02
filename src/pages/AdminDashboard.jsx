@@ -51,7 +51,7 @@ import {
 
 } from '@fortawesome/free-solid-svg-icons';
 import { Container, Row, Col, Button, Nav, Offcanvas, Collapse } from 'react-bootstrap';
-import StoryForm from '../components/AddStories';
+import StoryForm from '../components/stories/AddStories';
 import { faShopify } from '@fortawesome/free-brands-svg-icons';
 import { faCalendarCheck, faCommenting } from '@fortawesome/free-regular-svg-icons';
 import StoriesDataTable from '../admin/TableStories';

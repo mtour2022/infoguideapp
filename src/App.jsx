@@ -10,7 +10,6 @@ import Home from './pages/Home.jsx';
 import { useState, useContext } from 'react';
 import { AuthProvider, useAuth} from './auth/authentication.jsx';
 import AppNavBar from './components/navbar/AppNavBar';
-import AddStories from './components/AddStories.jsx';
 import AdminDashboard from './pages/AdminDashboard.jsx';
 
 function PrivateRoute({ element, ...rest }) {
@@ -38,7 +37,6 @@ function App() {
               <Route path="/home" element={<Home />}/>
               <Route path="*" element={<NotFound />}/>
               {/* to be private */}
-              <Route path="/stories+form" element={<AddStories />}/>
             </Routes>
           </Container >
           </div>

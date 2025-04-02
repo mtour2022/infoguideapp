@@ -903,9 +903,9 @@ body {
 
 /* Home section layout */
 .home-section {
-  padding-left: 100px;
+  padding-left: 70px;
   padding-right: 70px;
-  padding-top: 100px;
+  padding-top: 50px;
   /* padding-bottom: 100px; */
 }
 
@@ -1057,89 +1057,6 @@ body {
 
 
 
-@media (max-width: 768px) { /* Targets tablets and smaller screens */
-  .customized-sidebar {
-    display: none; /* Hides sidebar */
-  }
-
-  .customized-main-content {
-    width: 100% !important; /* Expands main content fully */
-  }
-
-  .slideshow{
-    height: 50vh;
-  }
-
-  .nav-button.left {
-    left: 10px;
-  }
-
-   /* Adjust nav button background to transparent for smaller screens */
-   .nav-button {
-    background: transparent; /* Makes the background transparent */
-    color: white;
-  }
-
-   /* Add hover effect */
-   .nav-button:hover {
-    background: rgba(0, 0, 0, 0.1);
-  }
-
-  .slideshow-title {
-    font-size: 2rem;
-  }
-
-  .dot {
-    width: 5px;
-    height: 5px;
-  }
-
-
-  .slideshow-title {
-    padding-left: 20px;
-    padding-right: 20px;
-  }
-  .slideshow-title::after {
-    padding-left: 20px;
-    padding-right: 20px;
-  }
-  .slideshow-title::before {
-    padding-left: 20px;
-    padding-right: 20px;
-  }
-
-  
-.beach-logo {
-  width: 300px; /* Adjust size as needed */
-}
-
-.home-section {
-  padding-left: 10px;
-  padding-right: 10px;
-  padding-top: 10px;
-  padding-bottom: 10px;
-}
-
-.home-section-title {
-  font-size: x-large;
-  font-weight: 500;
-  text-align: start;
-  padding-left: 10px;
-  padding-bottom: 10px;
-  padding-top: 20px;
-
-}
-
-
-.home-section-subtitle {
-  text-align: start;
-  font-size: medium;
-  padding-left: 10px;
-
-}
-
-}
-
 
 /* Ensure the attractions container centers the cards properly */
 .row.justify-content-center {
@@ -1177,6 +1094,7 @@ body {
   overflow: hidden;
   z-index: 1;
 }
+
 
 /* Individual images in the slider */
 .image-slider {
@@ -1256,10 +1174,10 @@ body {
 
 .pagination-component-name {
   font-family: 'BARABARA-final', sans-serif;
-  font-size: x-large;
-  letter-spacing: 2px;
+  font-size: large;
+  letter-spacing: 4px;
   text-transform: uppercase;
-  font-weight: 700;
+  font-weight: 500;
   color: white;
   text-align: left;
   margin: 0;
@@ -1279,18 +1197,53 @@ body {
 
 .geo-filter-container {
   display: flex;
-  justify-content: center;
+  justify-content: flex-start;
   gap: 10px;
+  overflow-x: auto;
+  white-space: nowrap;
+  flex-wrap: nowrap;
+  scrollbar-width: thin;
+  scrollbar-color: rgb(237, 237, 237) rgb(255, 255, 255); /* thumb and track */
+  padding-left: 10px;
+  padding-right: 10px;
+  padding-bottom: 10px;
+  cursor: grab;
 }
+
+.geo-filter-container:active {
+  cursor: grabbing;
+}
+
+.geo-filter-container::-webkit-scrollbar {
+  height: 5px;
+}
+
+.geo-filter-container::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 10px;
+}
+
+.geo-filter-container::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.geo-filter-container {
+  -webkit-overflow-scrolling: touch;
+}
+
+.geo-filter-container {
+  touch-action: pan-x;
+}
+
 
 .geo-filter {
   background-color: #f0f0f0;
   border: none;
   padding: 5px 10px;
-  font-size: 16px;
+  font-size: 14px;
   cursor: pointer;
   border-radius: 10px;
-  font-weight: bold;
+  font-weight: normal;
 
   transition: background-color 0.3s ease, color 0.3s ease;
 }
@@ -1313,10 +1266,7 @@ body {
   }
 
   
-.geo-filter-container {
-  justify-content: start;
-  padding-left: 10px;
-}
+
 }
 
 /* Add margin-bottom to attraction cards */
@@ -1331,8 +1281,8 @@ body {
   padding: 5px 10px;
   background-color: #1F89B2; /* Match geo-filter button color */
   color: white;
-  font-size: 16px;
-  font-weight: bold;
+  font-size: 14px;
+  font-weight: normal;
   border: none;
   border-radius: 10px;
   text-decoration: none;
@@ -1342,4 +1292,107 @@ body {
 .discover-more-btn:hover {
   background-color: #4ba2ff;
   transform: scale(1.05);
+}
+
+.pagination-component-gradient {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, #000000 1%, rgba(0, 0, 0, 0) 40%);
+  z-index: 2;
+}
+
+
+
+
+
+
+
+@media (max-width: 768px) { /* Targets tablets and smaller screens */
+  .customized-sidebar {
+    display: none; /* Hides sidebar */
+  }
+
+  .customized-main-content {
+    width: 100% !important; /* Expands main content fully */
+  }
+
+  .slideshow{
+    height: 50vh;
+  }
+
+  .nav-button.left {
+    left: 10px;
+  }
+
+   /* Adjust nav button background to transparent for smaller screens */
+   .nav-button {
+    background: transparent; /* Makes the background transparent */
+    color: white;
+  }
+
+   /* Add hover effect */
+   .nav-button:hover {
+    background: rgba(0, 0, 0, 0.1);
+  }
+
+  .slideshow-title {
+    font-size: 2rem;
+  }
+
+  .dot {
+    width: 5px;
+    height: 5px;
+  }
+
+
+  .slideshow-title {
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+  .slideshow-title::after {
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+  .slideshow-title::before {
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+
+  
+.beach-logo {
+  width: 300px; /* Adjust size as needed */
+}
+
+.home-section {
+  padding-left: 10px;
+  padding-right: 10px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+
+.home-section-title {
+  font-size: x-large;
+
+  text-align: start;
+  padding-left: 10px;
+  padding-bottom: 10px;
+  padding-top: 20px;
+
+}
+
+
+.home-section-subtitle {
+  text-align: start;
+  font-size: medium;
+  padding-left: 10px;
+
+}
+
+.geo-filter-container {
+  margin-top: 20px;
+  justify-content: start;
+
+  padding-left: 10px;
+}
+
 }
