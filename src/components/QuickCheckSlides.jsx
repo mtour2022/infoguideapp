@@ -123,7 +123,7 @@ const UpdatesCarousel = ({ collectionName, categoryOptions, classificationOption
             ))}
           </div>
         ) : (
-          <p className="text-center text-gray-500">No updates available</p>
+          <p className="text-center text-gray-500">No updateshereilable</p>
         )}
       </div>
 
