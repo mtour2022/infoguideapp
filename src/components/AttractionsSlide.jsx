@@ -49,7 +49,7 @@ const AttractionsSlide = () => {
   return (
     <div className="home-section">
       <h2 className="home-section-title">TOURIST HOT SPOTS</h2>
-      <p className="home-section-subtitle">Explore the best places to visit.</p>
+      <p className="home-section-subtitle">Explore the best attractions to visit.</p>
 
       <div className="geo-filter-container text-center mb-4">
         {geoOptions.map((geo) => (

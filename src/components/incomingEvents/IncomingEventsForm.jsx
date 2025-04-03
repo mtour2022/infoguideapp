@@ -288,7 +288,7 @@ export default function IncomingEventsForm() {
 
             const docRef = await addDoc(collection(db, "incomingEvents"), incomingEvents);
             const dealDoc = doc(db, "incomingEvents", docRef.id);
-            await dealDoc(dealDoc, { id: docRef.id });
+            await updateDoc(dealDoc, { id: docRef.id });
 
             Swal.fire({
                 title: "Incoming Events Submitted",

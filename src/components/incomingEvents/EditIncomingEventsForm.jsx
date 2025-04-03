@@ -78,6 +78,7 @@ const BodyImageDropzone = ({
 export default function EditIncomingEventsForm({editingItem, toAddForm}) {
     const [incomingEventsFormData, setIncomingEventsFormData] = useState(new IncomingEventsFormData());
     const [resetKey, setResetKey] = useState(0); // Reset trigger
+    const [selectedCategory, setSelectedCategory] = useState("");
 
 
     useEffect(() => {
@@ -223,13 +224,7 @@ export default function EditIncomingEventsForm({editingItem, toAddForm}) {
         }));
     };
 
-    const resetBodyImage = () => {
-        setIncomingEventsFormData((prev) => ({
-            ...prev,
-            body: [{ subtitle: "", body: "", image: null, image_source: ""}],
-        }));
-    };
-
+ 
     // Handler for dropping an image into a specific body section
     const onBodyImageDrop = (acceptedFiles, index) => {
         if (acceptedFiles.length > 0) {
@@ -287,22 +282,22 @@ export default function EditIncomingEventsForm({editingItem, toAddForm}) {
             try {
               // Handle header image replacement
               let headerImageURL;
-              if (storyFormData.headerImage instanceof File) {
+              if (incomingEventsFormData.headerImage instanceof File) {
                 // If a new header image is provided, delete the old one (if it exists)
                 if (editingItem && editingItem.headerImage) {
                   await deleteImageFromFirebase(editingItem.headerImage);
                 }
                 headerImageURL = await uploadImageToFirebase(
-                  storyFormData.headerImage,
-                  `incomingEvents/${Date.now()}_${storyFormData.headerImage.name}`
+                  incomingEventsFormData.headerImage,
+                  `incomingEvents/${Date.now()}_${incomingEventsFormData.headerImage.name}`
                 );
               } else {
-                headerImageURL = storyFormData.headerImage;
+                headerImageURL = incomingEventsFormData.headerImage;
               }
           
               // Handle body images replacement
               const bodyImagesURLs = await Promise.all(
-                storyFormData.body.map(async (section, index) => {
+                incomingEventsFormData.body.map(async (section, index) => {
                   if (section.image instanceof File) {
                     // If a new body image is provided, delete the old one (if it exists)
                     if (
@@ -344,7 +339,7 @@ export default function EditIncomingEventsForm({editingItem, toAddForm}) {
               };
           
               // Update the existing document using the story's id
-              const storyDocRef = doc(db, "incomingEvents", storyFormData.id);
+              const storyDocRef = doc(db, "incomingEvents", incomingEventsFormData.id);
               await updateDoc(storyDocRef, dealData);
           
               Swal.fire({
@@ -354,7 +349,6 @@ export default function EditIncomingEventsForm({editingItem, toAddForm}) {
               });
           
               // Optionally reset form data after a successful incoming events
-              setBodyImages([]);
               resetHeaderImage();
               toAddForm();
             } catch (error) {
@@ -425,37 +419,7 @@ export default function EditIncomingEventsForm({editingItem, toAddForm}) {
                                     </Form.Group>
                                     </Col>
                 </Row>
-                 <Row>
-                                    <Col md={6}>
-                                    <Form.Group className="mb-3">
-                                        <Form.Label className="label">Start Date & Time</Form.Label>
-                                        <Form.Control
-                                            type="datetime-local"
-                                            name="dateTimeStart"
-                                            value={incomingEventsFormData.dateTimeStart}
-                                            onChange={handleChange}
-                                            required
-                                        />
-                                    </Form.Group>
-                
-                
-                
-                                    </Col>
-                                    <Col md={6}>
-                                    <Form.Group className="mb-3">
-                                      <Form.Label className="label">End Date & Time</Form.Label>
-                                      <Form.Control
-                                        type="datetime-local"
-                                        name="dateTimeEnd"
-                                        value={incomingEventsFormData.dateTimeEnd}
-                                        onChange={handleChange}
-                                        min={incomingEventsFormData.dateTimeStart} // Prevents selecting an earlier date
-                                        disabled={!incomingEventsFormData.dateTimeStart} // Disable if Start Date is empty
-                                        required
-                                      />
-                                    </Form.Group>
-                                    </Col>
-                </Row>
+             
                 <Row>
                     <Col md={12}>
                         <Form.Group className="mb-3">

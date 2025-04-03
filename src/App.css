@@ -903,8 +903,8 @@ body {
 
 /* Home section layout */
 .home-section {
-  padding-left: 70px;
-  padding-right: 70px;
+  padding-left: 200px;
+  padding-right: 200px;
   padding-top: 50px;
   /* padding-bottom: 100px; */
 }
@@ -970,22 +970,41 @@ body {
 }
 
 /* Ensure content is stretched at the bottom */
-.home-button-content {
+/* .home-button-content {
   position: absolute;
   bottom: 0;
   left: 0;
   width: 100%;
-  padding: 12px; /* Space inside */
+  padding: 12px; 
   z-index: 3;
-  background: transparent; /* Optional darker overlay */
+  background: transparent;
+} */
+
+.text-background-solid-color {
+  
+  background: rgba(11, 92, 123, 0.95); /* Semi-transparent black */
+  display: inline-block; /* Makes the div only as tall as the content */
+  padding: 8px 12px; /* Adds spacing around the text */
+ /* Optional: adds rounded corners */
 }
+
+.home-button-content {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%; /* Allow it to size dynamically */
+  max-width: 100%; /* Prevent overflow */
+  padding: 8px 12px;
+  z-index: 3;
+}
+
 
 /* Text - Now fully bottom-left aligned */
 .home-button-name {
   font-family: 'Poppins', sans-serif;
-  font-size: small;
+  font-size: medium;
   letter-spacing: 2px;
-  font-weight: 700;
+  font-weight: 600;
   color: white;
   text-align: left;
   margin: 0;
@@ -995,7 +1014,7 @@ body {
 
 .home-button-caption {
   font-family: 'Poppins', sans-serif;
-  font-size: xx-small;
+  font-size: x-small;
   letter-spacing: 2px;
   font-weight: 500;
   color: white;
@@ -1004,6 +1023,7 @@ body {
   text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.3); /* Very soft black text shadow */
 }
 
+/* Custom class to apply z-index */
 
 
 .home-button-logo {
@@ -1305,6 +1325,15 @@ body {
 
 
 
+/* costumized large screen */
+@media (max-width: 1401px) {   
+  .home-section {
+    padding-left: 50px;
+    padding-right: 50px;
+
+  }
+}
+
 
 
 @media (max-width: 768px) { /* Targets tablets and smaller screens */
@@ -1363,11 +1392,13 @@ body {
   width: 300px; /* Adjust size as needed */
 }
 
+
 .home-section {
   padding-left: 10px;
   padding-right: 10px;
   padding-top: 10px;
   padding-bottom: 10px;
+  margin-top: 20px;
 }
 
 .home-section-title {

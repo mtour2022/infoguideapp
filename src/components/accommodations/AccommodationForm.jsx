@@ -102,7 +102,7 @@ export default function AccommodationForm({}) {
         subcategory: "Accommodation Establishments",
       }));
       setSelectedCategory("Hospitality & Lodging");
-      setSelectedSubcategory("Accommodation Establishments")
+      setSelectedSubcategory("accommodations")
     }
   }, [setAccommodationFormData, accommodationFormData.category, accommodationFormData.subcategory]);
   
@@ -297,7 +297,7 @@ export default function AccommodationForm({}) {
             </Col>
             <Col md={6}>
             <Form.Group controlId="subcategory" className="mb-3">
-              <Form.Label className="label">Category</Form.Label>
+              <Form.Label className="label">SubCategory</Form.Label>
               <Form.Control
                 type="text"
                 placeholder="Enter Subcategory"

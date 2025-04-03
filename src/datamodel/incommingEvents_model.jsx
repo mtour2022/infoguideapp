@@ -20,7 +20,7 @@
     
     export const incomingEventsCategoryOptions = [
         "Concerts & Live Music",
-        "Festivals & Carnivals",
+        "Festivals & Celebrations",
         "Sports Events",
         "Conferences & Seminars",
         "Workshops & Training",

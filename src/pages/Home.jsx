@@ -19,7 +19,9 @@ import {
   faBookBible,
   faBookMedical,
   faBookOpen,
+  faCalendarCheck,
 } from "@fortawesome/free-solid-svg-icons";
+import { incomingEventsCategoryOptions } from "../datamodel/incommingEvents_model";
 export default function Home() {
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
     const [isSmallScreen, setIsSmallScreen] = useState(window.innerWidth <= 768);
@@ -59,6 +61,8 @@ export default function Home() {
                         <FontAwesomeIcon icon={faPersonSwimming} className="me-2"/>Activities</button>
                     <button onClick={() => scrollToSection("tourism-updates")} className="discover-more-btn my-2 fw-bold" >
                         <FontAwesomeIcon icon={faBell} className="me-2"/>Updates</button>
+                    <button onClick={() => scrollToSection("tourism-incomingevents")} className="discover-more-btn my-2 fw-bold" >
+                        <FontAwesomeIcon icon={faCalendarCheck} className="me-2"/>Events</button>
                     <button onClick={() => scrollToSection("tourism-stories")} className="discover-more-btn my-2 fw-bold">
                         <FontAwesomeIcon icon={faBookOpen} className="me-2"/>Stories</button>
 
@@ -82,6 +86,15 @@ export default function Home() {
                         filterType="category"
                     />
                 </div>
+                <div id="tourism-incomingevents">
+                    <UpdatesCarousel
+                        collectionName="incomingEvents"
+                        categoryOptions={incomingEventsCategoryOptions}
+                        title="Incomming Events"
+                        caption="Get excited and participate on these incoming events!"
+                        filterType="category"
+                    />
+                </div>
                 <div id="tourism-stories">
                     <UpdatesCarousel
                         collectionName="stories"
@@ -91,6 +104,7 @@ export default function Home() {
                         filterType="classification"
                     />
                 </div>
+                
 
                 <Container className="empty-container"></Container>
                 <Container className="empty-container"></Container>

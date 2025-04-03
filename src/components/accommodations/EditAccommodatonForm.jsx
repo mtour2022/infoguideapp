@@ -146,11 +146,11 @@ export default function EditingAccommodationForm({editingItem, toAddForm}) {
       // Update selected category if editingItem has a category
       if (editingItem.category) {
         setSelectedCategory(editingItem.category || "");
-        setSelectedSubcategory(editingItem.subcategory || "");
+        setSelectedSubcategory("accommodations");
         setSelectedClassification(editingItem.classification || "");
       } else {
         setSelectedCategory("Hospitality & Lodging");
-        setSelectedSubcategory("Accommodation Establishments");
+        setSelectedSubcategory("accommodations");
       }
     }
   }, [editingItem]); // Dependency array includes editingItem
@@ -409,7 +409,7 @@ export default function EditingAccommodationForm({editingItem, toAddForm}) {
             </Col>
             <Col md={6}>
                         <Form.Group controlId="subcategory" className="mb-3">
-                          <Form.Label className="label">Category</Form.Label>
+                          <Form.Label className="label">Sub-Category</Form.Label>
                           <Form.Control
                             type="text"
                             placeholder="Enter Subcategory"
@@ -419,6 +419,7 @@ export default function EditingAccommodationForm({editingItem, toAddForm}) {
                             readOnly
                           />
           </Form.Group>
+          
             
             {/* {selectedCategory && subcategoriesOptions[selectedCategory] && (
                     <Form.Group controlId="formSubcategory" className="mb-3">
@@ -447,28 +448,28 @@ export default function EditingAccommodationForm({editingItem, toAddForm}) {
                     </Form.Group>
                 )} */}
             {selectedSubcategory && classificationOptions[selectedSubcategory] && (
-            <Form.Group controlId="formClassification" className="mb-3">
-            <Form.Label className="label">Classification</Form.Label>
-            <Form.Select
-              value={accommodationFormData.classification || ""}
-              onChange={(e) => {
-                const newClassification = e.target.value;
-                setSelectedClassification(newClassification);
-
-                // Update accommodationFormData
-                setAccommodationFormData((prev) => ({
-                  ...prev,
-                  classification: newClassification,
-                }));
-              }}
-            >
-              <option value="">Select Classification</option>
-              {classificationOptions[selectedSubcategory]?.map((classification, index) => (
-                <option key={index} value={classification}>{classification}</option>
-              ))}
-            </Form.Select>
-            </Form.Group>
-            )}
+                       <Form.Group controlId="formClassification" className="mb-3">
+                       <Form.Label className="label">Classification</Form.Label>
+                       <Form.Select
+                         value={accommodationFormData.classification || ""}
+                         onChange={(e) => {
+                           const newClassification = e.target.value;
+                           setSelectedClassification(newClassification);
+           
+                           // Update accommodationFormData
+                           setAccommodationFormData((prev) => ({
+                             ...prev,
+                             classification: newClassification,
+                           }));
+                         }}
+                       >
+                         <option value="">Select Classification</option>
+                         {classificationOptions[selectedSubcategory]?.map((classification, index) => (
+                           <option key={index} value={classification}>{classification}</option>
+                         ))}
+                       </Form.Select>
+                       </Form.Group>
+                       )}
             </Col>
         </Row >
         <Container className="empty-container"></Container>

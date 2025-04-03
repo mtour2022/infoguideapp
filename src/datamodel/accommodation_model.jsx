@@ -152,18 +152,22 @@ export const categoryOptions = [
   
 
   export const roomTypeOptions = [
-    'Single',
+    'Single', 'Standard Room',
     'Standard Double',
-    'Standard Twin Room',
+    'Standard Twin Room',    'Deluxe Room',
     'Deluxe Double Room',
     'Deluxe Triple Room',
     'Deluxe Family Room',
-    'Studio Room or Apartment',
-    'Junior Suite', 'Executive Suite',
-    'Presidential Suite',
-    'Bunk Bed',
+    'Studio Room or Apartment', 'Apartelle', 'Suite Room','Penthouse Suite','Ambassador Suite','Mandarin Grand Suite',
+    'Junior Suite', 'Executive Suite','Loft Suite',
+    'Presidential Suite','Luxury Room',
+    'Superior Room', 'Premier Room','Honeymoon Room', 'Family Room',
+    'Bunk Bed',   "Bachelor's Pad",
     'Villa',
     'Triple Room',
+    'Quad Room',
+    'Queen Bed',
+    'King Bed',
     'Quad Room',
     'Connecting Room',
     'Cabana',
@@ -176,15 +180,15 @@ export const categoryOptions = [
     'Indoor Dining',
     'Basic Fitness Center',
     'Spa & Wellness Center',
-    'Swimming Pool',
-    'Pool Bar',
+    'Swimming Pool',  'Sky Deck Pool',
+    'Pool Bar',   'Baggage Storage',
     'Rooftop Bar / Lounge',
     'Game Room & Entertainment Areas',
     'Playgrounds & Kids’ Areas',
     'Private Beach Access',
     'Banquet & Event Halls',
     'Business & Conference Rooms',
-    'Indoor Cafe'
+    'Indoor Cafe',    'Function Hall',    'Karaoke Room', 'View Deck',
   ];
   
   export const amenitiesOptions = [
@@ -203,6 +207,6 @@ export const categoryOptions = [
     'Complimentary Breakfast',
     'Laundry Services',
     '24/7 Security Guard',
-    'Golf Course Access',
+    'Golf Course Access',  'Room Service',
   ];
   
