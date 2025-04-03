@@ -32,9 +32,8 @@ function App() {
             <Routes>
               <Route path="/infoguideapp/home" element={<AdminDashboard />}/>
               <Route path="/" element={<AdminDashboard />}/>
-
               <Route path="/infoguideapp/admin" element={<AdminDashboard />}/>
-              <Route path="/infoguideapp/home" element={<Home />}/>
+              <Route path="/infoguideapp/home" element={<AdminDashboard />}/>
               <Route path="*" element={<NotFound />}/>
               {/* to be private */}
             </Routes>
