@@ -30,11 +30,11 @@ function App() {
           <div className='content-wrapper'>
           <Container fluid >
             <Routes>
-              <Route path="/infoguideapp/" element={<Home />}/>
+              <Route path="/infoguideapp/home" element={<Home />}/>
               <Route path="/" element={<Home />}/>
 
-              <Route path="/admin" element={<AdminDashboard />}/>
-              <Route path="/home" element={<Home />}/>
+              <Route path="/infoguideapp/admin" element={<AdminDashboard />}/>
+              <Route path="/infoguideapp/home" element={<Home />}/>
               <Route path="*" element={<NotFound />}/>
               {/* to be private */}
             </Routes>
