@@ -116,7 +116,8 @@ const UpdatesCarousel = ({ collectionName, categoryOptions, classificationOption
         {currentUpdates.length > 0 ? (
           <div className="row justify-content-start">
             {currentUpdates.map((update) => (
-              <div className="col-lg-3 col-md-6 col-sm-6 col-6 mb-4" key={update.id}>
+              <div className="col-md-6 col-sm-12 mb-4"
+               key={update.id}>
                 <UpdateCard update={update} collectionName={collectionName} />
               </div>
             ))}
