@@ -100,7 +100,7 @@ export default function Home() {
                         collectionName="stories"
                         classificationOptions={storiesClassificationOptions}
                         title="Tourism Stories"
-                        caption="Read and be inspired."
+                        caption="Get your me time, Read and be inspired."
                         filterType="classification"
                     />
                 </div>
