@@ -1,3 +1,5 @@
+
+
 import { useState, useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChevronLeft, faChevronRight } from "@fortawesome/free-solid-svg-icons";
@@ -5,10 +7,9 @@ import { collection, getDocs } from "firebase/firestore";
 import { db } from "../config/firebase";
 import { NavLink } from "react-router-dom";
 import { Form, Row, Col } from "react-bootstrap";
-import DatePicker from "react-datepicker";
-import "react-datepicker/dist/react-datepicker.css"; // Import DatePicker styles
-import { parseISO, format } from 'date-fns';
 import { faCalendar } from "@fortawesome/free-regular-svg-icons";
+import { parseISO, format } from 'date-fns';
+
 
 const UpdatesCarousel = ({ collectionName, categoryOptions, classificationOptions, title, caption, filterType }) => {
   const [updates, setUpdates] = useState([]);
@@ -17,7 +18,6 @@ const UpdatesCarousel = ({ collectionName, categoryOptions, classificationOption
   const [selectedFilter, setSelectedFilter] = useState("All");
   const [searchQuery, setSearchQuery] = useState("");
   const [itemsPerPage, setItemsPerPage] = useState(window.innerWidth < 768 ? 2 : 4);
-  const [dateRange, setDateRange] = useState([null, null]); // [startDate, endDate]
 
   useEffect(() => {
     const handleResize = () => {
@@ -30,6 +30,14 @@ const UpdatesCarousel = ({ collectionName, categoryOptions, classificationOption
   const totalPages = Math.ceil(filteredUpdates.length / itemsPerPage);
 
   useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentPage((prev) => (prev < totalPages ? prev + 1 : 1));
+    }, 8000);
+
+    return () => clearInterval(interval);
+  }, [totalPages]);
+
+  useEffect(() => {
     const fetchUpdates = async () => {
       const querySnapshot = await getDocs(collection(db, collectionName));
       const updatesData = querySnapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
@@ -40,21 +48,14 @@ const UpdatesCarousel = ({ collectionName, categoryOptions, classificationOption
 
   useEffect(() => {
     let filtered = selectedFilter === "All" ? updates : updates.filter((update) => update[filterType] === selectedFilter);
-    
+
     if (searchQuery) {
       filtered = filtered.filter((update) => update.title.toLowerCase().includes(searchQuery.toLowerCase()));
     }
 
-    if (dateRange[0]) {
-      filtered = filtered.filter((update) => new Date(update.dateTimeStart) >= new Date(dateRange[0]));
-    }
-    if (dateRange[1]) {
-      filtered = filtered.filter((update) => new Date(update.dateTimeEnd) <= new Date(dateRange[1]));
-    }
-
     setFilteredUpdates(filtered);
     setCurrentPage(1);
-  }, [updates, selectedFilter, searchQuery, filterType, dateRange]);
+  }, [updates, selectedFilter, searchQuery, filterType]);
 
   const currentUpdates = filteredUpdates.slice(
     (currentPage - 1) * itemsPerPage,
@@ -68,21 +69,11 @@ const UpdatesCarousel = ({ collectionName, categoryOptions, classificationOption
       <h2 className="home-section-title">{title}</h2>
       <p className="home-section-subtitle">{caption}</p>
 
-      <div className="geo-filter-container text-center mb-4">
-        {["All", ...filterOptions].map((option) => (
-          <button
-            key={option}
-            className={`geo-filter ${selectedFilter === option ? "active" : ""}`}
-            onClick={() => setSelectedFilter(option)}
-          >
-            {option}
-          </button>
-        ))}
-      </div>
+      
 
       <div className="search-container text-center mb-4 mx-1">
         <Row className="row">
-          <Col md={8} sm={6} xs={6}  className="col px-2">
+          <Col md={8} sm={6} xs={6} className="col px-2">
             <Form.Control
               type="text"
               placeholder={`Search here`}
@@ -90,41 +81,35 @@ const UpdatesCarousel = ({ collectionName, categoryOptions, classificationOption
               onChange={(e) => setSearchQuery(e.target.value)}
             />
           </Col>
-          
-            <Col md={3} sm={6} xs={6} className="col px-2" style={{ position: 'relative', zIndex: 10 }}>
-              <Form.Group>
-                <DatePicker
-                  selected={dateRange[0]}
-                  onChange={(dates) => setDateRange(dates)}
-                  startDate={dateRange[0]}
-                  endDate={dateRange[1]}
-                  selectsRange
-                  isClearable
-                  dateFormat="MM/dd/yyyy"
-                  placeholderText="Select Date Range"
-                  className="form-control"
-                />
-              </Form.Group>
-            </Col>
-         
+
+          <Col md={4} sm={6} xs={6} className="col px-2">
+            <Form.Control
+              as="select"
+              value={selectedFilter}
+              onChange={(e) => setSelectedFilter(e.target.value)}
+            >
+              <option value="" disabled>
+                {filterType === "category" ? "Categories" : "Classification"}
+              </option>
+              {["All", ...filterOptions].map((option) => (
+                <option key={option} value={option}>
+                  {option}
+                </option>
+              ))}
+            </Form.Control>
+          </Col>
+
         </Row>
       </div>
 
-
-
-      <div className="container">
-        {currentUpdates.length > 0 ? (
-          <div className="row justify-content-start">
-            {currentUpdates.map((update) => (
-              <div className="col-md-6 col-sm-12 mb-4"
-               key={update.id}>
-                <UpdateCard update={update} collectionName={collectionName} />
-              </div>
-            ))}
-          </div>
-        ) : (
-          <p className="text-center text-gray-500">No updateshereilable</p>
-        )}
+      <div className="carousel-wrapper position-relative">
+        <div className="row justify-content-start">
+          {currentUpdates.map((update) => (
+            <div className="col-md-6 col-sm-12 mb-4" key={update.id}>
+              <UpdateCard update={update} collectionName={collectionName} />
+            </div>
+          ))}
+        </div>
       </div>
 
       <div className="d-flex justify-content-between align-items-center">
@@ -152,6 +137,7 @@ const UpdatesCarousel = ({ collectionName, categoryOptions, classificationOption
 const UpdateCard = ({ update, collectionName }) => {
   const [isLoading, setIsLoading] = useState(true);
 
+
   useEffect(() => {
     const img = new Image();
     img.src = update.headerImage;
@@ -162,28 +148,23 @@ const UpdateCard = ({ update, collectionName }) => {
   const dateStart = update.dateTimeStart ? parseISO(update.dateTimeStart) : null;
   const dateEnd = update.dateTimeEnd ? parseISO(update.dateTimeEnd) : null;
 
-  // Format the dates only if they are valid
   const formattedDateStart = dateStart 
-    ? new Intl.DateTimeFormat('en-US', {
-        month: 'long',
-        day: '2-digit',
-        year: 'numeric',
-        hour: 'numeric',
-        minute: '2-digit',
-        hour12: true,
-      }).format(dateStart) 
-    : null; // Fallback if dateStart is not available
+  ? new Intl.DateTimeFormat('en-US', {
+      month: 'long',
+      day: '2-digit',
+      year: 'numeric',
+    }).format(dateStart) 
+  : null;
 
-  const formattedDateEnd = dateEnd
-    ? new Intl.DateTimeFormat('en-US', {
-        month: 'long',
-        day: '2-digit',
-        year: 'numeric',
-        hour: 'numeric',
-        minute: '2-digit',
-        hour12: true,
-      }).format(dateEnd)
-    : null; // Fallback if dateEnd is not available
+const formattedDateEnd = dateEnd
+  ? new Intl.DateTimeFormat('en-US', {
+      month: 'long',
+      day: '2-digit',
+      year: 'numeric',
+    }).format(dateEnd)
+  : null;
+
+
 
   return (
     <div className="pagination-component-card">
@@ -202,14 +183,21 @@ const UpdateCard = ({ update, collectionName }) => {
         ></div>
       </div>
       <div className="home-button-content text-background-solid-color">
-        <p className="home-button-name">{update.title}</p>
-        <p className="home-button-caption fw-bold mb-2 mt-2">{(update.category || update.classification)?.toUpperCase()}</p>
-        {formattedDateStart && (
-          <p className="home-button-caption">
-            <FontAwesomeIcon icon={faCalendar} className="me-2" />
-            {collectionName === "updates" ? formattedDateStart : `${formattedDateStart} - ${formattedDateEnd}`}
-          </p>
-        )}
+        <p className="card-button-name">{update.title}</p>
+        <p className="card-button-caption">{Array.isArray(update.origin) ? update.origin.join(', ') : ''}</p>
+        <p className="card-button-caption">{update.name}</p>
+        <p className="card-button-caption fw-bold mb-2 mt-3">{(update.category || update.classification)?.toUpperCase()}</p>
+        {formattedDateStart ? (
+            <p className="card-button-caption">
+              <FontAwesomeIcon icon={faCalendar} className="me-2" />
+              {collectionName === "updates" 
+                ? formattedDateStart 
+                : formattedDateStart && formattedDateEnd 
+                  ? `${formattedDateStart} - ${formattedDateEnd}` 
+                  : formattedDateStart
+              }
+            </p>
+          ) : null}
 
       </div>
     </div>

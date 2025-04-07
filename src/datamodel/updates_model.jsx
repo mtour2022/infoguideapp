@@ -35,10 +35,12 @@ export default class UpdateFormData {
       "Events",
       "Guidelines",
       "Policies",
+      "Awards",
       "Emergency Alerts",
       "Community Updates",
       "Opportunities",
       "Public Notices",
       "Press Releases",
+
     ];
   

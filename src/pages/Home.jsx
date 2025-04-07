@@ -22,6 +22,8 @@ import {
   faCalendarCheck,
 } from "@fortawesome/free-solid-svg-icons";
 import { incomingEventsCategoryOptions } from "../datamodel/incommingEvents_model";
+import FooterCustomized from "../components/footer/Footer";
+import AttractionsActivitiesShowcase from "../components/homebutton2";
 export default function Home() {
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
     const [isSmallScreen, setIsSmallScreen] = useState(window.innerWidth <= 768);
@@ -71,13 +73,20 @@ export default function Home() {
                 <div id="home-buttons">
                     <HomeButtons />
                 </div>
-                <div id="attractions-slide">
+                {/* <div id="attractions-slide">
                     <AttractionsSlide />
                 </div>
                 <div id="activities-slide">
                     <ActivitiesSlide />
                 </div>
-                <div id="tourism-updates">
+                 */}
+                 <AttractionsActivitiesShowcase></AttractionsActivitiesShowcase>
+                
+
+
+            </div>
+            <div>
+            <div id="tourism-updates">
                     <UpdatesCarousel
                         collectionName="updates"
                         categoryOptions={updatesCategoryOptions}
@@ -100,17 +109,16 @@ export default function Home() {
                         collectionName="stories"
                         classificationOptions={storiesClassificationOptions}
                         title="Tourism Stories"
-                        caption="Get your me time, Read and be inspired."
+                        caption="Read, Be inspired and you might find the one!"
                         filterType="classification"
                     />
                 </div>
-                
-
-                <Container className="empty-container"></Container>
-                <Container className="empty-container"></Container>
-                <Container className="empty-container"></Container>
-                <Container className="empty-container"></Container>
             </div>
+            <div className="home-section">
+                <FooterCustomized></FooterCustomized>
+            </div>
+       
+
         </Container>
     );
 }

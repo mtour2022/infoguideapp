@@ -5,7 +5,7 @@ import HomeButtonFormData from "../datamodel/homeButtons_model";
 // Creating objects using the model
 const button1 = new HomeButtonFormData();
 button1.name = "ACCOMMODATION ESTABLISHMENTS";
-button1.link = "accommodations";
+button1.link = "/infoguideapp/accommodations";
 button1.image = "https://firebasestorage.googleapis.com/v0/b/infoguide-13007.firebasestorage.app/o/homeButtons%2Faccommodations.png?alt=media&token=b925b582-a826-4c41-867c-c0d0b395c73d";
 button1.color = "#A051EE";
 button1.caption = "Find the best places to stay.";

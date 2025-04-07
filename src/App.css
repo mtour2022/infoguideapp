@@ -16,7 +16,7 @@
 
 /* Text Default */
 body {
-  font-family: 'Inter', sans-serif !important;
+  font-family: 'Poppins', sans-serif !important;
 }
 
 .col {
@@ -48,7 +48,7 @@ body {
 
 /* containers */
 .content-wrapper {
-  padding-top: 100px !important; /* Adjust based on your navbar height */
+  padding-top: 110px !important; /* Adjust based on your navbar height */
 }
 
 .container,
@@ -556,6 +556,20 @@ body {
 }
 /* slideshow */
 
+.slideshow-title-small {
+  font-family: 'BARABARA-final', sans-serif;
+  font-size: 3rem;
+  font-style: normal;
+  letter-spacing: 2px;
+  text-align: center;
+  text-transform: uppercase;
+  position: relative; /* Ensure positioning context for absolute children */
+  display: inline-block;
+  color: white; /* Makes the text itself transparent to show the gradient */
+    text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.4); /* Stronger shadow effect */
+
+}
+
 .slideshow-title {
   font-family: 'BARABARA-final', sans-serif;
   font-size: 3rem;
@@ -697,8 +711,8 @@ body {
 
 .video-control {
   margin-top: 10px;
-  height: 35px;
-  width: 35px;
+  height: 20px;
+  width: 20px;
   background: transparent;
   border: none;
   cursor: pointer;
@@ -831,7 +845,8 @@ body {
 
 
 .read-more {
-  font-family: 'BARABARA-final', sans-serif;
+  font-family: 'Poppins', sans-serif;
+  font-weight: 800;
   font-size: small;
   letter-spacing: 2px;
   text-transform: uppercase;
@@ -969,37 +984,47 @@ body {
   z-index: 2;
 }
 
-/* Ensure content is stretched at the bottom */
-/* .home-button-content {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-  padding: 12px; 
-  z-index: 3;
-  background: transparent;
-} */
 
 .text-background-solid-color {
   
-  background: rgba(11, 92, 123, 0.95); /* Semi-transparent black */
+  background: white; /* Semi-transparent black */
   display: inline-block; /* Makes the div only as tall as the content */
   padding: 8px 12px; /* Adds spacing around the text */
  /* Optional: adds rounded corners */
+}
+
+/* Text - Now fully bottom-left aligned */
+.card-button-name {
+  font-family: 'Poppins', sans-serif;
+  font-size: large;
+  letter-spacing: 2px;
+  font-weight: 700;
+  color: #1F89B2;
+  text-align: left;
+  margin: 0;
+  
+}
+
+.card-button-caption {
+  font-family: 'Poppins', sans-serif;
+  font-size: x-small;
+  letter-spacing: 2px;
+  font-weight: 500;
+  color: #202020;
+  text-align: left;
+  margin: 0;
 }
 
 .home-button-content {
   position: absolute;
   bottom: 0;
   left: 0;
-  width: 100%; /* Allow it to size dynamically */
-  max-width: 100%; /* Prevent overflow */
+  width: 100%;
+  max-width: 100%;
   padding: 8px 12px;
   z-index: 3;
 }
 
-
-/* Text - Now fully bottom-left aligned */
 .home-button-name {
   font-family: 'Poppins', sans-serif;
   font-size: medium;
@@ -1008,8 +1033,10 @@ body {
   color: white;
   text-align: left;
   margin: 0;
-  text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.3); /* Very soft black text shadow */
-  
+  text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.3);
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  white-space: normal;
 }
 
 .home-button-caption {
@@ -1020,7 +1047,10 @@ body {
   color: white;
   text-align: left;
   margin: 0;
-  text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.3); /* Very soft black text shadow */
+  text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.3);
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  white-space: normal;
 }
 
 /* Custom class to apply z-index */
@@ -1321,6 +1351,559 @@ body {
   z-index: 2;
 }
 
+.carousel-wrapper {
+  position: relative;
+}
+
+.list-card-tile {
+  display: flex;
+  flex-direction: column; /* Ensure all content stacks vertically */
+  transition: transform 0.3s ease; /* Smooth transition on scale */
+}
+
+.list-card-tile:hover {
+  transform: scale(1.05); /* Apply the zoom effect to the whole tile */
+}
+
+.card-image {
+  position: relative; /* To allow absolute positioning of content inside it */
+  height: 200px;
+  background-size: cover;
+  background-position: center;
+  transition: transform 0.3s ease; /* Smooth transition on scale */
+}
+
+.list-card-tile:hover .card-image {
+  transform: scale(1.04); /* Zoom in effect when the list card is hovered */
+}
+
+.list-card-card {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 380px;
+  min-height: 380px;
+}
+
+
+
+.card-logo {
+  position: absolute;
+  padding: 2px;
+  top: 10px;
+  left: 10px;
+  height: 50px; /* Set fixed height */
+  width: auto;  /* Automatically adjust the width to maintain the aspect ratio */
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  background-color: white; /* To handle PNG logos */
+  object-fit: cover; /* Ensures the logo covers the space without distortion */
+}
+
+
+.card-accreditation{
+  position: absolute;
+  bottom: 10px; /* Positions them at the bottom of the image */
+  left: 10px; /* Adds some left padding */
+  color: white; /* White text color */
+  font-size: 12px; /* Small font size */
+  text-shadow: 0 2px 5px rgba(0, 0, 0, 0.3); /* Soft shadow for text readability */
+  display: flex;
+  align-items: center;
+}
+.card-ratings {
+  position: absolute;
+  bottom: 10px; /* Positions them at the bottom of the image */
+  right: 10px; /* Adds some left padding */
+  color: white; /* White text color */
+  font-size: 12px; /* Small font size */
+  text-shadow: 0 2px 5px rgba(0, 0, 0, 0.3); /* Soft shadow for text readability */
+  display: flex;
+  align-items: center;
+}
+/* 
+.card-accreditation {
+  font-weight: bold;
+  padding-right: 5px;
+}
+
+.card-ratings {
+  display: flex;
+  align-items: center;
+  padding-left: 5px;
+} */
+
+.list-card-star-icon {
+  font-size: 14px;
+  margin-right: 3px;
+}
+
+
+.list-card-title {
+  font-family: "Poppins";
+  font-size: 1.25rem;
+  font-weight: bold;
+}
+
+.list-card-subtitle {
+  font-family: "Poppins";
+  font-weight: 1000;
+  font-size: 10px;
+}
+
+.list-card-text {
+  font-size: 12px;
+  font-family: "Poppins";
+
+}
+
+
+
+.list-card-accreditation small,
+.list-card-ratings small {
+  font-weight: 400; /* Set to normal weight for small text */
+}
+
+.list-card-star-icon {
+  color: #ffd700; /* Gold color for the star */
+  margin-right: 5px; /* Adds space between the star and the rating */
+}
+
+.list-card-accreditation .check-icon {
+  margin-right: 5px; /* Space between check icon and accreditation text */
+  color: #28a745; /* Green color for the check icon */
+}
+
+
+.dot-logo {
+  width: 20px; /* Adjust the logo size */
+  height: 20px;
+  margin-right: 5px; /* Space between the logo and accreditation text */
+}
+
+.search-button {
+  width: 100%;
+  background: linear-gradient(to right, #1F89B2, #0c5d7d);
+  border: none !important;
+  color: white;
+  padding: 0.375rem 0.75rem; /* Matches Bootstrap's form-control */
+  font-size: 1rem;
+  line-height: 1.5;
+  height: calc(1.5em + 0.75rem + 2px); /* ~38px, same as default input */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.sort-options-button {
+  width: 100% !important;
+  background: white !important;
+  border: 0.5px solid lightgrey !important;
+  color: #6b7280 !important; /* Tailwind gray-500 */
+  padding: 0.375rem 0.75rem !important; /* Matches Bootstrap's form-control */
+  font-size: 1rem !important;
+  line-height: 1.5 !important;
+  height: calc(1.5em + 0.75rem + 2px) !important; /* ~38px, same as default input */
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 0.5rem !important;
+}
+
+
+.search-button:hover {
+  background: linear-gradient(to right, #1F89B2, #1aaae2) !important;
+}
+.sort-options-button:hover {
+  background: white !important;
+  border-color: #1F89B2 !important;
+  color: #1F89B2 !important;}
+
+.autocomplete-dropdown {
+  max-height: 200px;
+  overflow-y: auto;
+  z-index: 1050; /* Above most elements */
+}
+
+.suggestion-item:hover {
+  background-color: #f1f1f1;
+}
+
+/* Ensures the dropdown has a fixed width */
+.sort-dropdown .dropdown-toggle {
+  width: 200px; /* Adjust as needed */
+  text-align: center; /* Ensures the text is aligned properly */
+}
+
+.sort-dropdown-menu {
+  min-width: 200px; /* Keeps the dropdown menu width fixed */
+}
+
+/* Optional: Adjust the font size of the dropdown items for better consistency */
+.sort-dropdown-menu .dropdown-item {
+  font-size: 0.9rem; /* Adjust font size for better readability */
+}
+
+/* Style for filter button group */
+.filter-button-group {
+  margin-bottom: 1.5rem;
+}
+
+.filter-button-group h6 {
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+  font-size: 1.1rem;
+}
+
+
+
+/* Style for the filter buttons */
+.filter-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: center; /* Centers buttons horizontally */
+  align-items: center; /* Optional: Centers buttons vertically if they are on multiple rows */
+  width: 100%;
+}
+
+
+.filter-button-group .btn {
+  font-size: 0.875rem;
+  margin-right: 10px !important;
+  margin-bottom: 10px !important;
+
+  padding: 6px 12px;
+  border-radius:5px;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+/* Active button style */
+.filter-button-group .btn-primary {
+  background-color: #007bff;
+  border-color: #007bff;
+  color: white;
+}
+
+/* Inactive button style */
+.filter-button-group .btn-outline-secondary {
+  background-color: transparent;
+  border-color: #ccc;
+  color: #007bff;
+}
+
+.filter-button-group .btn-outline-secondary:hover {
+  background: white !important;
+  border-color: #1F89B2 !important;
+  color: #1F89B2 !important;
+}
+
+.filter-button-group .btn-primary:hover {
+  background: linear-gradient(to right, #1F89B2, #1aaae2) !important;
+  border-color: #4fc0ec !important;
+  color: white !important;
+}
+
+
+/* Full-screen overlay for the map */
+/* Full-screen overlay for the map */
+.map-popup-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.7);
+  z-index: 1000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+}
+
+/* Style for the close button */
+.close-button {
+  position: absolute;
+  top: 30px;
+  right: 30px;
+  padding: 10px;
+  background-color: #d23838 !important;
+  color: white !important;
+  border: none !important;
+  border-radius: 50%;
+  font-size: 16px;
+  cursor: pointer;
+  z-index: 1100;
+}
+
+/* Map container */
+.map-popup-container {
+  position: relative;
+  height: 100%;
+  width: 100%;
+  border-radius: 16px; /* Rounded edges */
+  overflow: hidden;
+  background-color: #fff;
+}
+/* Bottom card layout updated */
+.map-bottom-card {
+  position: absolute;
+  bottom: 10px;
+  left: 10px;
+  width: 320px;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.2);
+  padding: 12px;
+  z-index: 1100;
+  transition: transform 0.3s ease, opacity 0.3s ease;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+}
+
+.map-card-content {
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+.map-card-content img {
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
+  border-radius: 8px;
+  margin-right: 12px;
+}
+
+.map-card-text {
+  flex: 1;
+  text-align: start;
+}
+
+.map-card-text h4 {
+  margin: 0 0 4px;
+  font-size: 1.1rem;
+}
+
+.map-card-text p {
+  margin: 0;
+  font-size: 0.9rem;
+  color: #555;
+}
+
+.map-buttons-container {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  z-index: 1000;
+  display: flex;
+  flex-direction: column; /* Stack the buttons vertically */
+  gap: 10px; /* Add space between buttons */
+  align-items: flex-start; /* Align buttons to the start (left) */
+}
+
+
+.map-toggle-button,
+.map-toggle-location-button {
+  background-color: rgba(0, 0, 0, 0.5) !important;
+  color: white !important;
+  border: none !important;
+  padding: 10px 15px;
+  font-size: 12px !important;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease-in-out, transform 0.2s ease;
+  text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.3);
+
+}
+
+.map-toggle-button:hover,
+.map-toggle-location-button:hover {
+  background-color: rgb(0, 0, 0, 0.9) !important;
+}
+
+.map-toggle-button:focus,
+.map-toggle-location-button:focus {
+  outline: none;
+}
+
+.map-toggle-button:active,
+.map-toggle-location-button:active {
+  transform: scale(0.98);
+}
+
+.custom-map-marker {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-color: white;
+  border: 2px solid #ffffff; /* Primary blue border */
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+  position: relative;
+  overflow: hidden;
+  transform: translate(-50%, -100%);
+  cursor: pointer;
+}
+
+.custom-map-marker img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+}
+
+.custom-map-marker::after {
+  content: "";
+  position: absolute;
+  bottom: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 0;
+  height: 0;
+  border-left: 8px solid transparent;
+  border-right: 8px solid transparent;
+  border-top: 10px solid #007bff; /* Same as border color */
+}
+
+
+.footer-component {
+  background-color: white;  /* Set background to white */
+  color: #333333;  /* Set text color to dark grey */
+  padding-top: 20px;
+  padding-bottom: 20px;
+  margin-top: 50px;  /* Spacing above the footer */
+}
+
+.footer-component a {
+  color: #007bff;  /* Color for the links */
+  text-decoration: none;  /* Remove underline */
+}
+
+.footer-component a:hover {
+  text-decoration: underline;  /* Underline on hover */
+}
+
+.footer-component .map-wrapper {
+  position: relative;
+}
+
+.footer-component .border-gray {
+  border-top: 1px solid #ddd;  /* Light gray border on top */
+}
+
+.footer-component h5 {
+  font-size: 1.25rem;
+  font-weight: bold;
+}
+
+.footer-component p {
+  font-size: 0.875rem;
+  margin-bottom: 8px;
+}
+
+/* Targeting elements with class names starting with 'article-' */
+
+/* Header Image Styling */
+.article-headerImage {
+  object-fit: cover; /* Ensures the image covers the space */
+  height: 500px !important; /* Adjust the height as needed */
+  width: 100%; /* Ensure full width */
+  border-radius: 8px; /* Optional: rounded corners */
+  display: block;
+  margin-bottom: 20px;
+}
+
+/* Title Styling */
+.article-title {
+  font-size: 2.5rem; /* Increase the font size */
+  font-weight: bold; /* Make the title bold */
+  color: #333; /* Darker color for better readability */
+  text-align: center; /* Center the title */
+  margin-bottom: 20px;
+  font-family: 'Poppins';
+}
+
+.article-body-image {
+  object-fit: cover; /* Ensures images fill the space without distorting */
+  height: 250px !important; /* Set the same fixed height for gallery images */
+  width: 100%; /* Ensure full width */
+  border-radius: 8px; /* Optional: rounded corners */
+}
+
+.article-body-video {
+  object-fit: cover; /* Ensures images fill the space without distorting */
+  height: 500px !important; /* Set the same fixed height for gallery images */
+  width: 100%; /* Ensure full width */
+  border-radius: 8px; /* Optional: rounded corners */
+}
+
+/* Gallery Image Styling */
+.article-gallery {
+  object-fit: cover; /* Ensures images fill the space without distorting */
+  height: 200px !important; /* Set the same fixed height for gallery images */
+  width: 100%; /* Ensure full width */
+  border-radius: 8px; /* Optional: rounded corners */
+}
+
+/* Ensure all gallery images are the same size */
+.article-gallery-col {
+  padding: 0; /* Remove padding around images */
+  display: flex;
+  align-items: center; /* Center images vertically in their column */
+}
+
+/* Responsive Design for Mobile */
+@media (max-width: 767px) {
+  /* Adjust for small screens */
+  .article-title {
+    font-size: 2rem; /* Slightly smaller font on mobile */
+  }
+
+  /* Adjust header image height for mobile */
+  .article-headerImage {
+    height: 150px !important; /* Smaller header image on mobile */
+  }
+
+  .article-body-video {
+    height: 250px !important; /* Set the same fixed height for gallery images */
+  }
+  
+}
+
+
+@media (max-width: 576px) {
+  .footer-component {
+    padding-top: 15px;
+    padding-bottom: 15px;
+  }
+
+  .footer-component h5 {
+    font-size: 1rem;
+  }
+
+  .footer-component p {
+    font-size: 0.75rem;
+  }
+}
+
+
+
+
+@media (max-width: 767px) {
+  .list-card-tile {
+    margin-bottom: 20px;
+  }
+}
+
+@media (max-width: 992px) {
+  .list-card-tile {
+    margin-bottom: 15px;
+  }
+}
+
+
 
 
 
@@ -1337,6 +1920,16 @@ body {
 
 
 @media (max-width: 768px) { /* Targets tablets and smaller screens */
+  .content-wrapper {
+    padding-top: 50px;
+  }
+  .map-bottom-card {
+    bottom: 25px;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+  
+
   .customized-sidebar {
     display: none; /* Hides sidebar */
   }
@@ -1403,7 +1996,6 @@ body {
 
 .home-section-title {
   font-size: x-large;
-
   text-align: start;
   padding-left: 10px;
   padding-bottom: 10px;
