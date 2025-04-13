@@ -993,26 +993,35 @@ body {
  /* Optional: adds rounded corners */
 }
 
+.text-background-gradient {
+  background: linear-gradient(to top, white 70%, transparent 100%);
+  display: inline-block;
+  padding: 8px 12px;
+  border-radius: 8px; /* Optional: rounded corners */
+}
+
+
+
 /* Text - Now fully bottom-left aligned */
 .card-button-name {
   font-family: 'Poppins', sans-serif;
   font-size: large;
   letter-spacing: 2px;
   font-weight: 700;
-  color: #1F89B2;
+  color: #292929;
   text-align: left;
   margin: 0;
   
 }
 
 .card-button-caption {
-  font-family: 'Poppins', sans-serif;
-  font-size: x-small;
-  letter-spacing: 2px;
-  font-weight: 500;
-  color: #202020;
-  text-align: left;
-  margin: 0;
+  font-family: 'Poppins', sans-serif !important;
+  font-size: x-small !important;
+  letter-spacing: 2px !important;
+  font-weight: 500 !important;
+  color: #202020 !important;
+  text-align: left !important;
+  margin: 0 !important;
 }
 
 .home-button-content {
@@ -1148,6 +1157,7 @@ body {
 
 /* Individual images in the slider */
 .image-slider {
+  padding-bottom: 50px;
   position: absolute;
   inset: 0;
   background-size: cover;
@@ -1448,7 +1458,7 @@ body {
 .list-card-subtitle {
   font-family: "Poppins";
   font-weight: 1000;
-  font-size: 10px;
+  font-size: 8px;
 }
 
 .list-card-text {
@@ -1483,9 +1493,9 @@ body {
 
 .search-button {
   width: 100%;
-  background: linear-gradient(to right, #1F89B2, #0c5d7d);
+  background: #1F89B2 !important;
   border: none !important;
-  color: white;
+  color: white !important;
   padding: 0.375rem 0.75rem; /* Matches Bootstrap's form-control */
   font-size: 1rem;
   line-height: 1.5;
@@ -1495,6 +1505,54 @@ body {
   justify-content: center;
   gap: 0.5rem;
 }
+
+.search-button-light {
+  width: 100%;
+  background: #1F89B2 !important;
+  border: 1px solid white !important; /* White border */
+  border-radius: 10px !important;
+  color: white !important;
+  padding: 0.375rem 0.75rem; /* Matches Bootstrap's form-control */
+  font-size: 1rem;
+  line-height: 1.5;
+  height: calc(1.5em + 0.75rem + 2px); /* ~38px, same as default input */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  
+  /* Soft shadow */
+}
+
+.search-button-lighter {
+  width: 100%;
+  background: #DFF7FF !important;
+  border: 1px solid white !important; /* White border */
+  border-radius: 10px !important;
+  color: #008BC1 !important;
+  padding: 0.375rem 0.75rem; /* Matches Bootstrap's form-control */
+  font-size: 1rem;
+  line-height: 1.5;
+  height: calc(1.5em + 0.75rem + 2px); /* ~38px, same as default input */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  
+  /* Soft shadow */
+}
+
+
+
+.search-button-light:hover , .search-button-light.hovered , .search-button-lighter:hover {
+  /* Optional: change shadow or border color on hover */
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  background: #ffffff !important;
+color: #1F89B2 !important;
+border: 1px solid #1F89B2 !important; /* White border */
+
+}
+
 
 .sort-options-button {
   width: 100% !important;
@@ -1807,13 +1865,20 @@ body {
 
 /* Header Image Styling */
 .article-headerImage {
-  object-fit: cover; /* Ensures the image covers the space */
-  height: 500px !important; /* Adjust the height as needed */
+  position: relative; /* Required for ::before positioning */
+  height: 100% !important; /* Fixed height */
   width: 100%; /* Ensure full width */
   border-radius: 8px; /* Optional: rounded corners */
   display: block;
   margin-bottom: 20px;
+  background-color: #ffffff; /* Blue background */
+  background-size: cover; /* Make the image cover the container */
+  background-position: center; /* Ensure the image is centered */
+  object-fit: cover; /* Ensure the content fits */
 }
+
+
+
 
 /* Title Styling */
 .article-title {
@@ -1827,7 +1892,7 @@ body {
 
 .article-body-image {
   object-fit: cover; /* Ensures images fill the space without distorting */
-  height: 250px !important; /* Set the same fixed height for gallery images */
+  height: 400px !important; /* Set the same fixed height for gallery images */
   width: 100%; /* Ensure full width */
   border-radius: 8px; /* Optional: rounded corners */
 }
@@ -1841,17 +1906,131 @@ body {
 
 /* Gallery Image Styling */
 .article-gallery {
-  object-fit: cover; /* Ensures images fill the space without distorting */
+  background-color: transparent !important;
+  padding: 0 !important; 
+  object-fit: cover !important; /* Ensures images fill the space without distorting */
   height: 200px !important; /* Set the same fixed height for gallery images */
   width: 100%; /* Ensure full width */
-  border-radius: 8px; /* Optional: rounded corners */
+  border-radius: 2px; /* Optional: rounded corners */
 }
 
 /* Ensure all gallery images are the same size */
 .article-gallery-col {
-  padding: 0; /* Remove padding around images */
+  background-color: transparent !important;
+  /* Remove padding around images */
   display: flex;
   align-items: center; /* Center images vertically in their column */
+}
+
+.gallery-modal{
+  object-fit: cover !important;
+background-color: transparent !important;
+padding: 0 !important;
+}
+
+.gallery-modal .gallery-nav-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  color: white;
+  background: rgba(0, 0, 0, 0.4);
+  padding: 10px;
+  border-radius: 50%;
+  font-size: 1.8rem;
+  cursor: pointer;
+  z-index: 1000;
+  transition: background 0.3s ease;
+}
+
+.gallery-modal .gallery-nav-btn:hover {
+  background: rgba(0, 0, 0, 0.7);
+}
+.gallery-modal .gallery-nav-btn.left {
+  height: 25px;
+  width: 25px;
+  left: 15px;
+}
+.gallery-modal .gallery-nav-btn.right {
+  right: 15px;
+  height: 25px;
+  width: 25px;
+}
+
+.carousel-title {
+  font-family: 'BARABARA-final', sans-serif;
+  font-size: 2rem;
+  font-style: normal;
+  letter-spacing: 2px;
+  text-align: center;
+  text-transform: uppercase;
+  position: relative; /* Ensure positioning context for absolute children */
+  color: #1F89B2 !important;
+}
+
+.customized-dot-pagination .dot {
+  height: 6px;
+  width: 6px;
+  margin: 0 3px;
+  border-radius: 50%;
+  background-color: rgba(0, 0, 0, 0.2);
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.customized-dot-pagination .dot.active {
+  background-color: #333;
+}
+
+
+.custom-listcard:hover {
+  transform: scale(1.01);
+}
+.custom-listcard {
+  display: flex;
+  overflow: hidden;
+  border-radius: 0.5rem;
+  transition: transform 0.2s;
+  height: auto;
+  width: 100%;
+}
+
+.custom-listcard-inner {
+  display: flex;
+  width: 100%;
+}
+
+.custom-listcard-image {
+  flex: 0 0 30%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-size: contain;
+  background-position: center center;
+  background-repeat: no-repeat;
+  border-radius: 0.5rem 0 0 0.5rem;
+  min-height: 120px; /* Adjust as needed */
+  margin: 10px !important;
+}
+
+
+.custom-listcard-text {
+  flex: 1;
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+
+.custom-listcard-title {
+  font-size: 1.25rem;
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+}
+
+.custom-listcard-description {
+  font-size: 0.95rem;
+  color: #555;
 }
 
 /* Responsive Design for Mobile */
@@ -1863,7 +2042,7 @@ body {
 
   /* Adjust header image height for mobile */
   .article-headerImage {
-    height: 150px !important; /* Smaller header image on mobile */
+    height: 250px !important; /* Smaller header image on mobile */
   }
 
   .article-body-video {

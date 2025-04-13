@@ -8,13 +8,14 @@ import ImageLoader from "../../assets/images/whitebach_backdrop.png"; // Dummy l
 import { Container } from "react-bootstrap";
 import { useNavigate } from 'react-router-dom';
 
+
 const videoUrl = "https://firebasestorage.googleapis.com/v0/b/infoguide-13007.firebasestorage.app/o/boracay%20video%20preview.mp4?alt=media&token=1a3e9db3-e1d2-45ed-a812-dc2206b2c49e";
 
 const Slideshow = () => {
   const navigate = useNavigate();
 
   const handleReadMore = (collectionName, dataId) => {
-    navigate(`/infoguideapp/${collectionName}/${dataId}`);
+    navigate(`/infoguideapp/read/${collectionName}/${dataId}`);
   };
 
 

@@ -71,6 +71,7 @@ export default function EditDealsForm({editingItem, toAddForm}) {
     const [dealsFormData, setDealsFormData] = useState(new DealsFormData());
     const [resetKey, setResetKey] = useState(0); // Reset trigger
 
+                const [selectedCategory, setSelectedCategory] = useState("");
 
     useEffect(() => {
         if (editingItem) {
@@ -279,22 +280,22 @@ export default function EditDealsForm({editingItem, toAddForm}) {
             try {
               // Handle header image replacement
               let headerImageURL;
-              if (storyFormData.headerImage instanceof File) {
+              if (dealsFormData.headerImage instanceof File) {
                 // If a new header image is provided, delete the old one (if it exists)
                 if (editingItem && editingItem.headerImage) {
                   await deleteImageFromFirebase(editingItem.headerImage);
                 }
                 headerImageURL = await uploadImageToFirebase(
-                  storyFormData.headerImage,
-                  `deals/${Date.now()}_${storyFormData.headerImage.name}`
+                    dealsFormData.headerImage,
+                  `deals/${Date.now()}_${dealsFormData.headerImage.name}`
                 );
               } else {
-                headerImageURL = storyFormData.headerImage;
+                headerImageURL = dealsFormData.headerImage;
               }
           
               // Handle body images replacement
               const bodyImagesURLs = await Promise.all(
-                storyFormData.body.map(async (section, index) => {
+                dealsFormData.body.map(async (section, index) => {
                   if (section.image instanceof File) {
                     // If a new body image is provided, delete the old one (if it exists)
                     if (
@@ -336,7 +337,7 @@ export default function EditDealsForm({editingItem, toAddForm}) {
               };
           
               // Update the existing document using the story's id
-              const storyDocRef = doc(db, "deals", storyFormData.id);
+              const storyDocRef = doc(db, "deals", dealsFormData.id);
               await updateDoc(storyDocRef, dealData);
           
               Swal.fire({
@@ -346,7 +347,6 @@ export default function EditDealsForm({editingItem, toAddForm}) {
               });
           
               // Optionally reset form data after a successful deals
-              setBodyImages([]);
               resetHeaderImage();
               toAddForm();
             } catch (error) {

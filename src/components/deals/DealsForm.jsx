@@ -299,7 +299,7 @@ export default function DealsForm() {
 
             const docRef = await addDoc(collection(db, "deals"), deals);
             const dealDoc = doc(db, "deals", docRef.id);
-            await dealDoc(dealDoc, { id: docRef.id });
+            await updateDoc(dealDoc, { id: docRef.id });
 
             Swal.fire({
                 title: "Deals Submitted",

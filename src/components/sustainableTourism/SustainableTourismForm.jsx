@@ -281,7 +281,7 @@ export default function SustainableTourimsForm() {
 
             const docRef = await addDoc(collection(db, "sustainableTourism"), sustainableTourism);
             const sustainableTourismDoc = doc(db, "sustainableTourism", docRef.id);
-            await sustainableTourismDoc(sustainableTourismDoc, { id: docRef.id });
+            await updateDoc(sustainableTourismDoc, { id: docRef.id });
 
             Swal.fire({
                 title: "Sustainable Tourism Events Submitted",

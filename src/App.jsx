@@ -10,8 +10,12 @@ import { useState, useContext } from 'react';
 import { AuthProvider, useAuth } from './auth/authentication.jsx';
 import AppNavBar from './components/navbar/AppNavBar';
 import AdminDashboard from './pages/AdminDashboard.jsx';
-import AccommodationPage from './pages/AccommodationList.jsx';
+import ListViewPageComponent from './pages/ListViewPage.jsx';
 import ArticleViewComponent from './pages/ArticleView.jsx';
+import ItemViewComponent from './pages/ItemViewPage.jsx';
+import ListViewPageComponent2 from './pages/ListViewPage2.jsx';
+import CarouselListPage from './pages/CarouselListPage.jsx';
+import ListViewPageComponent3 from './pages/ListViewPage3.jsx';
 
 function PrivateRoute({ element, ...rest }) {
   const { userLoggedIn } = useAuth();
@@ -30,8 +34,12 @@ function App() {
               <Route path="/infoguideapp/home" element={<Home />} />
               <Route path="/" element={<Home />} />
               <Route path="/infoguideapp/admin" element={<AdminDashboard />} />
-              <Route path="/infoguideapp/accommodations" element={<AccommodationPage />} />
-              <Route path="/infoguideapp/:collectionName/:dataId" element={<ArticleViewComponent />} />
+              <Route path="/infoguideapp/enterprises/:collectionName" element={<ListViewPageComponent />} />
+              <Route path="/infoguideapp/update/:collectionName" element={<ListViewPageComponent2 />} />
+              <Route path="/infoguideapp/slideshow/:collectionName" element={<CarouselListPage />} />
+              <Route path="/infoguideapp/listview/:collectionName" element={<ListViewPageComponent3 />} />
+              <Route path="/infoguideapp/read/:collectionName/:dataId" element={<ArticleViewComponent />} />
+              <Route path="/infoguideapp/view/:collectionName/:dataId" element={<ItemViewComponent />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
           </Container>

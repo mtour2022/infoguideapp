@@ -7,10 +7,17 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFilter, faMapLocationDot, faSearch, faSortAlphaDown, faSortAlphaUp, faSortNumericDown, faSortNumericUp, faTimes} from "@fortawesome/free-solid-svg-icons";
 import MapPopup from "../components/mapSearch/MapSearchComponent";
 import FooterCustomized from "../components/footer/Footer";
+import { useParams } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
+const ListViewPageComponent = ({}) => {
+  const { collectionName } = useParams();
 
-const AccommodationPage = ({ title, caption, link }) => {
-  const [accommodations, setAccommodations] = useState([]);
-  const [filteredAccommodations, setFilteredAccommodations] = useState([]);
+
+  const navigate = useNavigate();
+
+
+  const [data, setData] = useState([]);
+  const [filteredData, setFilteredData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [lastVisible, setLastVisible] = useState(null);
   const [isLastPage, setIsLastPage] = useState(false);
@@ -69,20 +76,20 @@ const AccommodationPage = ({ title, caption, link }) => {
     setShowMap(false);
   };
 
-  const fetchAccommodations = async (nextPage = false) => {
+  const fetchData = async (nextPage = false) => {
     setLoading(true);
     let q;
 
     if (nextPage && lastVisible) {
       q = query(
-        collection(db, "accommodations"),
+        collection(db, collectionName),
         orderBy("name"),
         startAfter(lastVisible),
         limit(itemsPerPage)
       );
     } else {
       q = query(
-        collection(db, "accommodations"),
+        collection(db, collectionName),
         orderBy("name"),
         limit(itemsPerPage)
       );
@@ -92,43 +99,43 @@ const AccommodationPage = ({ title, caption, link }) => {
 
     try {
       const querySnapshot = await getDocs(q);
-      const accommodationsData = querySnapshot.docs.map((doc) => ({
+      const dataItems = querySnapshot.docs.map((doc) => ({
         id: doc.id,
         ...doc.data(),
       }));
 
-      setAccommodations(accommodationsData);
-      setFilteredAccommodations(accommodationsData);
+      setData(dataItems);
+      setFilteredData(dataItems);
 
       const lastVisibleDoc = querySnapshot.docs[querySnapshot.docs.length - 1];
       setLastVisible(lastVisibleDoc);
 
-      setIsLastPage(accommodationsData.length < itemsPerPage);
+      setIsLastPage(dataItems.length < itemsPerPage);
     } catch (error) {
-      console.error("Error fetching accommodations:", error);
+      console.error("Error fetching enterprises:", error);
     } finally {
       setLoading(false);
     }
   };
 
   useEffect(() => {
-    fetchAccommodations();
+    fetchData();
   }, [itemsPerPage]);
 
   const handleNextPage = () => {
-    fetchAccommodations(true);
+    fetchData(true);
   };
 
   useEffect(() => {
     if (searchQuery.trim() === "") {
-      setFilteredAccommodations(accommodations);
+      setFilteredData(data);
     } else {
-      const results = accommodations.filter(accommodation =>
-        accommodation.name.toLowerCase().includes(searchQuery.toLowerCase())
+      const results = data.filter(data =>
+        data.name.toLowerCase().includes(searchQuery.toLowerCase())
       );
-      setFilteredAccommodations(results);
+      setFilteredData(results);
     }
-  }, [searchQuery, accommodations]);
+  }, [searchQuery, data]);
 
   const handlePreviousPage = async () => {
 
@@ -137,7 +144,7 @@ const AccommodationPage = ({ title, caption, link }) => {
 
     setLoading(true);
     let q = query(
-      collection(db, "accommodations"),
+      collection(db, collectionName),
       orderBy("name"),
       startAfter(lastVisible),
       limit(itemsPerPage)
@@ -145,22 +152,22 @@ const AccommodationPage = ({ title, caption, link }) => {
 
     try {
       const querySnapshot = await getDocs(q);
-      const accommodationsData = querySnapshot.docs.map((doc) => ({
+      const DataItemize = querySnapshot.docs.map((doc) => ({
         id: doc.id,
         ...doc.data(),
       }));
 
-      setAccommodations(accommodationsData);
-      setFilteredAccommodations(accommodationsData);
+      setData(DataItemize);
+      setFilteredData(DataItemize);
 
       const lastVisibleDoc = querySnapshot.docs[querySnapshot.docs.length - 1];
       setLastVisible(lastVisibleDoc);
 
-      setIsLastPage(accommodationsData.length < itemsPerPage);
+      setIsLastPage(DataItemize.length < itemsPerPage);
       setIsFirstPage(false); // Mark as not the first page anymore
 
     } catch (error) {
-      console.error("Error fetching accommodations:", error);
+      console.error("Error fetching entrprises:", error);
     } finally {
       setLoading(false);
     }
@@ -191,7 +198,7 @@ const AccommodationPage = ({ title, caption, link }) => {
   };
 
   const applyFilters = () => {
-    let filtered = accommodations;
+    let filtered = data;
   
     // Apply general filters
     Object.keys(filters).forEach((filterType) => {
@@ -215,7 +222,7 @@ const AccommodationPage = ({ title, caption, link }) => {
       }
     });
   
-    setFilteredAccommodations(filtered);
+    setFilteredData(filtered);
   };
   
 
@@ -229,16 +236,16 @@ const AccommodationPage = ({ title, caption, link }) => {
   };
 
   const handleSearch = () => {
-    const results = accommodations.filter(accommodation =>
-      accommodation.name.toLowerCase().includes(searchQuery.toLowerCase())
+    const results = data.filter(data =>
+      data.name.toLowerCase().includes(searchQuery.toLowerCase())
     );
-    setFilteredAccommodations(results);
+    setFilteredData(results);
     setShowSuggestions(false);
   };
 
   const handleSuggestionClick = (suggestion) => {
     setSearchQuery(suggestion.name);
-    setFilteredAccommodations([suggestion]);
+    setFilteredData([suggestion]);
     setSuggestions([]);
     setShowSuggestions(false);
   };
@@ -248,11 +255,11 @@ const AccommodationPage = ({ title, caption, link }) => {
     setSearchQuery(newQuery);
 
     if (newQuery.trim() === "") {
-      setFilteredAccommodations(accommodations);
+      setFilteredData(data);
       setSuggestions([]);
       setShowSuggestions(false);
     } else {
-      const matches = accommodations
+      const matches = data
         .filter(acc =>
           acc.name.toLowerCase().includes(newQuery.toLowerCase())
         )
@@ -264,7 +271,7 @@ const AccommodationPage = ({ title, caption, link }) => {
 
   const handleSort = (sortKey) => {
     setSortOption(sortKey);
-    let sortedList = [...filteredAccommodations];
+    let sortedList = [...filteredData];
     if (sortKey === "name-asc") {
       sortedList.sort((a, b) => a.name.localeCompare(b.name));
     } else if (sortKey === "name-desc") {
@@ -274,7 +281,7 @@ const AccommodationPage = ({ title, caption, link }) => {
     } else if (sortKey === "rating-desc") {
       sortedList.sort((a, b) => b.ratings - a.ratings);
     }
-    setFilteredAccommodations(sortedList);
+    setFilteredData(sortedList);
   };
 
   if (loading) {
@@ -285,47 +292,163 @@ const AccommodationPage = ({ title, caption, link }) => {
     );
   }
 
+  const sectionTitles = {
+    accommodations: {
+      title: "ACCOMMODATION ESTABLISHMENTS",
+      subtitle: (
+        <>
+          Department of Tourism (DOT) Accredited data Establishments in Boracay Island, Malay as of <b>March 2025</b>.
+        </>
+      ),
+    },
+    restaurants: {
+      title: "RESTAURANTS",
+      subtitle: (
+        <>
+          Department of Tourism (DOT) Accredited Restaurants in Boracay Island, Malay as of <b>March 2025</b>.
+        </>
+      ),
+    },
+    spaAndWellnessCentres: {
+      title: "SPA AND WELLNESS CENTERS",
+      subtitle: (
+        <>
+          Department of Tourism (DOT) Accredited Spa and Wellness Centers in Boracay Island, Malay as of <b>March 2025</b>.
+        </>
+      ),
+    },
+    MICEFacilities: {
+      title: "M.I.C.E. FACILITIES",
+      subtitle: (
+        <>
+          Department of Tourism (DOT) Accredited M.I.C.E. Facilities in Boracay Island, Malay as of <b>March 2025</b>.
+        </>
+      ),
+    },
+    touristLandAndAirTransportOperators: {
+      title: "TOURIST LAND & AIR TRANSPORT OPERATORS",
+      subtitle: (
+        <>
+          Department of Tourism (DOT) Accredited Land and Air Transport Operators in Malay as of <b>March 2025</b>.
+        </>
+      ),
+    },
+    travelAndTourOperators: {
+      title: "TRAVEL AND TOUR OPERATORS",
+      subtitle: (
+        <>
+          Department of Tourism (DOT) Accredited Travel and Tour Operators in Malay as of <b>March 2025</b>.
+        </>
+      ),
+    },
+    tourguides: {
+      title: "TOUR GUIDES",
+      subtitle: (
+        <>
+          Department of Tourism (DOT) Accredited Tour Guides in Malay and Region VI as of <b>March 2025</b>.
+        </>
+      ),
+    },
+    touristAndSpecialtyShops: {
+      title: "TOURIST SHOPS AND SPECIALTY SHOPS",
+      subtitle: (
+        <>
+          Department of Tourism (DOT) Accredited Tourist and Specialty Shops in Boracay Island, Malay as of <b>March 2025</b>.
+        </>
+      ),
+    },
+    attractions: {
+      title: "TOURIST HOT SPOTS",
+      subtitle: (
+        <>
+          Attractions to disccover.
+        </>
+      ),
+    },
+    activities: {
+      title: "TOURIST ACTIVITIES",
+      subtitle: (
+        <>
+          Exciting activities to try.
+        </>
+      ),
+    }
+    // You can add more collectionName mappings here
+  };
+  
   return (
     <div className="home-section content-wrapper">
-      <h2 className="home-section-title">ACCOMMODATION ESTABLISHMENTS</h2>
-      <p className="home-section-subtitle">
-        Department of Tourism (DOT) Accredited Accommodation Establishments in Boracay Island, Malay as of <b>March 2025</b>.
-      </p>
+      <Row>
+      <Col md={12}>
+                    <a
+                            className="text-decoration-none d-block mb-5"
+                            style={{ cursor: "pointer", color: "black" }}
+                          >
+                            <span
+                              onClick={() => navigate(`/infoguideapp/home`)}
+                              style={{ color: "black", marginRight: "5px", fontSize: "0.90rem"  }}
+                            >
+                              home
+                            </span>
+                            
+                            <span
+                              onClick={() => navigate(`/infoguideapp/enterprises/${collectionName}`)}
+                              style={{ color: "black", margin: "0 5px", fontSize: "0.90rem"   }}
+                            >
+                              / {collectionName}
+                            </span>
+                           
+                          </a>
+        
+                    </Col>
+      </Row>
+      <h2 className="home-section-title">{sectionTitles[collectionName]?.title}</h2>
+      <p className="home-section-subtitle">{sectionTitles[collectionName]?.subtitle}</p>
 
       <Row className="align-items-center">
-        <Col xs={10} sm={10} md={10} className="position-relative">
-          <Form.Control
-            type="text"
-            placeholder={`Search over ${accommodations.length} accommodations`}
-            value={searchQuery}
-            onChange={handleSearchInputChange}
-            onKeyDown={(e) => {
-              if (e.key === "Enter") {
-                handleSearch();
-              }
-            }}
-            onFocus={() => {
-              if (suggestions.length > 0) setShowSuggestions(true);
-            }}
-            onBlur={() => {
-              setTimeout(() => setShowSuggestions(false), 100);
-            }}
-          />
-          {showSuggestions && suggestions.length > 0 && (
-            <div className="autocomplete-dropdown position-absolute w-100 bg-white border rounded shadow-sm z-3">
-              {suggestions.map((suggestion) => (
-                <div
-                  key={suggestion.id}
-                  className="p-2 suggestion-item"
-                  style={{ cursor: "pointer" }}
-                  onClick={() => handleSuggestionClick(suggestion)}
-                >
-                  {suggestion.name}
-                </div>
-              ))}
-            </div>
-          )}
-        </Col>
+                    
+      <Col xs={10} sm={10} md={10} className="position-relative">
+  <Form.Control
+    type="text"
+    placeholder={`Search over ${data.length} ${collectionName}`}
+    value={searchQuery}
+    onChange={handleSearchInputChange}
+    onKeyDown={(e) => {
+      if (e.key === "Enter") {
+        handleSearch();
+      }
+    }}
+    onFocus={() => {
+      if (suggestions.length > 0) setShowSuggestions(true);
+    }}
+    onBlur={() => {
+      setTimeout(() => setShowSuggestions(false), 100);
+    }}
+    // Always display the text input field, no matter the screen size
+  />
+
+  {/* Show search icon only on smaller screens */}
+  <div className="d-none d-md-block position-absolute" style={{ top: '50%', right: '10px', transform: 'translateY(-50%)' }}>
+    <i className="bi bi-search" style={{ fontSize: '1.5rem', cursor: 'pointer' }} onClick={() => {/* add search icon click functionality */}}></i>
+  </div>
+
+  {showSuggestions && suggestions.length > 0 && (
+    <div className="autocomplete-dropdown position-absolute w-100 bg-white border rounded shadow-sm z-3">
+      {suggestions.map((suggestion) => (
+        <div
+          key={suggestion.id}
+          className="p-2 suggestion-item"
+          style={{ cursor: "pointer" }}
+          onClick={() => handleSuggestionClick(suggestion)}
+        >
+          {suggestion.name}
+        </div>
+      ))}
+    </div>
+  )}
+</Col>
+
+
 
         <Col xs={2} sm={2} md={2}>
           <Button
@@ -418,7 +541,8 @@ const AccommodationPage = ({ title, caption, link }) => {
             </Button>
 
             <MapPopup
-              accommodations={accommodations}
+              datas={data}
+              collectionName={collectionName}
               isMapVisible={isMapVisible}
             />
           </div>
@@ -432,8 +556,8 @@ const AccommodationPage = ({ title, caption, link }) => {
         {/* For the general filters */}
         {Object.keys(filters).map((filterType) => (
           <div key={filterType} className="filter-buttons">
-            {accommodations
-              .map((accommodation) => accommodation[filterType])
+            {data
+              .map((data) => data[filterType])
               .flat()
               .filter((value, index, self) => value && value !== null && self.indexOf(value) === index)
               .map((value) => (
@@ -453,8 +577,8 @@ const AccommodationPage = ({ title, caption, link }) => {
         {/* For the address filters */}
         {["street", "barangay"].map((filterType) => (
           <div key={filterType} className="filter-buttons">
-            {accommodations
-              .map((accommodation) => accommodation.address[filterType])
+            {data
+              .map((data) => data.address[filterType])
               .flat()
               .filter((value) => value && value !== null)
               .filter((value, index, self) => self.indexOf(value) === index)
@@ -487,12 +611,12 @@ const AccommodationPage = ({ title, caption, link }) => {
       <Container className="empty-container"></Container>
 
       <Row className="justify-content-start mt-4">
-        {filteredAccommodations.length > 0 ? (
-          filteredAccommodations.map((accommodation) => (
-            <ListCard key={accommodation.id} accommodation={accommodation} />
+        {filteredData.length > 0 ? (
+          filteredData.map((data) => (
+            <ListCard key={data.id} data={data} collectionName={collectionName}/>
           ))
         ) : (
-          <div>No accommodations found.</div>
+          <div>No enterprises found.</div>
         )}
       </Row>
 
@@ -510,4 +634,4 @@ const AccommodationPage = ({ title, caption, link }) => {
   );
 };
 
-export default AccommodationPage;
+export default ListViewPageComponent;

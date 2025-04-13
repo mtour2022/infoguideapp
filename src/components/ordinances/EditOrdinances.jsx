@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Container, Row, Col, Form, Button } from "react-bootstrap";
 import { db, storage } from "../../config/firebase";
 import {  collection, addDoc, doc, updateDoc  } from "firebase/firestore";
@@ -55,9 +55,9 @@ export default function EditOrdinancesForm({editingItem, toAddForm}) {
       setOrdinancesFormData(prevState => ({
         ...prevState,
         id: editingItem.id || "",
-        title: editingItem.name || "",
+        title: editingItem.title || "",
         ordinance: editingItem.ordinance || "",
-        description: editingItem.category || "", // Default category if not provided
+        description: editingItem.description || "", // Default category if not provided
         logo: editingItem.logo || "",
         references: editingItem.references || [],
       }));
@@ -88,7 +88,7 @@ export default function EditOrdinancesForm({editingItem, toAddForm}) {
 
         try {
             // Initialize URLs
-           let logoURL = hotlinesFormData.logo;
+           let logoURL = ordinancesFormData.logo;
            // Handle logo replacement
            if (ordinancesFormData.logo instanceof File) {
              // If a new logo is provided, delete the old one (if it exists)
@@ -123,7 +123,7 @@ export default function EditOrdinancesForm({editingItem, toAddForm}) {
                            resetForm();
                            toAddForm();
                          } catch (error) {
-                           console.error("Error updating hotlines:", error);
+                           console.error("Error updating ordinances:", error);
                            Swal.fire({
                              title: "Update Failed",
                              text: "There was an error updating the Ordinance.",

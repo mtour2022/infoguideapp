@@ -32,7 +32,7 @@
         "First Aid and Medical Attention",
         "Fire Supression",
         "Water Rescue",
-        "Police Assistance",
+        "Peace, Order, and Security",
         "Healthcare",
         "Mental Care",
         "Tourist Assistance",

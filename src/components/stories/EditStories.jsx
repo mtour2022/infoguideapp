@@ -125,7 +125,6 @@ export default function EditStoryForm({editingItem, toAddForm}) {
 
 
    
-    const [bodyImages, setBodyImages] = useState([]);
 
      const [resetKey, setResetKey] = useState(0); // Reset trigger
     
@@ -373,7 +372,6 @@ export default function EditStoryForm({editingItem, toAddForm}) {
           });
       
           // Optionally reset form data after a successful update
-          setBodyImages([]);
           resetHeaderImage();
           toAddForm();
         } catch (error) {

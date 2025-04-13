@@ -134,7 +134,8 @@ export const categoryOptions = [
     'Gender-friendly',
     'Budget-friendly',
     'Vegan-friendly',
-    'Allergen-friendly'
+    'Allergen-friendly',
+    'Pregnant-friendly'
   ];
   
   

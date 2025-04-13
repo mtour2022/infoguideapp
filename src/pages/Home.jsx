@@ -24,6 +24,7 @@ import {
 import { incomingEventsCategoryOptions } from "../datamodel/incommingEvents_model";
 import FooterCustomized from "../components/footer/Footer";
 import AttractionsActivitiesShowcase from "../components/homebutton2";
+import { dealsAndPromotionsCategoryOptions } from "../datamodel/deals_model";
 export default function Home() {
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
     const [isSmallScreen, setIsSmallScreen] = useState(window.innerWidth <= 768);
@@ -57,12 +58,14 @@ export default function Home() {
                 <div className="text-center mt-4">
                     <button onClick={() => scrollToSection("home-buttons")} className="discover-more-btn my-2 fw-bold" >
                         <FontAwesomeIcon icon={faBuilding} className="me-2"/>Enterprises</button>
-                    <button onClick={() => scrollToSection("attractions-slide")} className="discover-more-btn my-2 fw-bold" >
+                    <button onClick={() => scrollToSection("tourism-activities")} className="discover-more-btn my-2 fw-bold" >
                         <FontAwesomeIcon icon={faBinoculars} className="me-2"/>Attractions</button>
-                    <button onClick={() => scrollToSection("activities-slide")} className="discover-more-btn my-2 fw-bold">
+                    <button onClick={() => scrollToSection("tourism-activities")} className="discover-more-btn my-2 fw-bold">
                         <FontAwesomeIcon icon={faPersonSwimming} className="me-2"/>Activities</button>
                     <button onClick={() => scrollToSection("tourism-updates")} className="discover-more-btn my-2 fw-bold" >
                         <FontAwesomeIcon icon={faBell} className="me-2"/>Updates</button>
+                        <button onClick={() => scrollToSection("tourism-deals")} className="discover-more-btn my-2 fw-bold" >
+                        <FontAwesomeIcon icon={faFire} className="me-2"/>Deals and Promos</button>
                     <button onClick={() => scrollToSection("tourism-incomingevents")} className="discover-more-btn my-2 fw-bold" >
                         <FontAwesomeIcon icon={faCalendarCheck} className="me-2"/>Events</button>
                     <button onClick={() => scrollToSection("tourism-stories")} className="discover-more-btn my-2 fw-bold">
@@ -78,20 +81,28 @@ export default function Home() {
                 </div>
                 <div id="activities-slide">
                     <ActivitiesSlide />
-                </div>
-                 */}
-                 <AttractionsActivitiesShowcase></AttractionsActivitiesShowcase>
-                
-
-
+                </div> */}
             </div>
             <div>
+            <div id="tourism-activities">
+            <AttractionsActivitiesShowcase></AttractionsActivitiesShowcase>
+
+                </div>
             <div id="tourism-updates">
                     <UpdatesCarousel
                         collectionName="updates"
                         categoryOptions={updatesCategoryOptions}
                         title="Tourism Updates"
                         caption="Stay informed with the latest news and announcements."
+                        filterType="category"
+                    />
+                </div>
+                <div id="tourism-deals">
+                    <UpdatesCarousel
+                        collectionName="deals"
+                        categoryOptions={dealsAndPromotionsCategoryOptions}
+                        title="Deals and Promos"
+                        caption="Get your chance for these promos and deals!"
                         filterType="category"
                     />
                 </div>

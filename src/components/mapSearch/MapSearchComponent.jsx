@@ -12,15 +12,27 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { OverlayView } from "@react-google-maps/api";
 
+const MapPopup = ({ datas, collectionName}) => {
+  const navigate = useNavigate();
 
-const MapPopup = ({ accommodations }) => {
+  const handleReadMore = (collectionName, dataId) => {
+    const readCollections = ["stories", "incomingEvents", "deals", "updates"];
+  
+    const path = readCollections.includes(collectionName)
+      ? `/infoguideapp/read/${collectionName}/${dataId}`
+      : `/infoguideapp/view/${collectionName}/${dataId}`;
+  
+    console.log(collectionName);
+    console.log(dataId);
+    navigate(path);
+  };
+  
   const [selectedAcc, setSelectedAcc] = useState(null);
   const [mapCenter, setMapCenter] = useState({ lat: 11.9674, lng: 121.9274 });
   const [currentLocation, setCurrentLocation] = useState(null);
   const [showCurrentLocation, setShowCurrentLocation] = useState(false);
   const mapRef = useRef(null);
   const [hidePOI, setHidePOI] = useState(false);
-  const navigate = useNavigate();
 
   const { isLoaded } = useJsApiLoader({
     googleMapsApiKey: "AIzaSyB12zV70G4pEPERWnWPiC69_BZhw_5Af9k",
@@ -28,8 +40,8 @@ const MapPopup = ({ accommodations }) => {
 
   const mapContainerStyle = { height: "100%", width: "100%" };
 
-  const uniqueAccommodations = Array.from(
-    new Map(accommodations.map((acc) => [acc.id, acc])).values()
+  const uniquedatas = Array.from(
+    new Map(datas.map((acc) => [acc.id, acc])).values()
   );
 
   useEffect(() => {
@@ -132,7 +144,7 @@ const MapPopup = ({ accommodations }) => {
             gestureHandling: "greedy",
           }}
         >
-          {uniqueAccommodations.map((acc) => (
+          {uniquedatas.map((acc) => (
             <OverlayView
             key={acc.id}
             position={{ lat: acc.address.lat, lng: acc.address.long }}
@@ -170,7 +182,7 @@ const MapPopup = ({ accommodations }) => {
       {selectedAcc && (
         <div
           className="map-bottom-card"
-          onClick={() => navigate(`/accommodation/${selectedAcc.id}`)}
+          onClick={() => handleReadMore(collectionName, selectedAcc.id)}
         >
           <div className="map-card-content">
             <img src={selectedAcc.headerImage} alt={selectedAcc.name} />

@@ -79,7 +79,9 @@ const BodyImageDropzone = ({
 export default function EditSustainableTourismForm({editingItem, toAddForm}) {
     const [sustainableTourismFormData, setsustainableTourismFormData] = useState(new SustainableFormData());
     const [resetKey, setResetKey] = useState(0); // Reset trigger
-
+// Local state for selections
+                const [selectedCategory, setSelectedCategory] = useState("");
+                const [selectedSubcategory, setSelectedSubcategory] = useState("");
 
     useEffect(() => {
         if (editingItem) {
@@ -280,22 +282,22 @@ export default function EditSustainableTourismForm({editingItem, toAddForm}) {
             try {
               // Handle header image replacement
               let headerImageURL;
-              if (storyFormData.headerImage instanceof File) {
+              if (sustainableTourismFormData.headerImage instanceof File) {
                 // If a new header image is provided, delete the old one (if it exists)
                 if (editingItem && editingItem.headerImage) {
                   await deleteImageFromFirebase(editingItem.headerImage);
                 }
                 headerImageURL = await uploadImageToFirebase(
-                  storyFormData.headerImage,
-                  `sustainableTourism/${Date.now()}_${storyFormData.headerImage.name}`
+                  sustainableTourismFormData.headerImage,
+                  `sustainableTourism/${Date.now()}_${sustainableTourismFormData.headerImage.name}`
                 );
               } else {
-                headerImageURL = storyFormData.headerImage;
+                headerImageURL = sustainableTourismFormData.headerImage;
               }
           
               // Handle body images replacement
               const bodyImagesURLs = await Promise.all(
-                storyFormData.body.map(async (section, index) => {
+                sustainableTourismFormData.body.map(async (section, index) => {
                   if (section.image instanceof File) {
                     // If a new body image is provided, delete the old one (if it exists)
                     if (
@@ -333,7 +335,7 @@ export default function EditSustainableTourismForm({editingItem, toAddForm}) {
               };
           
               // Update the existing document using the story's id
-              const storyDocRef = doc(db, "sustainableTourism", storyFormData.id);
+              const storyDocRef = doc(db, "sustainableTourism", sustainableTourismFormData.id);
               await updateDoc(storyDocRef, sustainbleData);
           
               Swal.fire({
@@ -343,7 +345,6 @@ export default function EditSustainableTourismForm({editingItem, toAddForm}) {
               });
           
               // Optionally reset form data after a successful sustainable tourism
-              setBodyImages([]);
               resetHeaderImage();
               toAddForm();
             } catch (error) {
@@ -383,37 +384,7 @@ export default function EditSustainableTourismForm({editingItem, toAddForm}) {
                         <Container className="empty-container"></Container>
                     </Col>
                 </Row>
-                <Row>
-                                    <Col md={6}>
-                                    <Form.Group className="mb-3">
-                                        <Form.Label className="label">Start Date & Time</Form.Label>
-                                        <Form.Control
-                                            type="datetime-local"
-                                            name="dateTimeStart"
-                                            value={sustainableTourismFormData.dateTimeStart}
-                                            onChange={handleChange}
-                                            required
-                                        />
-                                    </Form.Group>
                 
-                
-                
-                                    </Col>
-                                    <Col md={6}>
-                                    <Form.Group className="mb-3">
-                                      <Form.Label className="label">End Date & Time</Form.Label>
-                                      <Form.Control
-                                        type="datetime-local"
-                                        name="dateTimeEnd"
-                                        value={sustainableTourismFormData.dateTimeEnd}
-                                        onChange={handleChange}
-                                        min={sustainableTourismFormData.dateTimeStart} // Prevents selecting an earlier date
-                                        disabled={!sustainableTourismFormData.dateTimeStart} // Disable if Start Date is empty
-                                        required
-                                      />
-                                    </Form.Group>
-                                    </Col>
-                </Row>
                 <Row>
                     <Col md={12}>
                         <Form.Group className="mb-3">

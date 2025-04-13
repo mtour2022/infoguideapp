@@ -4,20 +4,20 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCamera, faMapLocationDot, faPersonSwimming } from "@fortawesome/free-solid-svg-icons";
 
 const AttractionsActivitiesShowcase = () => {
-  const navigate = useNavigate();
+
 
   const cards = [
     {
       title: "Tourist Hot Spots",
       image:
         "https://firebasestorage.googleapis.com/v0/b/infoguide-13007.firebasestorage.app/o/AgnagaMiniFalls%26%20ColdSpring.jpg?alt=media&token=ac261bd1-6d49-49a2-8f37-56fb6db645ab",
-      link: "/attractions",
+      link: "attractions",
     },
     {
       title: "Tourist Activities",
       image:
         "https://firebasestorage.googleapis.com/v0/b/infoguide-13007.firebasestorage.app/o/DSC_4919-min.JPG?alt=media&token=80d6dc7a-6878-456c-bb6b-b6ff9990046f",
-      link: "/activities",
+      link: "activities",
     },
   ];
 
@@ -30,7 +30,7 @@ const AttractionsActivitiesShowcase = () => {
 
       <div className="row g-4">
         {cards.map((card, index) => (
-          <ImageCard key={index} card={card} onClick={() => navigate(card.link)} />
+          <ImageCard key={index} card={card} />
         ))}
       </div>
     </div>
@@ -38,6 +38,8 @@ const AttractionsActivitiesShowcase = () => {
 };
 
 const ImageCard = ({ card, onClick }) => {
+  const navigate = useNavigate();
+
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
@@ -51,7 +53,7 @@ const ImageCard = ({ card, onClick }) => {
 
 
   return (
-    <div className="col-md-6" style={{ cursor: "pointer" }} onClick={onClick}>
+    <div className="col-md-6" style={{ cursor: "pointer" }}  onClick={() => navigate(`/infoguideapp/enterprises/${card.link}`)}>
       <div className="pagination-component-card">
         <div className="image-slider-container">
           {isLoading && (
@@ -71,7 +73,7 @@ const ImageCard = ({ card, onClick }) => {
             }}
           />
         </div>
-        <div className="home-button-content text-background-solid-color">
+        <div className="home-button-content text-background-gradient">
           <p className="card-button-name">
           {isAttractions && <FontAwesomeIcon icon={faCamera} className="me-2" />}
           {isActivities && <FontAwesomeIcon icon={faPersonSwimming} className="me-2" />}
