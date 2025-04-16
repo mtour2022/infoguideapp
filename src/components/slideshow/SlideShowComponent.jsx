@@ -15,7 +15,7 @@ const Slideshow = () => {
   const navigate = useNavigate();
 
   const handleReadMore = (collectionName, dataId) => {
-    navigate(`/infoguideapp/read/${collectionName}/${dataId}`);
+    navigate(`/read/${collectionName}/${dataId}`);
   };
 
 
