@@ -21,6 +21,9 @@
     export const incomingEventsCategoryOptions = [
         "Concerts & Live Music",
         "Festivals & Celebrations",
+        "Clean Up and Tree Planting Activities",
+        "Tourism Service Competitions",
+        "Beach and Water Sports Events",
         "Sports Events",
         "Conferences & Seminars",
         "Workshops & Training",
@@ -29,7 +32,7 @@
         "Community Gatherings",
         "Art Exhibitions & Cultural Events",
         "Theater & Performing Arts",
-        "Food & Beverage Festivals",
+        "Food Festivals and Local Products Fares",
         "Tech & Startup Events",
         "Trade Shows & Expos",
         "Wellness & Fitness Events",

@@ -27,14 +27,20 @@ button3.color = "#2D8B3C";
 button3.caption = "Relax and rejuvenate.";
 button3.icon = "spa";
 
+// const button4 = new HomeButtonFormData();
+// button4.name = "M.I.C.E. FACILITIES";
+// button4.link = "/infoguideapp/enterprises/MICEFacilities";
+// button4.image = "https://firebasestorage.googleapis.com/v0/b/infoguide-13007.firebasestorage.app/o/homeButtons%2Fmicebackground.jpg?alt=media&token=10a7509d-39a0-4781-a2e8-fb4ca240e95c";
+// button4.color = "#008080";
+// button4.caption = "Meet, innovate, and collaborate.";
+// button4.icon = "building";
 const button4 = new HomeButtonFormData();
-button4.name = "M.I.C.E. FACILITIES";
-button4.link = "/infoguideapp/enterprises/MICEFacilities";
-button4.image = "https://firebasestorage.googleapis.com/v0/b/infoguide-13007.firebasestorage.app/o/homeButtons%2Fmicebackground.jpg?alt=media&token=10a7509d-39a0-4781-a2e8-fb4ca240e95c";
+button4.name = "TOUR ACTIVITY PROVIDERS";
+button4.link = "/infoguideapp/enterprises/touristActivityProviders";
+button4.image = "https://firebasestorage.googleapis.com/v0/b/infoguide-13007.firebasestorage.app/o/parasailing.png?alt=media&token=807f6447-1760-467c-b350-b9facb0bd24f";
 button4.color = "#008080";
-button4.caption = "Meet, innovate, and collaborate.";
+button4.caption = "Elevated experiences with this watersports providers.";
 button4.icon = "building";
-
 
 
 const button5 = new HomeButtonFormData();

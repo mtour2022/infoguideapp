@@ -16,7 +16,7 @@ const MapPopup = ({ datas, collectionName}) => {
   const navigate = useNavigate();
 
   const handleReadMore = (collectionName, dataId) => {
-    const readCollections = ["stories", "incomingEvents", "deals", "updates"];
+    const readCollections = ["stories", "incomingEvents", "deals", "updates", "lifeStyles", "helpfulLinks", "cruiseShips", "travelExpos", "tourismProjects", "awardsAndRecognitions", "tourismMarkets"];
   
     const path = readCollections.includes(collectionName)
       ? `/infoguideapp/read/${collectionName}/${dataId}`
@@ -155,8 +155,9 @@ const MapPopup = ({ datas, collectionName}) => {
               onClick={() => handleMarkerClick(acc)}
               title={acc.name}
             >
-              <img src={acc.logo} alt={acc.name} />
+              <img src={acc.logo || acc.headerImage} alt={acc.name} />
             </div>
+
             </OverlayView>
 
             ))}

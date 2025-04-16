@@ -4,7 +4,7 @@ import { doc, getDoc } from "firebase/firestore";
 import { db } from "../config/firebase";
 import { Container, Row, Col, Card, Button, Image, Badge, Toast, ToastContainer, Modal } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCalendarPlus, faShareAlt, faStar, faGlobe, faMapMarkerAlt, faCopy, faX } from "@fortawesome/free-solid-svg-icons";
+import { faCalendarPlus, faShareAlt, faStar, faGlobe, faMapMarkerAlt, faCopy, faX, faWalking } from "@fortawesome/free-solid-svg-icons";
 import ImageModal from "../components/imageview/ImageViewComponent";
 import FooterCustomized from "../components/footer/Footer";
 import facebooklogo from "../assets/images/logos/facebooklogo.png"; 
@@ -74,8 +74,11 @@ const ItemViewComponent = () => {
     setModalIndex((prev) => (prev === data.images.length - 1 ? 0 : prev + 1));
   };
 
-  const handleImageLoad = () => {
-  };
+    const [imageLoading, setImageLoading] = useState(true);
+  
+    const handleImageLoad = () => {
+      setImageLoading(false);
+    };
 
   useEffect(() => {
     const fetchAccommodation = async () => {
@@ -172,6 +175,8 @@ const ItemViewComponent = () => {
     'Hillside (With Road Access)': faMountain,
     'Forest Area (Trail Walk)': faTree,
     'Forest Area (With Community Guide)': faTree,
+    'Walking Distant to Beach': faWalking,
+
   };
 
   
@@ -732,13 +737,15 @@ const capitalizeFirstLetter = (str) => {
                   )}
 
 
-                  
-                  {note && typeof note === "string" && note.trim() !== "" && (
-  <div>
-    <h5><strong>Notes, Reminders, and Tips</strong></h5>
-    <div className="section-body mb-4" dangerouslySetInnerHTML={{ __html: note }} />
-  </div>
+{typeof note === 'string' &&
+  note.trim() !== "" &&
+  note.trim() !== "<p><br></p>" && (
+    <div>
+      <h5><strong>Notes, Reminders, and Tips</strong></h5>
+      <div className="section-body mb-4" dangerouslySetInnerHTML={{ __html: note }} />
+    </div>
 )}
+
 
                 {images?.length > 0 && (
                   <div className="d-none d-md-block mt-5">
@@ -1055,16 +1062,22 @@ const capitalizeFirstLetter = (str) => {
 
 {/* Full Image Modal for Body Image */}
 <Modal show={showImageModal} onHide={closeImageModal} centered size="lg">
-        <Modal.Body className="gallery-modal">
-          {/* Remove Spinner Loader */}
-          <Image
-            src={selectedImage}
-            alt="Full View"
-            fluid
-            onLoad={handleImageLoad} // Set image loading to false once it's loaded
-          />
-        </Modal.Body>
-      </Modal>
+  <Modal.Body className="gallery-modal d-flex justify-content-center align-items-center">
+    {imageLoading && (
+      <div className="spinner-border text-primary" role="status">
+        <span className="visually-hidden">Loading...</span>
+      </div>
+    )}
+
+    <Image
+      src={selectedImage}
+      alt="Full View"
+      fluid
+      onLoad={handleImageLoad}
+      style={{ display: imageLoading ? 'none' : 'block' }}
+    />
+  </Modal.Body>
+</Modal>
 
        {/* Header Image with Gaussian Blur Background */}
        

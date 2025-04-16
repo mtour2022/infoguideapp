@@ -129,13 +129,35 @@ export default function RequirementsForm({}) {
                 Swal.showLoading();
             }
         });
+
+        // Handle body images replacement
+                  const bodyImagesURLs = await Promise.all(
+                    requirementsFormData.body.map(async (section, index) => {
+                      if (section.image instanceof File) {
+                        // If a new body image is provided, delete the old one (if it exists)
+                        if (
+                          editingItem &&
+                          editingItem.body &&
+                          editingItem.body[index] &&
+                          editingItem.body[index].image
+                        ) {
+                          await deleteImageFromFirebase(editingItem.body[index].image);
+                        }
+                        return await uploadImageToFirebase(
+                          section.image,
+                          `requirements/${Date.now()}_${section.image.name}`
+                        );
+                      }
+                      return section.image;
+                    })
+                  );
     
         try {
             // Upload header image if available
-            let headerImageURL = accommodationFormData.headerImage
-                ? await uploadImageToFirebase(accommodationFormData.headerImage, `requirements/${Date.now()}_${accommodationFormData.headerImage.name}`)
+            let headerImageURL = requirementsFormData.headerImage
+                ? await uploadImageToFirebase(requirementsFormData.headerImage, `requirements/${Date.now()}_${requirementsFormData.headerImage.name}`)
                 : null;
-            // Create an instance of AccommodationFormData and populate it
+            // Create an instance of requirementsFormData and populate it
             const requirementData = new RequirementsFormData();
             requirementData.id = ""; // Firestore will generate this
             requirementData.title = requirementsFormData.title;
@@ -150,7 +172,7 @@ export default function RequirementsForm({}) {
             requirementData.headerImage = headerImageURL;
             requirementData.references = requirementsFormData.references || [];;
     
-            // Save accommodation data to Firestore
+            // Save requirementsFormData data to Firestore
             const docRef = await addDoc(collection(db, "requirements"), requirementData.toJSON());
             const requirementDoc = doc(db, "requirements", docRef.id);
             await updateDoc(requirementDoc, { id: docRef.id });

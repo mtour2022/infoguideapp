@@ -8,11 +8,12 @@ import { useNavigate } from 'react-router-dom';
 import { parseISO, format } from 'date-fns';
 
 const ListCard = ({ data, collectionName }) => {
+
   const navigate = useNavigate();
 
    
   const handleReadMore = (collectionName, dataId) => {
-    const readCollections = ["stories", "incomingEvents", "deals", "updates"];
+    const readCollections = ["stories", "incomingEvents", "deals", "updates", "lifeStyles", "helpfulLinks", "cruiseShips", "travelExpos", "tourismProjects", "awardsAndRecognitions", "tourismMarkets"];
   
     const path = readCollections.includes(collectionName)
       ? `/infoguideapp/read/${collectionName}/${dataId}`
@@ -41,19 +42,27 @@ const ListCard = ({ data, collectionName }) => {
     date="",
     dateTimeStart="",
     dateTimeEnd="",
+    dateStart="",
+    dateEnd="",
     origin=[],
+    total="",
     id, // Ensure there's an id property to use for navigation
   } = data;
 
-     // Parse and format dates
-     const dateStartParsed = dateTimeStart ? parseISO(dateTimeStart) : null;
-     const dateEndParsed = dateTimeEnd ? parseISO(dateTimeEnd) : null;
-     const dateParsed = date ? parseISO(date) : null;
-   
-     const formattedDateStart = dateStartParsed ? format(dateStartParsed, 'MMMM dd, yyyy') : null;
-     const formattedDateEnd = dateEndParsed ? format(dateEndParsed, 'MMMM dd, yyyy') : null;
-     const formattedDate = dateParsed ? format(dateParsed, 'MMMM dd, yyyy') : null;
-   
+  const isValidDate = (d) => d instanceof Date && !isNaN(d);
+
+  const startRaw = dateTimeStart || dateStart;
+  const endRaw = dateTimeEnd || dateEnd;
+  
+  const dateStartParsed = startRaw ? parseISO(startRaw) : null;
+  const dateEndParsed = endRaw ? parseISO(endRaw) : null;
+  const dateParsed = date ? parseISO(date) : null;
+  
+  const formattedDateStart = isValidDate(dateStartParsed) ? format(dateStartParsed, 'MMMM dd, yyyy') : null;
+  const formattedDateEnd = isValidDate(dateEndParsed) ? format(dateEndParsed, 'MMMM dd, yyyy') : null;
+  const formattedDate = isValidDate(dateParsed) ? format(dateParsed, 'MMMM dd, yyyy') : null;
+  
+
   
 
   // Use default image only for headerImage fallback
@@ -67,15 +76,16 @@ const ListCard = ({ data, collectionName }) => {
       if (cat && cat !== "N/A") return cat.toUpperCase();
       if (subcategory && subcategory !== "N/A") return subcategory.toUpperCase();
       if (classification && classification !== "N/A") return classification.toUpperCase();
-      return "UNCATEGORIZED";
+      return "";
     })();
     
   return (
-    <Col xs={12} sm={6} md={4} lg={3} className="mb-4 list-card-tile">
-      <Card
-        className="rounded shadow-sm overflow-hidden list-card-card"
-        onClick={() => handleReadMore(collectionName, id)} // Handle card click
-      >
+<Col xs={12} sm={6} md={4} lg={3} className="mb-4 d-flex">
+<Card
+  className="rounded shadow-sm overflow-hidden list-card-card d-flex flex-column w-100"
+  onClick={() => handleReadMore(collectionName, id)}
+>
+
         <div
           className="card-image"
           style={{
@@ -104,8 +114,8 @@ const ListCard = ({ data, collectionName }) => {
           )}
         </div>
 
-        <Card.Body className="list-card-body">
-            {
+        <Card.Body className="list-card-body d-flex flex-column justify-content-between">
+        {
               title && (
                 <Card.Title className="font-weight-bold list-card-title fw-bold mb-3">
                   {title}
@@ -113,18 +123,32 @@ const ListCard = ({ data, collectionName }) => {
               )
             }
 
-          <Card.Title className="font-weight-bold card-button-caption fw-bold mb-4">
-            {origin.join(', ')}
-          </Card.Title>
-
-          <Card.Title className={`${collectionName === "stories" ? "card-button-caption" : "list-card-title"} fw-bold mb-3`}>
-            {name}
-          </Card.Title>
+{origin && (
+               <Card.Title className="font-weight-bold card-button-caption fw-bold mb-4">
+               {origin.join(', ')}
+             </Card.Title>
+            )}
 
           
-          <Card.Subtitle className="mb-2 card-button-caption fw-bold">
-            {displayCategory}
-          </Card.Subtitle>
+          {name && (
+               <Card.Title className={`${collectionName === "stories" ? "card-button-caption" : "list-card-title"} fw-bold mb-3`}>
+               {name}
+             </Card.Title>
+            )}
+          
+
+          {displayCategory && (
+               <Card.Subtitle className="mb-2 card-button-caption fw-bold">
+               {displayCategory}
+             </Card.Subtitle>
+            )}
+
+{total && (
+               <Card.Subtitle className="mb-2 card-button-caption fw-bold">
+               Total Visitors: {total}
+             </Card.Subtitle>
+            )}
+         
 
           {formattedDate && (
               <Card.Title className="card-button-caption">
@@ -139,14 +163,18 @@ const ListCard = ({ data, collectionName }) => {
               </Card.Title>
             )}
 
+            {address && (
+              <Card.Text className="text-muted list-card-text">
+              {[address.street, address.barangay, address.town, address.province]
+                .filter(Boolean)
+                .join(", ")}
+            </Card.Text>
+            )}
 
 
+          
 
-          <Card.Text className="text-muted list-card-text">
-            {[address.street, address.barangay, address.town, address.province]
-              .filter(Boolean)
-              .join(", ")}
-          </Card.Text>
+
         </Card.Body>
       </Card>
     </Col>

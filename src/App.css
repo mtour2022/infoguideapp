@@ -1392,7 +1392,7 @@ body {
   flex-direction: column;
   justify-content: space-between;
   height: 380px;
-  min-height: 380px;
+  min-height: 200px;
 }
 
 
@@ -1866,7 +1866,7 @@ border: 1px solid #1F89B2 !important; /* White border */
 /* Header Image Styling */
 .article-headerImage {
   position: relative; /* Required for ::before positioning */
-  height: 100% !important; /* Fixed height */
+  height: 500px !important; /* Fixed height */
   width: 100%; /* Ensure full width */
   border-radius: 8px; /* Optional: rounded corners */
   display: block;
@@ -1926,6 +1926,8 @@ border: 1px solid #1F89B2 !important; /* White border */
   object-fit: cover !important;
 background-color: transparent !important;
 padding: 0 !important;
+background-color: transparent !important;
+color: transparent !important;
 }
 
 .gallery-modal .gallery-nav-btn {
@@ -2032,6 +2034,8 @@ padding: 0 !important;
   font-size: 0.95rem;
   color: #555;
 }
+
+
 
 /* Responsive Design for Mobile */
 @media (max-width: 767px) {

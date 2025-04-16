@@ -1,32 +1,30 @@
 import React, { useEffect, useState } from "react";
 import { Container, Row, Spinner, Button, Col, Form, Dropdown } from "react-bootstrap";
 import { db } from "../config/firebase";
-import { collection, getDocs, query, orderBy, limit, startAfter } from "firebase/firestore";
+import { collection, getDocs, query, orderBy, limit, startAfter, getCountFromServer } from "firebase/firestore";
 import ListCard from "../components/listCard/ListCard";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faFilter, faMapLocationDot, faSearch, faSortAlphaDown, faSortAlphaUp, faSortNumericDown, faSortNumericUp, faTimes} from "@fortawesome/free-solid-svg-icons";
+import { faFilter, faMapLocationDot, faSearch, faSortAlphaDown, faSortAlphaUp, faSortNumericDown, faSortNumericUp, faTimes } from "@fortawesome/free-solid-svg-icons";
 import MapPopup from "../components/mapSearch/MapSearchComponent";
 import FooterCustomized from "../components/footer/Footer";
 import { useParams } from 'react-router-dom';
 import { useNavigate } from "react-router-dom";
-const ListViewPageComponent = ({}) => {
+const ListViewPageComponent = ({ }) => {
+  const [totalCount, setTotalCount] = useState(0);
   const { collectionName } = useParams();
-
-
   const navigate = useNavigate();
-
-
+  const [pageCursors, setPageCursors] = useState([]);
+  const [isLastPage, setIsLastPage] = useState(false);
   const [data, setData] = useState([]);
   const [filteredData, setFilteredData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [lastVisible, setLastVisible] = useState(null);
-  const [isLastPage, setIsLastPage] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
+  const [allData, setAllData] = useState([]); // To store all data for suggestions
   const [showSuggestions, setShowSuggestions] = useState(false);
   const [suggestions, setSuggestions] = useState([]);
   const [sortOption, setSortOption] = useState("name-asc");
-  const [itemsPerPage, setItemsPerPage] = useState(50); // Default for large screens
-  const [isFirstPage, setIsFirstPage] = useState(true); // Add a new state
+  const [itemsPerPage, setItemsPerPage] = useState(20); // Default for large screens
   const [showFilters, setShowFilters] = useState(false); // State to toggle filters
   const [addressFilters, setAddressFilters] = useState({
     street: [],
@@ -39,8 +37,8 @@ const ListViewPageComponent = ({}) => {
   });
   const [showMap, setShowMap] = useState(false); // Manage popup visibility
   const [isMapVisible, setIsMapVisible] = useState(true);
-   // Effect to reset map visibility when it is closed
-   useEffect(() => {
+  // Effect to reset map visibility when it is closed
+  useEffect(() => {
     if (!showMap) {
       setIsMapVisible(false); // Hide map when it's closed
     } else {
@@ -66,8 +64,8 @@ const ListViewPageComponent = ({}) => {
     };
   }, []);
 
-   // Handle map search button click
-   const handleOpenMap = () => {
+  // Handle map search button click
+  const handleOpenMap = () => {
     setShowMap(true); // Show the map popup when clicked
   };
 
@@ -76,102 +74,79 @@ const ListViewPageComponent = ({}) => {
     setShowMap(false);
   };
 
-  const fetchData = async (nextPage = false) => {
-    setLoading(true);
-    let q;
-
-    if (nextPage && lastVisible) {
-      q = query(
-        collection(db, collectionName),
-        orderBy("name"),
-        startAfter(lastVisible),
-        limit(itemsPerPage)
-      );
-    } else {
-      q = query(
-        collection(db, collectionName),
-        orderBy("name"),
-        limit(itemsPerPage)
-      );
-      setIsFirstPage(true); // This ensures we mark the first page properly
-
+  const fetchAllData = async () => {
+    try {
+      const querySnapshot = await getDocs(query(collection(db, collectionName), orderBy("name")));
+      const documents = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+      setAllData(documents);
+    } catch (error) {
+      console.error("Error fetching all data:", error);
     }
+  };
+  // Fetch data as usual, but this function is only used for paginated data
+  const fetchData = async (direction = "initial") => {
+    setLoading(true);
 
     try {
+      let q = query(collection(db, collectionName), orderBy("name"), limit(itemsPerPage));
+
+      if (direction === "next" && lastVisible) {
+        q = query(q, startAfter(lastVisible));
+      } else if (direction === "prev" && pageCursors.length >= 2) {
+        const prevCursor = pageCursors[pageCursors.length - 2];
+        q = query(collection(db, collectionName), orderBy("name"), startAfter(prevCursor), limit(itemsPerPage));
+      }
+
+      if (direction === "initial") {
+        const countSnapshot = await getCountFromServer(collection(db, collectionName));
+        setTotalCount(countSnapshot.data().count);
+      }
+
       const querySnapshot = await getDocs(q);
-      const dataItems = querySnapshot.docs.map((doc) => ({
-        id: doc.id,
-        ...doc.data(),
-      }));
+      const documents = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
 
-      setData(dataItems);
-      setFilteredData(dataItems);
+      if (direction === "next") {
+        setPageCursors([...pageCursors, querySnapshot.docs[0]]);
+      } else if (direction === "prev") {
+        setPageCursors(prev => prev.slice(0, -1));
+      } else {
+        setPageCursors(querySnapshot.docs.length ? [querySnapshot.docs[0]] : []);
+      }
 
-      const lastVisibleDoc = querySnapshot.docs[querySnapshot.docs.length - 1];
-      setLastVisible(lastVisibleDoc);
-
-      setIsLastPage(dataItems.length < itemsPerPage);
+      setData(documents);
+      setFilteredData(documents);
+      setLastVisible(querySnapshot.docs[querySnapshot.docs.length - 1]);
+      setIsLastPage(querySnapshot.docs.length < itemsPerPage);
     } catch (error) {
-      console.error("Error fetching enterprises:", error);
+      console.error("Pagination error:", error);
     } finally {
       setLoading(false);
     }
   };
 
-  useEffect(() => {
-    fetchData();
-  }, [itemsPerPage]);
 
-  const handleNextPage = () => {
-    fetchData(true);
-  };
+
+  useEffect(() => {
+    fetchData("initial");
+    fetchAllData(); // Fetch all data once when the page loads
+  }, [collectionName]);
+
+
+
 
   useEffect(() => {
     if (searchQuery.trim() === "") {
       setFilteredData(data);
     } else {
-      const results = data.filter(data =>
-        data.name.toLowerCase().includes(searchQuery.toLowerCase())
+      const results = data.filter(item =>
+        item.name?.toLowerCase().includes(searchQuery.toLowerCase())
       );
       setFilteredData(results);
     }
   }, [searchQuery, data]);
-
-  const handlePreviousPage = async () => {
-
-      if (isFirstPage) return; // Prevent going back if it's the first page
+  
 
 
-    setLoading(true);
-    let q = query(
-      collection(db, collectionName),
-      orderBy("name"),
-      startAfter(lastVisible),
-      limit(itemsPerPage)
-    );
-
-    try {
-      const querySnapshot = await getDocs(q);
-      const DataItemize = querySnapshot.docs.map((doc) => ({
-        id: doc.id,
-        ...doc.data(),
-      }));
-
-      setData(DataItemize);
-      setFilteredData(DataItemize);
-
-      const lastVisibleDoc = querySnapshot.docs[querySnapshot.docs.length - 1];
-      setLastVisible(lastVisibleDoc);
-
-      setIsLastPage(DataItemize.length < itemsPerPage);
-      setIsFirstPage(false); // Mark as not the first page anymore
-
-    } catch (error) {
-      console.error("Error fetching entrprises:", error);
-    } finally {
-      setLoading(false);
-    }
-  };
 
   // Handle street or barangay filter changes
   const handleAddressFilterChange = (filterType, value) => {
@@ -183,7 +158,7 @@ const ListViewPageComponent = ({}) => {
     }
     setAddressFilters(updatedAddressFilters); // Update the state for address filters
   };
-  
+
 
   const handleFilterChange = (filterType, value) => {
     const updatedFilters = { ...filters };
@@ -199,7 +174,7 @@ const ListViewPageComponent = ({}) => {
 
   const applyFilters = () => {
     let filtered = data;
-  
+
     // Apply general filters
     Object.keys(filters).forEach((filterType) => {
       if (filters[filterType].length > 0) {
@@ -210,7 +185,7 @@ const ListViewPageComponent = ({}) => {
         );
       }
     });
-  
+
     // Apply address filters for street and barangay
     Object.keys(addressFilters).forEach((filterType) => {
       if (addressFilters[filterType].length > 0) {
@@ -221,23 +196,23 @@ const ListViewPageComponent = ({}) => {
         );
       }
     });
-  
+
     setFilteredData(filtered);
   };
-  
+
 
   useEffect(() => {
     applyFilters();
   }, [filters, addressFilters]); // Make sure filters and addressFilters trigger the effect
-  
+
 
   const handFilter = () => {
     setShowFilters(!showFilters); // Toggle filters visibility
   };
 
   const handleSearch = () => {
-    const results = data.filter(data =>
-      data.name.toLowerCase().includes(searchQuery.toLowerCase())
+    const results = allData.filter(item =>
+      item.name.toLowerCase().includes(searchQuery.toLowerCase())
     );
     setFilteredData(results);
     setShowSuggestions(false);
@@ -245,7 +220,7 @@ const ListViewPageComponent = ({}) => {
 
   const handleSuggestionClick = (suggestion) => {
     setSearchQuery(suggestion.name);
-    setFilteredData([suggestion]);
+    // setFilteredData([suggestion]);
     setSuggestions([]);
     setShowSuggestions(false);
   };
@@ -255,14 +230,10 @@ const ListViewPageComponent = ({}) => {
     setSearchQuery(newQuery);
 
     if (newQuery.trim() === "") {
-      setFilteredData(data);
-      setSuggestions([]);
       setShowSuggestions(false);
     } else {
-      const matches = data
-        .filter(acc =>
-          acc.name.toLowerCase().includes(newQuery.toLowerCase())
-        )
+      const matches = allData
+        .filter(acc => acc.name.toLowerCase().includes(newQuery.toLowerCase()))
         .slice(0, 5);
       setSuggestions(matches);
       setShowSuggestions(true);
@@ -372,84 +343,78 @@ const ListViewPageComponent = ({}) => {
           Exciting activities to try.
         </>
       ),
+    },
+    touristActivityProviders: {
+      title: "TOURIST ACTIVITY PROVIDERS",
+      subtitle: (
+        <>
+          Elevate your experience with these tour activity providers.
+        </>
+      ),
     }
     // You can add more collectionName mappings here
   };
-  
+
   return (
     <div className="home-section content-wrapper">
       <Row>
-      <Col md={12}>
-                    <a
-                            className="text-decoration-none d-block mb-5"
-                            style={{ cursor: "pointer", color: "black" }}
-                          >
-                            <span
-                              onClick={() => navigate(`/infoguideapp/home`)}
-                              style={{ color: "black", marginRight: "5px", fontSize: "0.90rem"  }}
-                            >
-                              home
-                            </span>
-                            
-                            <span
-                              onClick={() => navigate(`/infoguideapp/enterprises/${collectionName}`)}
-                              style={{ color: "black", margin: "0 5px", fontSize: "0.90rem"   }}
-                            >
-                              / {collectionName}
-                            </span>
-                           
-                          </a>
-        
-                    </Col>
+        <Col md={12}>
+          <a
+            className="text-decoration-none d-block mb-5"
+            style={{ cursor: "pointer", color: "black" }}>
+            <span
+              onClick={() => navigate(`/infoguideapp/home`)}
+              style={{ color: "black", marginRight: "5px", fontSize: "0.90rem" }}>
+              home
+            </span>
+            <span
+              onClick={() => navigate(`/infoguideapp/enterprises/${collectionName}`)}
+              style={{ color: "black", margin: "0 5px", fontSize: "0.90rem" }}>
+              / {collectionName}
+            </span>
+          </a>
+        </Col>
       </Row>
       <h2 className="home-section-title">{sectionTitles[collectionName]?.title}</h2>
       <p className="home-section-subtitle">{sectionTitles[collectionName]?.subtitle}</p>
-
       <Row className="align-items-center">
-                    
-      <Col xs={10} sm={10} md={10} className="position-relative">
-  <Form.Control
-    type="text"
-    placeholder={`Search over ${data.length} ${collectionName}`}
-    value={searchQuery}
-    onChange={handleSearchInputChange}
-    onKeyDown={(e) => {
-      if (e.key === "Enter") {
-        handleSearch();
-      }
-    }}
-    onFocus={() => {
-      if (suggestions.length > 0) setShowSuggestions(true);
-    }}
-    onBlur={() => {
-      setTimeout(() => setShowSuggestions(false), 100);
-    }}
-    // Always display the text input field, no matter the screen size
-  />
+        <Col xs={10} sm={10} md={10} className="position-relative">
+          <Form.Control
+            type="text"
+            placeholder={`Search over ${totalCount} ${collectionName}`}
+            value={searchQuery}
+            onChange={handleSearchInputChange}
+            onKeyDown={(e) => {
+              if (e.key === "Enter") {
+                handleSearch();
+              }
+            }}
+            onFocus={() => {
+              if (suggestions.length > 0) setShowSuggestions(true);
+            }}
+            onBlur={() => {
+              setTimeout(() => setShowSuggestions(false), 100);
+            }}
+          />
+          <div className="d-none d-md-block position-absolute" style={{ top: '50%', right: '10px', transform: 'translateY(-50%)' }}>
+            <i className="bi bi-search" style={{ fontSize: '1.5rem', cursor: 'pointer' }} onClick={handleSearch}></i>
+          </div>
 
-  {/* Show search icon only on smaller screens */}
-  <div className="d-none d-md-block position-absolute" style={{ top: '50%', right: '10px', transform: 'translateY(-50%)' }}>
-    <i className="bi bi-search" style={{ fontSize: '1.5rem', cursor: 'pointer' }} onClick={() => {/* add search icon click functionality */}}></i>
-  </div>
-
-  {showSuggestions && suggestions.length > 0 && (
-    <div className="autocomplete-dropdown position-absolute w-100 bg-white border rounded shadow-sm z-3">
-      {suggestions.map((suggestion) => (
-        <div
-          key={suggestion.id}
-          className="p-2 suggestion-item"
-          style={{ cursor: "pointer" }}
-          onClick={() => handleSuggestionClick(suggestion)}
-        >
-          {suggestion.name}
-        </div>
-      ))}
-    </div>
-  )}
-</Col>
-
-
-
+          {showSuggestions && suggestions.length > 0 && (
+            <div className="autocomplete-dropdown position-absolute w-100 bg-white border rounded shadow-sm z-3">
+              {suggestions.map((suggestion) => (
+                <div
+                  key={suggestion.id}
+                  className="p-2 suggestion-item"
+                  style={{ cursor: "pointer" }}
+                  onClick={() => handleSuggestionClick(suggestion)}
+                >
+                  {suggestion.name}
+                </div>
+              ))}
+            </div>
+          )}
+        </Col>
         <Col xs={2} sm={2} md={2}>
           <Button
             onClick={handleSearch}
@@ -460,7 +425,6 @@ const ListViewPageComponent = ({}) => {
           </Button>
         </Col>
       </Row>
-
       <Row className="mt-3">
         <Col xs={4} md={4}>
           <Dropdown onSelect={(key) => handleSort(key)} className=" sort-dropdown  mb-2">
@@ -512,7 +476,7 @@ const ListViewPageComponent = ({}) => {
         </Col>
         <Col xs={4} md={4}>
           <Button
-          className="w-100 mb-2 sort-options-button"
+            className="w-100 mb-2 sort-options-button"
             onClick={handFilter}
           >
             <FontAwesomeIcon icon={faFilter} />
@@ -520,115 +484,117 @@ const ListViewPageComponent = ({}) => {
           </Button>
         </Col>
         <Col xs={4} md={4}>
+        {collectionName !== 'activities' && (
           <Button
-          className="w-100 sort-options-button"
+            className="w-100 sort-options-button"
             onClick={handleOpenMap}
           >
             <FontAwesomeIcon icon={faMapLocationDot} />
             <span className="d-none d-sm-inline ms-2">Map Search</span>
           </Button>
-        </Col>
-      </Row>
-
-      {/* Map Popup Component */}
-      {showMap && (
-          <div className="map-popup-overlay">
-            <Button className="close-button" onClick={() => {
-              setShowMap(false);
-              setIsMapVisible(false); // important to clean map state
-            }}>
-              <FontAwesomeIcon icon={faTimes} />
-            </Button>
-
-            <MapPopup
-              datas={data}
-              collectionName={collectionName}
-              isMapVisible={isMapVisible}
-            />
-          </div>
         )}
 
+        </Col>
+      </Row>
+      {/* Map Popup Component */}
+      {showMap && (
+        <div className="map-popup-overlay">
+          <Button className="close-button" onClick={() => {
+            setShowMap(false);
+            setIsMapVisible(false); // important to clean map state
+          }}>
+            <FontAwesomeIcon icon={faTimes} />
+          </Button>
 
+          <MapPopup
+            datas={allData}
+            collectionName={collectionName}
+            isMapVisible={isMapVisible}
+          />
+        </div>
+      )}
       {showFilters && (
-  <Row className="mt-4">
-    <Col xs={12}>
-      <div className="filter-button-group">
-        {/* For the general filters */}
-        {Object.keys(filters).map((filterType) => (
-          <div key={filterType} className="filter-buttons">
-            {data
-              .map((data) => data[filterType])
-              .flat()
-              .filter((value, index, self) => value && value !== null && self.indexOf(value) === index)
-              .map((value) => (
-                <Button
-                  key={value}
-                  onClick={() => handleFilterChange(filterType, value)}
-                  className={`btn ${
-                    filters[filterType].includes(value) ? "btn-primary" : "btn-outline-secondary"
-                  } filter-button`}
-                >
-                  {value}
-                </Button>
+        <Row className="mt-4">
+          <Col xs={12}>
+            <div className="filter-button-group">
+              {/* For the general filters */}
+              {Object.keys(filters).map((filterType) => (
+                <div key={filterType} className="filter-buttons">
+                  {data
+                    .map((data) => data[filterType])
+                    .flat()
+                    .filter((value, index, self) => value && value !== null && self.indexOf(value) === index)
+                    .map((value) => (
+                      <Button
+                        key={value}
+                        onClick={() => handleFilterChange(filterType, value)}
+                        className={`btn ${filters[filterType].includes(value) ? "btn-primary" : "btn-outline-secondary"
+                          } filter-button`}
+                      >
+                        {value}
+                      </Button>
+                    ))}
+                </div>
               ))}
-          </div>
-        ))}
-
-        {/* For the address filters */}
-        {["street", "barangay"].map((filterType) => (
-          <div key={filterType} className="filter-buttons">
-            {data
-              .map((data) => data.address[filterType])
-              .flat()
-              .filter((value) => value && value !== null)
-              .filter((value, index, self) => self.indexOf(value) === index)
-              .map((value) => (
-                <Button
-                  key={value}
-                  onClick={() => handleAddressFilterChange(filterType, value)}
-                  className={`btn ${
-                    addressFilters[filterType].includes(value) ? "btn-primary" : "btn-outline-secondary"
-                  } filter-button`}
-                >
-                  {value}
-                </Button>
+              {/* For the address filters */}
+              {["street", "barangay"].map((filterType) => (
+                <div key={filterType} className="filter-buttons">
+                  {data
+                    .map((data) => data.address[filterType])
+                    .flat()
+                    .filter((value) => value && value !== null)
+                    .filter((value, index, self) => self.indexOf(value) === index)
+                    .map((value) => (
+                      <Button
+                        key={value}
+                        onClick={() => handleAddressFilterChange(filterType, value)}
+                        className={`btn ${addressFilters[filterType].includes(value) ? "btn-primary" : "btn-outline-secondary"
+                          } filter-button`}
+                      >
+                        {value}
+                      </Button>
+                    ))}
+                </div>
               ))}
-          </div>
-        ))}
-      </div>
-    </Col>
-    <Row>
-    <Col>
-    </Col>
-    </Row>
-  </Row>
-)}
-
-
-
-
-
+            </div>
+          </Col>
+          <Row>
+            <Col>
+            </Col>
+          </Row>
+        </Row>
+      )}
       <Container className="empty-container"></Container>
-
       <Row className="justify-content-start mt-4">
         {filteredData.length > 0 ? (
           filteredData.map((data) => (
-            <ListCard key={data.id} data={data} collectionName={collectionName}/>
+            <ListCard key={data.id} data={data} collectionName={collectionName} />
           ))
         ) : (
           <div>No enterprises found.</div>
         )}
       </Row>
+      <Row className="my-4">
+        <Col className="d-flex justify-content-center gap-2">
+          <Button
+            variant="secondary"
+            disabled={pageCursors.length <= 1}
+            onClick={() => fetchData("prev")}
+          >
+            Prev Page
+          </Button>
+          <Button
+            variant="secondary"
+            disabled={isLastPage}
+            onClick={() => fetchData("next")}
+          >
+            Next Page
+          </Button>
+        </Col>
+      </Row>
 
-      <div className="d-flex justify-content-between mt-4 px-2 mb-5">
-      <Button onClick={handlePreviousPage} disabled={loading || isFirstPage}>
-        Previous
-      </Button>
 
-        <Button onClick={handleNextPage} disabled={loading || isLastPage}>
-          Next
-        </Button>
-      </div>
+
       <FooterCustomized></FooterCustomized>
     </div>
   );

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Container, Row, Col, Form, Button } from "react-bootstrap";
 import { db, storage } from "../../config/firebase";
 import {  collection, addDoc, doc, updateDoc  } from "firebase/firestore";
@@ -112,10 +112,10 @@ export default function EditRequirementsForm({editingItem, toAddForm}) {
   
     useEffect(() => {
         if (editingItem) {
-          setActivityFormData(prevState => ({
+          setRequirementsFormData(prevState => ({
             ...prevState,
             id: editingItem.id || "",
-            title: editingItem.name || "",
+            title: editingItem.title || "",
             purpose: editingItem.purpose || "", // Default category if not provided
             port: editingItem.port || "", // Default category if not provided
             body: editingItem.body.map((section, index) => ({
@@ -209,17 +209,17 @@ export default function EditRequirementsForm({editingItem, toAddForm}) {
             // Prepare accommodation data
             const updateRequirementData = {
               id: editingItem ? editingItem.id : "", // Use existing ID for updates
-              title: activityFormData.title,
-              port: activityFormData.port || selectedPort,
-              purpose: activityFormData.purpose || selectedPurpose,
-              body: activityFormData.body.map((section, index) => ({
+              title: requirementsFormData.title,
+              port: requirementsFormData.port || selectedPort,
+              purpose: requirementsFormData.purpose || selectedPurpose,
+              body: requirementsFormData.body.map((section, index) => ({
                 subtitle: section.subtitle,
                 body: section.body,
                 image: bodyImagesURLs[index] || "",
                 image_source: section.image_source,
               })),
               headerImage: headerImageURL,
-              references: activityFormData.references
+              references: requirementsFormData.references
             };
          
     
