@@ -280,7 +280,7 @@ const ListViewPageComponent3 = () => {
             <Dropdown className="w-100 mb-2">
               <Dropdown.Toggle className="w-100 sort-options-button">
                 <FontAwesomeIcon icon={faFilter} className="me-2" />
-                Filters
+                <span className="d-none d-sm-inline">Filters</span>
               </Dropdown.Toggle>
 
               <Dropdown.Menu className="p-3" style={{ minWidth: "300px" }}>
