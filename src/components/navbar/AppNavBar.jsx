@@ -7,7 +7,7 @@ import whitelogo from '../../assets/images/logoWhiteText.png';
 import { Container, Navbar, Nav, Image, NavDropdown, Form, FormControl, Button, InputGroup, Offcanvas } from 'react-bootstrap';
 import { Link, NavLink } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faBell, faLeaf, faSearch, faFire, faCalendarDay, faBinoculars, faPersonSwimming, faBars, faBookOpen, faCompass, faHotel, faFlag, faUtensils, faPlane, faSailboat, faShop, faHome, faShuttleVan, faCross, faAmbulance, faMedal, faStore, faUserGroup, faHeart, faIdCard, faWalking, faLink, faQuestion } from '@fortawesome/free-solid-svg-icons';
+import { faBell, faLeaf, faSearch, faFire, faCalendarDay, faBinoculars, faPersonSwimming, faBars, faBookOpen, faCompass, faHotel, faFlag, faUtensils, faPlane, faSailboat, faShop, faHome, faShuttleVan, faCross, faAmbulance, faMedal, faStore, faUserGroup, faHeart, faIdCard, faWalking, faLink, faQuestion, faHandPaper } from '@fortawesome/free-solid-svg-icons';
 import { useNavigate } from 'react-router-dom';
 
 export default function AppNavBar() {
@@ -140,13 +140,13 @@ export default function AppNavBar() {
           </NavDropdown.Item>
         </NavDropdown>
         <Nav.Link className='ms-lg-2 mb-1' id='basic-nav-sidebar' as={NavLink} to={`/update/cruiseShips`}>
-          <FontAwesomeIcon icon={faSailboat} size="md" className=' pe-2' fixedWidth /> COMPLAINT FORM
+          <FontAwesomeIcon icon={faHandPaper} size="md" className=' pe-2' fixedWidth /> COMPLAINT FORM
         </Nav.Link>
         <Nav.Link className='ms-lg-2 mb-1' id='basic-nav-sidebar' as={NavLink} to={`/update/cruiseShips`}>
-          <FontAwesomeIcon icon={faSailboat} size="md" className=' pe-2' fixedWidth /> ABOUT US
+          <FontAwesomeIcon icon={faQuestion} size="md" className=' pe-2' fixedWidth /> ABOUT US
         </Nav.Link>
         <Nav.Link className='ms-lg-2 mb-1' id='basic-nav-sidebar' as={NavLink} to={`/update/cruiseShips`}>
-          <FontAwesomeIcon icon={faSailboat} size="md" className=' pe-2' fixedWidth /> FEEDBACK FORM
+          <FontAwesomeIcon icon={faHandPaper} size="md" className=' pe-2' fixedWidth /> FEEDBACK FORM
         </Nav.Link>
       </Nav>
     </div>
