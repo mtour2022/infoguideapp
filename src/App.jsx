@@ -34,7 +34,7 @@ function App() {
               <Route path="/infoguideapp/home" element={<Home />} />
               <Route path="/infoguideapp/" element={<Home />} />
               <Route path="/" element={<Home />} />
-              <Route path="/infoguideapp/80f8f289ebacddaab14d76de7ef8fb715bce4aaf" element={<AdminDashboard />} />
+              <Route path="/infoguideapp/80f8f289ebacddaab14d76de7ef8fb715bce4aaf/admin" element={<AdminDashboard />} />
               <Route path="/infoguideapp/enterprises/:collectionName" element={<ListViewPageComponent />} />
               <Route path="/infoguideapp/update/:collectionName" element={<ListViewPageComponent2 />} />
               <Route path="/infoguideapp/slideshow/:collectionName" element={<CarouselListPage />} />

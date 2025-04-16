@@ -76,12 +76,6 @@ export default function Home() {
                 <div id="home-buttons">
                     <HomeButtons />
                 </div>
-                {/* <div id="attractions-slide">
-                    <AttractionsSlide />
-                </div>
-                <div id="activities-slide">
-                    <ActivitiesSlide />
-                </div> */}
             </div>
             <div>
             <div id="tourism-activities">
