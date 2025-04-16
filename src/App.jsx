@@ -33,7 +33,7 @@ function App() {
             <Routes>
               <Route path="/home" element={<Home />} />
               <Route path="/" element={<Home />} />
-              <Route path="/" element={<Home />} />
+              <Route path="" element={<Home />} />
               <Route path="/80f8f289ebacddaab14d76de7ef8fb715bce4aaf/admin" element={<AdminDashboard />} />
               <Route path="/enterprises/:collectionName" element={<ListViewPageComponent />} />
               <Route path="/update/:collectionName" element={<ListViewPageComponent2 />} />
