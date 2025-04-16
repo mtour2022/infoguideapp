@@ -138,7 +138,7 @@ const ArticleViewComponent = () => {
             style={{ cursor: "pointer", color: "black" }}
           >
             <span
-              onClick={() => navigate(`/infoguideapp/home`)}
+              onClick={() => navigate(`/home`)}
               style={{ color: "white", marginRight: "5px", fontSize: "0.90rem" }}
             >
               home
@@ -146,7 +146,7 @@ const ArticleViewComponent = () => {
             
             <span
               onClick={() =>
-                navigate(`/infoguideapp/${collectionName === "sustainableTourism" ? "slideshow" : "update"}/${collectionName}`)
+                navigate(`/${collectionName === "sustainableTourism" ? "slideshow" : "update"}/${collectionName}`)
               }
               style={{ color: "white", margin: "0 5px", fontSize: "0.90rem" }}
             >

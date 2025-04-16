@@ -53,7 +53,7 @@ const ImageCard = ({ card, onClick }) => {
 
 
   return (
-    <div className="col-md-6" style={{ cursor: "pointer" }}  onClick={() => navigate(`/infoguideapp/enterprises/${card.link}`)}>
+    <div className="col-md-6" style={{ cursor: "pointer" }}  onClick={() => navigate(`/enterprises/${card.link}`)}>
       <div className="pagination-component-card">
         <div className="image-slider-container">
           {isLoading && (

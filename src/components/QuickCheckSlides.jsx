@@ -14,7 +14,7 @@ const UpdatesCarousel = ({ collectionName, categoryOptions, classificationOption
   const navigate = useNavigate();
 
   const handleReadMore = (collectionName, dataId) => {
-    navigate(`/infoguideapp/read/${collectionName}/${dataId}`);
+    navigate(`/read/${collectionName}/${dataId}`);
   };
 
   const [updates, setUpdates] = useState([]);
@@ -114,7 +114,7 @@ const UpdatesCarousel = ({ collectionName, categoryOptions, classificationOption
 
       {/* Pagination */}
       <div className="d-flex justify-content-between align-items-center">
-        <NavLink to={`/infoguideapp/update/${collectionName}`} className="discover-more-btn">
+        <NavLink to={`/update/${collectionName}`} className="discover-more-btn">
           View All
         </NavLink>
 

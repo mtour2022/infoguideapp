@@ -226,8 +226,8 @@ const ListViewPageComponent2 = () => {
           <Row>
             <Col md={12}>
               <a className="text-decoration-none d-block mb-5" style={{ cursor: "pointer", color: "black" }}>
-                <span onClick={() => navigate(`/infoguideapp/home`)} style={{ color: "black", marginRight: "5px", fontSize: "0.90rem" }}>home</span>
-                <span onClick={() => navigate(`/infoguideapp/update/${collectionName}`)} style={{ color: "black", margin: "0 5px", fontSize: "0.90rem" }}>/ {collectionName}</span>
+                <span onClick={() => navigate(`/home`)} style={{ color: "black", marginRight: "5px", fontSize: "0.90rem" }}>home</span>
+                <span onClick={() => navigate(`/update/${collectionName}`)} style={{ color: "black", margin: "0 5px", fontSize: "0.90rem" }}>/ {collectionName}</span>
               </a>
             </Col>
           </Row>

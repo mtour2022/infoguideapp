@@ -13,7 +13,7 @@ const CarouselListPage = ({ title, caption }) => {
   const { collectionName } = useParams();
 
   const handleReadMore = (collectionName, dataId) => {
-    navigate(`/infoguideapp/read/${collectionName}/${dataId}`);
+    navigate(`/read/${collectionName}/${dataId}`);
   };
 
   const [sustainableData, setSustainableData] = useState([]);
@@ -84,13 +84,13 @@ const CarouselListPage = ({ title, caption }) => {
                     style={{ cursor: "pointer", color: "black" }}
                   >
                     <span
-                      onClick={() => navigate(`/infoguideapp/home`)}
+                      onClick={() => navigate(`/home`)}
                       style={{ color: "black", marginRight: "5px", fontSize: "0.90rem"  }}
                     >
                       home
                     </span>
                     <span
-                      onClick={() => navigate(`/infoguideapp/slideshow/${collectionName}`)}
+                      onClick={() => navigate(`/slideshow/${collectionName}`)}
                       style={{ color: "black", margin: "0 5px", fontSize: "0.90rem"   }}
                     >
                       / {collectionName}

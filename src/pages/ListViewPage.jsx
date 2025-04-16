@@ -363,12 +363,12 @@ const ListViewPageComponent = ({ }) => {
             className="text-decoration-none d-block mb-5"
             style={{ cursor: "pointer", color: "black" }}>
             <span
-              onClick={() => navigate(`/infoguideapp/home`)}
+              onClick={() => navigate(`/home`)}
               style={{ color: "black", marginRight: "5px", fontSize: "0.90rem" }}>
               home
             </span>
             <span
-              onClick={() => navigate(`/infoguideapp/enterprises/${collectionName}`)}
+              onClick={() => navigate(`/enterprises/${collectionName}`)}
               style={{ color: "black", margin: "0 5px", fontSize: "0.90rem" }}>
               / {collectionName}
             </span>

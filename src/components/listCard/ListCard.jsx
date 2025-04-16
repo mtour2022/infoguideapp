@@ -16,8 +16,8 @@ const ListCard = ({ data, collectionName }) => {
     const readCollections = ["stories", "incomingEvents", "deals", "updates", "lifeStyles", "helpfulLinks", "cruiseShips", "travelExpos", "tourismProjects", "awardsAndRecognitions", "tourismMarkets"];
   
     const path = readCollections.includes(collectionName)
-      ? `/infoguideapp/read/${collectionName}/${dataId}`
-      : `/infoguideapp/view/${collectionName}/${dataId}`;
+      ? `/read/${collectionName}/${dataId}`
+      : `/view/${collectionName}/${dataId}`;
   
     console.log(collectionName);
     console.log(dataId);

@@ -2,11 +2,9 @@
   "name": "infoguideapp",
   "private": true,
   "version": "0.0.0",
-  "homepage": "https://mtour2022.github.io/infoguideapp/",
   "type": "module",
   "scripts": {
     "predeploy": "npm run build",
-    "deploy": "gh-pages -d dist",
     "dev": "vite",
     "build": "vite build",
     "lint": "eslint .",
