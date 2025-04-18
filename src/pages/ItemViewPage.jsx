@@ -277,7 +277,7 @@ const capitalizeFirstLetter = (str) => {
                   <h2 className="mb-0"><strong>{name}</strong></h2>
                 </div>
 
-                <div className="d-flex justify-content-start">
+                <div className="d-flex justify-content-start text-start">
                   {category && (
                     <div className="me-3">
                       <p style={{ fontSize: "0.90rem" }}>
@@ -441,7 +441,7 @@ const capitalizeFirstLetter = (str) => {
                             Your browser does not support the video tag.
                           </video>
                           {section.image_source && (
-                            <small className="text-muted d-block mt-1">Source: {section.image_source}</small>
+                            <small className="text-break d-inline-block text-muted d-block mt-1">Source: {section.image_source}</small>
                           )}
                           <div
                             className="section-body"
@@ -463,15 +463,13 @@ const capitalizeFirstLetter = (str) => {
                               onClick={() => openImageModal(section.image)} // Open modal on click
                             />
                             {section.image_source && (
-                              <small className="text-muted d-block mt-1 mb-4">Source: {section.image_source}</small>
+                              <small className="text-break d-inline-block text-muted d-block mt-1 mb-4">Source: {section.image_source}</small>
                             )}
                           </Col>
-                          <Col md={12}>
                             <div
-                              className="section-body"
+                              className="section-body mx-0 px-0"
                               dangerouslySetInnerHTML={{ __html: section.body }}
                             />
-                          </Col>
                         </>
                       ) : section.image ? (
                         <Col md={12} className="col">
@@ -487,7 +485,7 @@ const capitalizeFirstLetter = (str) => {
                             onClick={() => openImageModal(section.image)} // Open modal on click
                           />
                           {section.image_source && (
-                            <small className="text-muted d-block mt-1 mb-1">Source: {section.image_source}</small>
+                            <small className="text-break d-inline-block text-muted d-block mt-1 mb-1">Source: {section.image_source}</small>
                           )}
                         </Col>
                       ) : section.body ? (

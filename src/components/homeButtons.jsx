@@ -20,6 +20,7 @@ import {
   faParking,
   faHospital,
   faFlag,
+  faSailboat,
 } from "@fortawesome/free-solid-svg-icons";
 import defaultButtonDataArray from "../classes/HomeButtons"; // Default button data
 import DOTlogo from "../assets/images/DepartmentOfTourismAccreditationLogo.png"
@@ -32,6 +33,7 @@ const iconMap = {
   spa: faSpa,
   restaurant: faUtensils,
   building: faBuilding,
+  sailboat: faSailboat,
   flag: faFlag,
   plane: faPlane,
   mic: faCompass,
@@ -53,15 +55,15 @@ const HomeButtons = ({ buttonDataArray = defaultButtonDataArray }) => {
     <div className="home-section">
       {/* First Section: DOT Accredited */}
       <div className="">
-          <h2 className="home-section-title m-0">DOT ACCREDITED TOURISM ENTERPRISES</h2>
+          <h2 className="home-section-title m-1">DOT ACCREDITED TOURISM ENTERPRISES</h2>
 
-        <p className="home-section-subtitle">
+        <p className="home-section-subtitle  mb-0">
           Department of Tourism (DOT) Accredited Enterprises in Boracay Island, Malay.
         </p>
         <div className="row">
             {buttonDataArray.length > 0 ? (
               buttonDataArray.slice(0, 8).map((button, index) => (
-                <div className="col-lg-3 col-md-4 col-sm-6 col-6" key={index}>
+                <div className="col-lg-3 col-md-4 col-sm-6 col-6 m-0 p-1 p-md-2" key={index}>
                   <NavLink to={button.link} className="group">
                     <div
                       className="home-button-card"

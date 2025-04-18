@@ -1,88 +1,61 @@
-import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCamera, faMapLocationDot, faPersonSwimming } from "@fortawesome/free-solid-svg-icons";
+import { faCompass, faBiking } from "@fortawesome/free-solid-svg-icons";
 
-const AttractionsActivitiesShowcase = () => {
+const fallbackImage =
+  "https://firebasestorage.googleapis.com/v0/b/infoguide-13007.firebasestorage.app/o/homeButtons%2Fwhitebach_backdrop.jpg?alt=media&token=2d712ede-915f-4ca5-ba1d-b650bce45cf7";
 
-
-  const cards = [
+const TwoSectionButtons = () => {
+  const cardData = [
     {
-      title: "Tourist Hot Spots",
-      image:
-        "https://firebasestorage.googleapis.com/v0/b/infoguide-13007.firebasestorage.app/o/AgnagaMiniFalls%26%20ColdSpring.jpg?alt=media&token=ac261bd1-6d49-49a2-8f37-56fb6db645ab",
-      link: "attractions",
+      name: "ATTRACTIONS",
+      caption: "Instagrammable places!",
+      link: "/enterprises/attractions",
+      color: "#B0E0E6", // Green
+      image: "https://firebasestorage.googleapis.com/v0/b/infoguide-13007.firebasestorage.app/o/attractions.png?alt=media&token=84f0cbf2-4986-4fa3-ae02-80a52319534f",
+      icon: faCompass,
     },
     {
-      title: "Tourist Activities",
-      image:
-        "https://firebasestorage.googleapis.com/v0/b/infoguide-13007.firebasestorage.app/o/DSC_4919-min.JPG?alt=media&token=80d6dc7a-6878-456c-bb6b-b6ff9990046f",
-      link: "activities",
+      name: "ACTIVITIES",
+      caption: "For thrill seekers!",
+      link: "/enterprises/activities",
+      color: "#0D1B2A", // Blue
+      image: "https://firebasestorage.googleapis.com/v0/b/infoguide-13007.firebasestorage.app/o/activities.jpg?alt=media&token=bc2a2009-b794-47b6-8f36-93c9394e24aa",
+      icon: faBiking,
     },
   ];
 
   return (
     <div className="home-section">
-      <h2 className="home-section-title">EXPLORE THE WORLD'S BEST BEACH</h2>
-      <p className="home-section-subtitle">
-        Explore scenic spots and join exciting tourist activities!
-      </p>
-
-      <div className="row g-4">
-        {cards.map((card, index) => (
-          <ImageCard key={index} card={card} />
+      <h2 className="home-section-title mb-1">EXPLORE MORE!</h2>
+      <p className="home-section-subtitle mb-0">Discover Attractions and Activities in Boracay</p>
+      <div className="row">
+        {cardData.map((card, index) => (
+          <div className="col-6 p-1 p-md-2" key={index}>
+            <NavLink to={card.link} className="group">
+              <div
+                className="home-button-card"
+                style={{ "--button-color": card.color }}
+              >
+                <div
+                  className="home-button-bg"
+                  style={{
+                    backgroundImage: `url(${card.image})`,
+                  }}
+                ></div>
+                <div className="home-button-gradient"></div>
+                <FontAwesomeIcon icon={card.icon} className="home-button-icon" />
+                <div className="home-button-content">
+                  <p className="home-button-name">{card.name}</p>
+                  <p className="home-button-caption">{card.caption}</p>
+                </div>
+              </div>
+            </NavLink>
+          </div>
         ))}
       </div>
     </div>
   );
 };
 
-const ImageCard = ({ card, onClick }) => {
-  const navigate = useNavigate();
-
-  const [isLoading, setIsLoading] = useState(true);
-
-  useEffect(() => {
-    const img = new Image();
-    img.src = card.image;
-    img.onload = () => setIsLoading(false);
-  }, [card.image]);
-
-  const isAttractions = card.link === "/attractions";
-  const isActivities = card.link === "/activities";
-
-
-  return (
-    <div className="col-md-6" style={{ cursor: "pointer" }}  onClick={() => navigate(`/enterprises/${card.link}`)}>
-      <div className="pagination-component-card">
-        <div className="image-slider-container">
-          {isLoading && (
-            <div className="image-loader">
-              <div className="spinner"></div>
-            </div>
-          )}
-          <div
-            className="image-slider"
-            style={{
-              backgroundImage: `url(${card.image})`,
-              backgroundSize: "cover",
-              backgroundPosition: "center",
-              height: "100%",
-              width: "100%",
-              opacity: isLoading ? 0 : 1,
-            }}
-          />
-        </div>
-        <div className="home-button-content text-background-gradient">
-          <p className="card-button-name">
-          {isAttractions && <FontAwesomeIcon icon={faCamera} className="me-2" />}
-          {isActivities && <FontAwesomeIcon icon={faPersonSwimming} className="me-2" />}
-            {card.title}
-          </p>
-        </div>
-      </div>
-    </div>
-  );
-};
-
-export default AttractionsActivitiesShowcase;
+export default TwoSectionButtons;

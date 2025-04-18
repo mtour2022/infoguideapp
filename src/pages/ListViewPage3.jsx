@@ -161,7 +161,7 @@ const ListViewPageComponent3 = () => {
   }, {});
 
   const sectionTitles = {
-    ordinances: { title: "BEACH LAWS", subtitle: "Boracay Beach Ordinances to follow." },
+    ordinances: { title: "BEACH LAWS", subtitle: "Boracay Municipal Ordinances to follow." },
     hotlines: { title: "HOTLINES", subtitle: "Emergency Hotlines and Tourist Assistance Hotlines." },
 
   };

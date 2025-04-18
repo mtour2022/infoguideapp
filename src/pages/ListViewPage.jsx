@@ -268,7 +268,7 @@ const ListViewPageComponent = ({ }) => {
       title: "ACCOMMODATION ESTABLISHMENTS",
       subtitle: (
         <>
-          Department of Tourism (DOT) Accredited data Establishments in Boracay Island, Malay as of <b>March 2025</b>.
+          Department of Tourism (DOT) Accredited Accommodation Establishments in Boracay Island, Malay as of <b>March 2025</b>.
         </>
       ),
     },

@@ -6,18 +6,18 @@ import { db } from '../config/firebase';
 import FooterCustomized from '../components/footer/Footer';
 import { parseISO, format } from 'date-fns';
 import ImageModal from '../components/imageview/ImageViewComponent'; // Import ImageModal component
-import facebooklogo from "../assets/images/logos/facebooklogo.png"; 
-import instagramlogo from "../assets/images/logos/instagramlogo.png"; 
-import tiktoklogo from "../assets/images/logos/tiktoklogo.png"; 
-import xtwitterlogo from "../assets/images/logos/xtwitterlogo.png"; 
-import youtubelogo from "../assets/images/logos/youtubelogo.png"; 
-import messengerlogo from "../assets/images/logos/messenger-logo.png"; 
-import emaillogo from "../assets/images/logos/google-email-logo.png"; 
-import whatsapplogo from "../assets/images/logos/whats-app-logo.png"; 
+import facebooklogo from "../assets/images/logos/facebooklogo.png";
+import instagramlogo from "../assets/images/logos/instagramlogo.png";
+import tiktoklogo from "../assets/images/logos/tiktoklogo.png";
+import xtwitterlogo from "../assets/images/logos/xtwitterlogo.png";
+import youtubelogo from "../assets/images/logos/youtubelogo.png";
+import messengerlogo from "../assets/images/logos/messenger-logo.png";
+import emaillogo from "../assets/images/logos/google-email-logo.png";
+import whatsapplogo from "../assets/images/logos/whats-app-logo.png";
 
-import tripadvisorlogo from "../assets/images/logos/tripadvisorlogo.png"; 
-import googlemaplogo from "../assets/images/logos/googlemaplogo.png"; 
-import DOTlogo from "../assets/images/DepartmentOfTourismAccreditationLogo.png"; 
+import tripadvisorlogo from "../assets/images/logos/tripadvisorlogo.png";
+import googlemaplogo from "../assets/images/logos/googlemaplogo.png";
+import DOTlogo from "../assets/images/DepartmentOfTourismAccreditationLogo.png";
 import { FacebookShareButton, FacebookIcon, EmailShareButton, EmailIcon, TwitterShareButton, TwitterIcon, LinkedinShareButton, LinkedinIcon, WhatsappShareButton, WhatsappIcon } from 'react-share';
 
 const ArticleViewComponent = () => {
@@ -59,11 +59,11 @@ const ArticleViewComponent = () => {
 
 
 
-   const [imageLoading, setImageLoading] = useState(true);
- 
-   const handleImageLoad = () => {
-     setImageLoading(false);
-   };
+  const [imageLoading, setImageLoading] = useState(true);
+
+  const handleImageLoad = () => {
+    setImageLoading(false);
+  };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -131,28 +131,28 @@ const ArticleViewComponent = () => {
           }}
         />
       )}
-      <Row>
+      <Row className='mt-2'>
         <Col md={12}>
           <a
-            className="text-decoration-none d-block mb-5"
+            className="text-decoration-none d-block mb-3"
             style={{ cursor: "pointer", color: "black" }}
           >
             <span
               onClick={() => navigate(`/home`)}
-              style={{ color: "white", marginRight: "5px", fontSize: "0.90rem" }}
+              style={{ color: "white", fontSize: "0.70rem" }}
             >
               home
             </span>
-            
+
             <span
               onClick={() =>
                 navigate(`/${collectionName === "sustainableTourism" ? "slideshow" : "update"}/${collectionName}`)
               }
-              style={{ color: "white", margin: "0 5px", fontSize: "0.90rem" }}
+              style={{ color: "white", margin: "0 5px", fontSize: "0.70rem" }}
             >
-              / {collectionName}
+              / {collectionName.replace(/([A-Z])/g, ' $1').replace(/^./, str => str.toUpperCase())}
             </span>
-            <span style={{ color: "white", marginLeft: "5px", fontSize: "0.90rem"   }}>/ {data.title}</span>
+            <span style={{ color: "white", fontSize: "0.70rem" }}>/ {data.title}</span>
           </a>
         </Col>
       </Row>
@@ -165,99 +165,116 @@ const ArticleViewComponent = () => {
         className="article-headerImage mb-4"
       />
 
-      <Row className="justify-content-center align-items-center">
-        <Col md={9}>
+      <Row className="justify-content-center align-items-center row">
+        <Col md={9} className='col'>
           {/* Title */}
           <h2 className="article-title mb-3">{data.title}</h2>
-          <div className="d-flex justify-content-center align-items-center mb-2">
-            {data.origin && <p className="mb-0">{data.origin.join(', ')} - </p>}
-            {data.formattedDateOnly && <p className="mb-0">{formattedDateOnly}</p>}
-            {data.name} 
-            {data.dateTimeStart && <p className="mb-0">{formattedDateStart}</p>}
+          <div className="d-flex justify-content-center align-items-center mb-2 text-start flex-wrap">
+            <p className="mb-0 text-center">
+              {data.origin?.length > 0 && data.origin.join(', ')}
+              {data.origin?.length > 0 && data.formattedDateOnly && ' - '}
+              {data.formattedDateOnly && !isNaN(new Date(formattedDateOnly)) && formattedDateOnly}
+              {(data.origin || data.formattedDateOnly) && data.name && ' - '}
+              {data.name}
+              {data.dateTimeStart && !isNaN(new Date(data.dateTimeStart)) && ` - ${formattedDateStart}`}
+            </p>
           </div>
+
+
 
           {/* Share Buttons */}
           <div className="d-flex mb-4 align-items-center gap-3 justify-content-center">
-  {/* Facebook */}
-  <a
-    href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareUrl)}`}
-    target="_blank"
-    rel="noreferrer"
-    className="rounded-circle d-flex align-items-center justify-content-center border"
-    style={{
-      width: "40px",
-      height: "40px",
-      backgroundColor: "#f0f0f0",
-      overflow: "hidden"
-    }}
-  >
-    <img src={facebooklogo} alt="Facebook" style={{ width: "20px", height: "20px" }} />
-  </a>
+            <a
+              href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(`https://www.boracayinfoguide.com/read/${collectionName}/${data.id}?image=${data.headerImage}`)}`}
+              target="_blank"
+              rel="noreferrer"
+              className="rounded-circle d-flex align-items-center justify-content-center border"
+              style={{
+                width: "40px",
+                height: "40px",
+                backgroundColor: "#f0f0f0",
+                overflow: "hidden"
+              }}
+            >
+              <img src={facebooklogo} alt="Facebook" style={{ width: "20px", height: "20px" }} />
+            </a>
 
-  {/* Email */}
-  <a
-    href={`mailto:?subject=${encodeURIComponent(data?.title || '')}&body=${encodeURIComponent(shareUrl)}`}
-    target="_blank"
-    rel="noreferrer"
-    className="rounded-circle d-flex align-items-center justify-content-center border"
-    style={{
-      width: "40px",
-      height: "40px",
-      backgroundColor: "#f0f0f0",
-      overflow: "hidden"
-    }}
-  >
-    <img src={emaillogo} alt="Email" style={{ width: "20px", height: "20px" }} />
-  </a>
 
-  {/* X / Twitter */}
-  <a
-    href={`https://twitter.com/intent/tweet?url=${encodeURIComponent(shareUrl)}&text=${encodeURIComponent(data?.title || '')}`}
-    target="_blank"
-    rel="noreferrer"
-    className="rounded-circle d-flex align-items-center justify-content-center border"
-    style={{
-      width: "40px",
-      height: "40px",
-      backgroundColor: "#f0f0f0",
-      overflow: "hidden"
-    }}
-  >
-    <img src={xtwitterlogo} alt="X / Twitter" style={{ width: "20px", height: "20px" }} />
-  </a>
+            {/* Email */}
+            <a
+              href={`mailto:?subject=${encodeURIComponent(data?.title || '')}&body=${encodeURIComponent(
+                `https://www.boracayinfoguide.com/read/${collectionName}/${data.id}&image=${data?.headerImage}`
+              )}`}
+              target="_blank"
+              rel="noreferrer"
+              className="rounded-circle d-flex align-items-center justify-content-center border"
+              style={{
+                width: "40px",
+                height: "40px",
+                backgroundColor: "#f0f0f0",
+                overflow: "hidden"
+              }}
+            >
+              <img src={emaillogo} alt="Email" style={{ width: "20px", height: "20px" }} />
+            </a>
 
-  {/* WhatsApp */}
-  <a
-    href={`https://api.whatsapp.com/send?text=${encodeURIComponent(data?.title || '')}%20${encodeURIComponent(shareUrl)}`}
-    target="_blank"
-    rel="noreferrer"
-    className="rounded-circle d-flex align-items-center justify-content-center border"
-    style={{
-      width: "40px",
-      height: "40px",
-      backgroundColor: "#f0f0f0",
-      overflow: "hidden"
-    }}
-  >
-    <img src={whatsapplogo} alt="WhatsApp" style={{ width: "20px", height: "20px" }} />
-  </a>
+            {/* Twitter (X) */}
+            <a
+              href={`https://twitter.com/intent/tweet?url=${encodeURIComponent(`https://www.boracayinfoguide.com/read/${collectionName}/${data.id}&image=${data?.headerImage}`)}&text=${encodeURIComponent(
+                data?.title || 'Check this out!'
+              )}&image=${encodeURIComponent(data?.headerImage || '/path/to/default-image.jpg')}`}
+              target="_blank"
+              rel="noreferrer"
+              className="rounded-circle d-flex align-items-center justify-content-center border"
+              style={{
+                width: "40px",
+                height: "40px",
+                backgroundColor: "#f0f0f0",
+                overflow: "hidden"
+              }}
+            >
+              <img src={xtwitterlogo} alt="X / Twitter" style={{ width: "20px", height: "20px" }} />
+            </a>
 
-  {/* Messenger */}
-  <a
-    href={`fb-messenger://share?link=${encodeURIComponent(shareUrl)}`}
-    target="_blank"
-    rel="noreferrer"
-    className="rounded-circle d-flex align-items-center justify-content-center border"
-    style={{
-      width: "40px",
-      height: "40px",
-      backgroundColor: "#f0f0f0",
-      overflow: "hidden"
-    }}
-  >
-    <img src={messengerlogo} alt="Messenger" style={{ width: "20px", height: "20px" }} />
-  </a>
-</div>
+            {/* WhatsApp */}
+            <a
+              href={`https://api.whatsapp.com/send?text=${encodeURIComponent(
+                data?.title || 'Check this out!'
+              )}%20${encodeURIComponent(
+                `https://www.boracayinfoguide.com/read/${collectionName}/${data.id}&image=${data?.headerImage}`
+              )}&image=${encodeURIComponent(data?.headerImage)}`}
+              target="_blank"
+              rel="noreferrer"
+              className="rounded-circle d-flex align-items-center justify-content-center border"
+              style={{
+                width: "40px",
+                height: "40px",
+                backgroundColor: "#f0f0f0",
+                overflow: "hidden"
+              }}
+            >
+              <img src={whatsapplogo} alt="WhatsApp" style={{ width: "20px", height: "20px" }} />
+            </a>
+
+            {/* Messenger */}
+            <a
+              href={`fb-messenger://share?link=${encodeURIComponent(
+                `https://www.boracayinfoguide.com/read/${collectionName}/${data.id}&image=${data?.headerImage}`
+              )}&image=${encodeURIComponent(data?.headerImage || '/path/to/default-image.jpg')}`}
+              target="_blank"
+              rel="noreferrer"
+              className="rounded-circle d-flex align-items-center justify-content-center border"
+              style={{
+                width: "40px",
+                height: "40px",
+                backgroundColor: "#f0f0f0",
+                overflow: "hidden"
+              }}
+            >
+              <img src={messengerlogo} alt="Messenger" style={{ width: "20px", height: "20px" }} />
+            </a>
+
+          </div>
 
 
 
@@ -276,7 +293,7 @@ const ArticleViewComponent = () => {
                   {section.image_source && (
                     <small className="text-muted d-block mt-1">Source: {section.image_source}</small>
                   )}
-                  
+
                   <div
                     className="section-body"
                     dangerouslySetInnerHTML={{ __html: section.body }}
@@ -301,9 +318,9 @@ const ArticleViewComponent = () => {
                     )}
                   </Col>
                   <Col md={12}>
-                    
+
                     <div
-                      className="section-body  mx-3"
+                      className="section-body"
                       dangerouslySetInnerHTML={{ __html: section.body }}
                     />
                   </Col>
@@ -311,8 +328,8 @@ const ArticleViewComponent = () => {
               ) : section.image ? (
                 <Col md={12}>
                   <h4>
-                      <strong>{section.subtitle}</strong>
-                    </h4>
+                    <strong>{section.subtitle}</strong>
+                  </h4>
                   <Image
                     src={section.image}
                     alt="Section"
@@ -331,7 +348,7 @@ const ArticleViewComponent = () => {
                     <strong>{section.subtitle}</strong>
                   </h4>
                   <div
-                    className="section-body mx-3"
+                    className="section-body"
                     dangerouslySetInnerHTML={{ __html: section.body }}
                   />
                 </Col>
@@ -339,16 +356,16 @@ const ArticleViewComponent = () => {
             </Row>
           ))}
 
-        {data.description && (
-          <Row>
-            <Col md={12}>
-              <div
-                className="section-body mx-3"
-                dangerouslySetInnerHTML={{ __html: data.description }}
-              />
-            </Col>
-          </Row>
-        )}
+          {data.description && (
+            <Row>
+              <Col md={12}>
+                <div
+                  className="section-body"
+                  dangerouslySetInnerHTML={{ __html: data.description }}
+                />
+              </Col>
+            </Row>
+          )}
 
 
           {/* Image Gallery */}
@@ -394,12 +411,13 @@ const ArticleViewComponent = () => {
 
           {/* References */}
           {data.references?.length > 0 && (
-            <div className="mt-5">
-              <h5 className="ms-3">References</h5>
+            <div className="mt-5 mx-2">
+              <h5>References</h5>
               <ul>
                 {data.references.map((ref, idx) => (
                   <li key={idx}>
-                    <a href={ref} target="_blank" rel="noopener noreferrer">
+                    <a
+                      href={ref} target="_blank" rel="noopener noreferrer" className="text-break d-inline-block">
                       {ref}
                     </a>
                   </li>
@@ -410,12 +428,13 @@ const ArticleViewComponent = () => {
 
           {/* References */}
           {data.socials?.length > 0 && (
-            <div className="mt-5">
-              <h5 className="ms-3">Helpful Links</h5>
+            <div className="mt-5 mx-2">
+              <h5>Helpful Links</h5>
               <ul>
                 {data.socials.map((ref, idx) => (
                   <li key={idx}>
-                    <a href={ref} target="_blank" rel="noopener noreferrer">
+                    <a href={ref} className="text-break d-inline-block"
+                      target="_blank" rel="noopener noreferrer">
                       {ref}
                     </a>
                   </li>
@@ -425,9 +444,9 @@ const ArticleViewComponent = () => {
           )}
 
           {data.tags?.length > 0 && (
-            <div className="mt-5">
-              <h5 className="ms-3">Tags</h5>
-              <div className='mx-3'>
+            <div className="mt-5  mx-2">
+              <h5>Tags</h5>
+              <div >
                 {data.tags.map((ref, idx) => {
                   // Remove spaces and capitalize the first letter of each word
                   const formattedTag = ref
@@ -456,7 +475,7 @@ const ArticleViewComponent = () => {
 
 
 
-          
+
         </Col>
       </Row>
 
@@ -469,7 +488,7 @@ const ArticleViewComponent = () => {
               <span className="visually-hidden">Loading...</span>
             </div>
           )}
-      
+
           <Image
             src={selectedImage}
             alt="Full View"

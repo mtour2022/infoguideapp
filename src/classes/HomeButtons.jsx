@@ -8,7 +8,7 @@ button1.name = "ACCOMMODATION ESTABLISHMENTS";
 button1.link = "/enterprises/accommodations";
 button1.image = "https://firebasestorage.googleapis.com/v0/b/infoguide-13007.firebasestorage.app/o/homeButtons%2Faccommodations.png?alt=media&token=b925b582-a826-4c41-867c-c0d0b395c73d";
 button1.color = "#A051EE";
-button1.caption = "Find the best places to stay.";
+button1.caption = "Luxury to homelike comfort.";
 button1.icon = "hotel";
 
 const button2 = new HomeButtonFormData();
@@ -16,7 +16,7 @@ button2.name = "RESTAURANTS";
 button2.link = "/enterprises/restaurants";
 button2.image = "https://firebasestorage.googleapis.com/v0/b/infoguide-13007.firebasestorage.app/o/homeButtons%2Fboracaydine.png?alt=media&token=b0afdc72-a651-4f2c-a825-a9059bc5314d";
 button2.color = "#DA3C3C";
-button2.caption = "Explore the best dining spots.";
+button2.caption = "Cravings satisfied.";
 button2.icon = "restaurant";
 
 const button3 = new HomeButtonFormData();
@@ -24,7 +24,7 @@ button3.name = "SPA & WELLNESS CENTERS";
 button3.link = "/enterprises/spaAndWellnessCentres";
 button3.image = "https://firebasestorage.googleapis.com/v0/b/infoguide-13007.firebasestorage.app/o/homeButtons%2Fspawellnessbackground.png?alt=media&token=ba96844e-1608-4438-95fc-902ff797c6a1";
 button3.color = "#2D8B3C";
-button3.caption = "Relax and rejuvenate.";
+button3.caption = "Peace through touch.";
 button3.icon = "spa";
 
 // const button4 = new HomeButtonFormData();
@@ -39,16 +39,16 @@ button4.name = "TOUR ACTIVITY PROVIDERS";
 button4.link = "/enterprises/touristActivityProviders";
 button4.image = "https://firebasestorage.googleapis.com/v0/b/infoguide-13007.firebasestorage.app/o/parasailing.png?alt=media&token=807f6447-1760-467c-b350-b9facb0bd24f";
 button4.color = "#008080";
-button4.caption = "Elevated experiences with this watersports providers.";
-button4.icon = "building";
+button4.caption = "Elevated experiences.";
+button4.icon = "sailboat";
 
 
 const button5 = new HomeButtonFormData();
 button5.name = "TOURIST LAND & AIR TRANSPORT OPERATORS";
 button5.link = "/enterprises/touristLandAndAirTransportOperators";
 button5.image = "https://firebasestorage.googleapis.com/v0/b/infoguide-13007.firebasestorage.app/o/homeButtons%2Ftouristlandandairtransfer-min.png?alt=media&token=9c991c65-624f-4b18-9b6e-ff803068c7ba";
-button5.color = "#F3DB3B";
-button5.caption = "Reliable transport options.";
+button5.color = "#D6C334";
+button5.caption = "Hassle-free travel.";
 button5.icon = "plane";
 
 const button6 = new HomeButtonFormData();
@@ -56,7 +56,7 @@ button6.name = "TRAVEL AND TOUR OPERATORS";
 button6.link = "/enterprises/travelAndTourOperators";
 button6.image = "https://firebasestorage.googleapis.com/v0/b/infoguide-13007.firebasestorage.app/o/homeButtons%2FtravelAndToursbackground-min.png?alt=media&token=41c0c7d3-697a-4031-8043-1fe7996bd29b";
 button6.color = "#4682B4";
-button6.caption = "Plan your next adventure.";
+button6.caption = "Planned and Seemless.";
 button6.icon = "flag";
 
 const button7 = new HomeButtonFormData();
@@ -64,7 +64,7 @@ button7.name = "TOUR GUIDES";
 button7.link = "/enterprises/tourguides";
 button7.image = "https://firebasestorage.googleapis.com/v0/b/infoguide-13007.firebasestorage.app/o/homeButtons%2Ftourguidesboracay.png?alt=media&token=b66c7bcf-4935-4c18-bda9-d07197397eb6";
 button7.color = "#FF8A00";
-button7.caption = "Experience guided tours.";
+button7.caption = "Guided steps.";
 button7.icon = "mic";
 
 const button8 = new HomeButtonFormData();
@@ -72,7 +72,7 @@ button8.name = "TOURIST & SPECIALTY SHOPS";
 button8.link = "/enterprises/touristAndSpecialtyShops";
 button8.image = "https://firebasestorage.googleapis.com/v0/b/infoguide-13007.firebasestorage.app/o/homeButtons%2Ftouristshops.jpg?alt=media&token=c3aaa527-0878-426f-92f2-5ed4f348bdbd";
 button8.color = "#8B4513";
-button8.caption = "Shop for souvenirs and gifts.";
+button8.caption = "Meaningful gifts.";
 button8.icon = "shopping";
 
 const button9 = new HomeButtonFormData();
