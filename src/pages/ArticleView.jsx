@@ -5,7 +5,7 @@ import { getDoc, doc } from 'firebase/firestore';
 import { db } from '../config/firebase';
 import FooterCustomized from '../components/footer/Footer';
 import { parseISO, format } from 'date-fns';
-import ImageModal from '../components/imageview/ImageViewComponent'; // Import ImageModal component
+import FullImageModal from '../components/imageview/ImageFullComponent'; // Import ImageModal component
 import facebooklogo from "../assets/images/logos/facebooklogo.png";
 import instagramlogo from "../assets/images/logos/instagramlogo.png";
 import tiktoklogo from "../assets/images/logos/tiktoklogo.png";
@@ -278,8 +278,10 @@ const ArticleViewComponent = () => {
 
 
 
+
           {/* Body Sections */}
           {data.body?.map((section, index) => (
+            <>
             <Row className="mb-5" key={index}>
               {isVideoUrl(section.image) ? (
                 <Col md={12}>
@@ -354,6 +356,15 @@ const ArticleViewComponent = () => {
                 </Col>
               ) : null}
             </Row>
+
+            {/* Image Modal with Navigation */}
+<FullImageModal
+            showImageModal={showModal}
+            closeImageModal={() => setShowModal(false)}
+            selectedImage={section.image}
+            
+          />
+          </>
           ))}
 
           {data.description && (
@@ -399,15 +410,9 @@ const ArticleViewComponent = () => {
             </>
           )}
 
-          {/* Image Modal with Navigation */}
-          <ImageModal
-            show={showModal}
-            onHide={() => setShowModal(false)}
-            images={data.images}
-            modalIndex={modalIndex}
-            onPrev={handlePrev}
-            onNext={handleNext}
-          />
+          
+
+
 
           {/* References */}
           {data.references?.length > 0 && (
