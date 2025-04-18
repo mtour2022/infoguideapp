@@ -34,7 +34,7 @@ const FooterCustomized = () => {
 
           {/* Contact Information Column */}
           <Col md={6} sm={12}>
-            <h5 className="mb-3">LGU Malay Municipal Tourism Offcie</h5>
+            <h5 className="mb-3">LGU Malay Municipal Tourism Office</h5>
             <p><strong>Email:</strong> lgumalaytourism@yahoo.com</p>
             <p><strong>24/7 Tourist Hotline:</strong> (+63) 968 243 1919, (+63) 905 219 1604</p>
             <p><strong>Telephone:</strong> (036) 288-8827, (036) 288-2493</p>

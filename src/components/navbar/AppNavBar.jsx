@@ -7,7 +7,7 @@ import whitelogo from '../../assets/images/logoWhiteText.png';
 import { Container, Navbar, Nav, Image, NavDropdown, Form, FormControl, Button, InputGroup, Offcanvas } from 'react-bootstrap';
 import { Link, NavLink } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faBell, faLeaf, faSearch, faFire, faCalendarDay, faBinoculars, faPersonSwimming, faBars, faBookOpen, faCompass, faHotel, faFlag, faUtensils, faPlane, faSailboat, faShop, faHome, faShuttleVan, faCross, faAmbulance, faMedal, faStore, faUserGroup, faHeart, faIdCard, faWalking, faLink, faQuestion, faHandPaper } from '@fortawesome/free-solid-svg-icons';
+import { faBell, faLeaf, faSearch, faFire, faCalendarDay, faBinoculars, faPersonSwimming, faBars, faBookOpen, faCompass, faHotel, faFlag, faUtensils, faPlane, faSailboat, faShop, faHome, faShuttleVan, faCross, faAmbulance, faMedal, faStore, faUserGroup, faHeart, faIdCard, faWalking, faLink, faQuestion, faHandPaper, faCheck } from '@fortawesome/free-solid-svg-icons';
 import { useNavigate } from 'react-router-dom';
 
 export default function AppNavBar() {
@@ -110,6 +110,9 @@ export default function AppNavBar() {
           </NavDropdown.Item>
           <NavDropdown.Item as={NavLink} className='text-dark my-2'   to={`/listview/requirements`} id='basic-nav-dropdown-item'>
           {<span className="text-dark" style={{ fontSize: '0.80rem' }}> <FontAwesomeIcon icon={faIdCard} size="md" className=' pe-2' fixedWidth /> TOURIST REQUIREMENTS</span>}
+          </NavDropdown.Item>
+          <NavDropdown.Item as={NavLink} className='text-dark my-2'   to={`/listview/ordinances`} id='basic-nav-dropdown-item'>
+          {<span className="text-dark" style={{ fontSize: '0.80rem' }}> <FontAwesomeIcon icon={faCheck} size="md" className=' pe-2' fixedWidth /> BEACH LAWS</span>}
           </NavDropdown.Item>
           <NavDropdown.Item as={NavLink} className='text-dark my-2'   to={`/update/lifeStyles`} id='basic-nav-dropdown-item'>
           {<span className="text-dark" style={{ fontSize: '0.80rem' }}> <FontAwesomeIcon icon={faWalking} size="md" className=' pe-2' fixedWidth /> LIFESTYLES AND FACILITIES</span>}
