@@ -8,6 +8,9 @@ import { faFilter, faMapLocationDot, faSearch, faSortAlphaDown, faSortAlphaUp, f
 import FooterCustomized from "../components/footer/Footer";
 import { useParams } from 'react-router-dom';
 import { useNavigate } from "react-router-dom";
+import { parseISO, format, isWithinInterval, addDays, subDays, addMonths, subWeeks } from "date-fns";
+import { NavLink } from "react-router-dom";
+import { faChevronLeft, faChevronRight } from "@fortawesome/free-solid-svg-icons";
 
 const ListViewPageComponent2 = () => {
   const [totalCount, setTotalCount] = useState(0);
@@ -68,8 +71,8 @@ const ListViewPageComponent2 = () => {
 
       const now = new Date();
       const sortedByNearestDate = documents.sort((a, b) => {
-        const dateA = new Date(a.dateTimeStart || a.date || 0);
-        const dateB = new Date(b.dateTimeStart || b.date || 0);
+        const dateA = new Date(a.dateTimeStart || a.date || a.dateStart || 0);
+        const dateB = new Date(b.dateTimeStart || b.date || b.dateStart || 0);
 
         const timeA = dateA >= now ? dateA.getTime() : Infinity;
         const timeB = dateB >= now ? dateB.getTime() : Infinity;
@@ -213,6 +216,42 @@ const ListViewPageComponent2 = () => {
     travelExpos: { title: "TRAVEL EXPOS, EXHIBITS, CONFERENCES, B2B, AND ROADSHOWS", subtitle: "Promoting Malay tourism globally!" },
   };
 
+     const filteredUpdates = allData.filter(dataIndividual => {
+        const dateFieldStart = dataIndividual.dateTimeStart || dataIndividual.dateStart;
+        const dateFieldEnd = dataIndividual.dateTimeEnd || dataIndividual.dateEnd;
+        
+        if (!dateFieldStart || !dateFieldEnd) return false;
+        
+        const dateStart = parseISO(dateFieldStart);
+        const dateEnd = parseISO(dateFieldEnd);
+        const today = new Date();
+      
+        if (collectionName === "incomingEvents") {
+          // Include events that are within the next 7 days or ongoing (within today's date range)
+          return (
+            isWithinInterval(dateStart, { start: today, end: addDays(today, 7) }) || // Upcoming events
+            isWithinInterval(today, { start: dateStart, end: dateEnd }) // Ongoing events
+          );
+        } else if (collectionName === "deals" || collectionName === "stories") {
+          // Deals posted 2 weeks ago (e.g., within the last 14 days)
+          const twoWeeksAgo = subWeeks(today, 2);
+          
+          // Deals coming up in the next month
+          const oneMonthFromNow = addMonths(today, 1);
+          
+          return (
+            isWithinInterval(dateStart, { start: twoWeeksAgo, end: today }) || // Deals from 2 weeks ago
+            isWithinInterval(dateStart, { start: today, end: oneMonthFromNow }) // Deals coming up in the next month
+          );
+        } else {
+          // Default logic for other collections
+          return isWithinInterval(dateStart, {
+            start: subDays(today, 5),
+            end: addDays(today, 1),
+          });
+        }
+      });
+
   return (
     <div className="home-section content-wrapper">
       {loading ? (
@@ -233,8 +272,11 @@ const ListViewPageComponent2 = () => {
           </Row>
           <h2 className="home-section-title">{sectionTitles[collectionName]?.title}</h2>
           <p className="home-section-subtitle">{sectionTitles[collectionName]?.subtitle}</p>
+          
+          <Slideshow collectionName={collectionName} slides={filteredUpdates} />
 
-          <Row className="align-items-center">
+
+          <Row className="align-items-center mt-4">
             <Col xs={10} sm={10} md={10} className="position-relative">
               <Form.Control
                 type="text"
@@ -443,6 +485,135 @@ const ListViewPageComponent2 = () => {
     </div>
 
 
+  );
+};
+
+
+const Slideshow = ({ slides, collectionName }) => {
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const navigate = useNavigate();
+  const handleReadMore = (id) => {
+      navigate(`/read/${collectionName}/${id}`);
+  };
+  useEffect(() => {
+      const interval = setInterval(() => {
+          setCurrentIndex((prevIndex) => (prevIndex + 1) % slides.length);
+      }, 8000);
+      return () => clearInterval(interval);
+  }, [slides.length]);
+    // Inside the component
+   // Check if slides exist and have at least one item
+if (!slides || slides.length === 0 || !slides[currentIndex]) return null;
+
+const currentSlide = slides[currentIndex];
+
+// Pick the best available date
+const getStartDate = (slide) =>
+  slide?.dateTimeStart || slide?.dateStart || slide?.date || null;
+
+const getEndDate = (slide) =>
+  slide?.dateTimeEnd || slide?.dateEnd || null;
+
+// Format dates
+const dateStartRaw = getStartDate(currentSlide);
+const dateEndRaw = getEndDate(currentSlide);
+
+const dateStart = dateStartRaw ? parseISO(dateStartRaw) : null;
+const dateEnd = dateEndRaw ? parseISO(dateEndRaw) : null;
+
+const formattedDateStart = dateStart ? format(dateStart, 'MMMM dd, yyyy') : null;
+const formattedDateEnd = dateEnd ? format(dateEnd, 'MMMM dd, yyyy') : null;
+
+      return (
+        <>
+        <h3 className="card-button-name mt-3 mb-3 fs-5">
+                {collectionName === "incomingEvents"
+                  ? "EVENTS IN THE NEXT 7 DAYS!"
+                  : collectionName === "deals"
+                  ? "HOT DEALS AND PROMOS!"
+                  : `RECENT ${collectionName.replace(/([a-z])([A-Z])/g, "$1 $2").toUpperCase()}`}
+              </h3>
+      <div className="slideshow rounded" style={{
+          height: "350px",
+          overflow: "hidden",
+          boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)"
+      }}>
+        
+          {slides.map((slide, index) => (
+              <div
+                  key={index}
+                  className={`slide ${index === currentIndex ? "active" : ""}`}
+                  style={{
+                      opacity: index === currentIndex ? 1 : 0,
+                      transition: "opacity 1s ease-in-out", 
+                  }}>
+                  <div
+                      className="slide-image"
+                      style={{
+                          backgroundImage: `url(${slide.headerImage})`,
+                          height: "300px", 
+                          objectFit: "cover", 
+                      }}>
+                      <div className="upper-row">
+                          <div className="dots">
+                              {slides.map((_, dotIndex) => (
+                                  <span
+                                      key={dotIndex}
+                                      className={`dot ${dotIndex === currentIndex ? "active" : ""}`}
+                                      onClick={() => setCurrentIndex(dotIndex)}
+                                  ></span>
+                              ))}
+                          </div>
+                      </div>
+                  </div>
+                  <div className="home-button-content text-background-solid-color">
+                      <div className="d-flex justify-content-between align-items-center">
+                          <div>
+                              <p className="card-button-name">{slide.title}</p>
+                              <p className="card-button-caption d-none d-sm-block">
+                                  {Array.isArray(slide.origin) ? slide.origin.join(", ") : ""}
+                              </p>
+                              <div className="d-flex align-items-start">
+                                  <p className="card-button-caption d-none d-sm-block mb-0">
+                                      {slide.name}
+                                      {formattedDateStart && (
+                                          <>
+                                              {" - "}
+                                              {collectionName === "updates"
+                                                  ? formattedDateStart
+                                                  : formattedDateStart && formattedDateEnd
+                                                      ? `${formattedDateStart} - ${formattedDateEnd}`
+                                                      : formattedDateStart}
+                                          </>
+                                      )}
+                                  </p>
+                              </div>
+                          </div>
+
+                          <NavLink
+                          to={`/read/${collectionName}/${slide.id}`}
+                          className="discover-more-btn ms-0 fw-bold"
+                          style={{ textDecoration: "none" }}>
+                          Read
+                          </NavLink>
+
+                          
+                      </div>
+                  </div>
+              </div>
+          ))}
+          <button
+              className="nav-button left"
+              onClick={() => setCurrentIndex((currentIndex - 1 + slides.length) % slides.length)}>
+              <FontAwesomeIcon icon={faChevronLeft} />
+          </button>
+          <button
+              className="nav-button right"
+              onClick={() => setCurrentIndex((currentIndex + 1) % slides.length)}>
+              <FontAwesomeIcon icon={faChevronRight} />
+          </button>
+      </div>
+      </>
   );
 };
 

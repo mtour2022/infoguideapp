@@ -748,9 +748,9 @@ const capitalizeFirstLetter = (str) => {
                 {images?.length > 0 && (
                   <div className="d-none d-md-block mt-5">
                     <h5 className="mb-4"><strong>Gallery</strong></h5>
-                    <Row>
+                    <Row className="row">
                       {images.map((img, i) => (
-                        <Col xs={6} md={4} key={i} className="mb-4 article-gallery-col">
+                        <Col xs={6} md={4} key={i} className="mb-4 article-gallery-col col">
                           <Image
                             src={img}
                             fluid

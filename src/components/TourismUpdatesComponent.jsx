@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChevronLeft, faChevronRight } from "@fortawesome/free-solid-svg-icons";
 import { collection, getDocs } from "firebase/firestore";
 import { db } from "../config/firebase";
-import { parseISO, format, isWithinInterval, addDays, subDays } from "date-fns";
+import { parseISO, format, isWithinInterval, addDays, subDays, addMonths, subWeeks } from "date-fns";
 import { useNavigate } from "react-router-dom";
 import { Row, Col, Card, Spinner, Badge } from "react-bootstrap";
 import { NavLink } from "react-router-dom";
@@ -29,23 +29,42 @@ const DUalCarousel = ({ collectionName, title, caption }) => {
 
 
     const filteredUpdates = updates.filter(update => {
-        const dateField = update.dateTimeStart || update.dateStart || update.date;
-        if (!dateField) return false;
-        const date = parseISO(dateField);
-        const today = new Date();
+      const dateFieldStart = update.dateTimeStart || update.dateStart;
+      const dateFieldEnd = update.dateTimeEnd || update.dateEnd;
+      
+      if (!dateFieldStart || !dateFieldEnd) return false;
+      
+      const dateStart = parseISO(dateFieldStart);
+      const dateEnd = parseISO(dateFieldEnd);
+      const today = new Date();
     
-        if (collectionName === "incomingEvents") {
-            return isWithinInterval(date, {
-                start: today,
-                end: addDays(today, 7),
-            });
-        } else {
-            return isWithinInterval(date, {
-                start: subDays(today, 5),
-                end: addDays(today, 1),
-            });
-        }
+      if (collectionName === "incomingEvents") {
+        // Include events that are within the next 7 days or ongoing (within today's date range)
+        return (
+          isWithinInterval(dateStart, { start: today, end: addDays(today, 7) }) || // Upcoming events
+          isWithinInterval(today, { start: dateStart, end: dateEnd }) // Ongoing events
+        );
+      } else if (collectionName === "deals" || collectionName === "stories") {
+        // Deals posted 2 weeks ago (e.g., within the last 14 days)
+        const twoWeeksAgo = subWeeks(today, 2);
+        
+        // Deals coming up in the next month
+        const oneMonthFromNow = addMonths(today, 1);
+        
+        return (
+          isWithinInterval(dateStart, { start: twoWeeksAgo, end: today }) || // Deals from 2 weeks ago
+          isWithinInterval(dateStart, { start: today, end: oneMonthFromNow }) // Deals coming up in the next month
+        );
+      } else {
+        // Default logic for other collections
+        return isWithinInterval(dateStart, {
+          start: subDays(today, 5),
+          end: addDays(today, 1),
+        });
+      }
     });
+    
+    
 
     
 
@@ -59,12 +78,14 @@ const DUalCarousel = ({ collectionName, title, caption }) => {
             <Row>
               {/* Left Side - Slideshow */}
               <Col md={6}>
-                <h3 className="card-button-name mt-3 mb-3 fs-5">
-                  {collectionName === "incomingEvents"
-                    ? "EVENTS IN THE NEXT 7 DAYS!"
-                    : `RECENT ${collectionName.replace(/([a-z])([A-Z])/g, "$1 $2").toUpperCase()}`}
-                </h3>
-      
+              <h3 className="card-button-name mt-3 mb-3 fs-5">
+                {collectionName === "incomingEvents"
+                  ? "EVENTS IN THE NEXT 7 DAYS!"
+                  : collectionName === "deals"
+                  ? "Hot Deals and Promos."
+                  : `RECENT ${collectionName.replace(/([a-z])([A-Z])/g, "$1 $2").toUpperCase()}`}
+              </h3>
+
                 <Slideshow collectionName={collectionName} slides={filteredUpdates} />
               </Col>
       
@@ -170,8 +191,25 @@ const Slideshow = ({ slides, collectionName }) => {
         }, 8000);
         return () => clearInterval(interval);
     }, [slides.length]);
-    const dateStart = slides[currentIndex].dateTimeStart ? parseISO(slides[currentIndex].dateTimeStart) : null;
-    const dateEnd = slides[currentIndex].dateTimeEnd ? parseISO(slides[currentIndex].dateTimeEnd) : null;
+       // Check if slides exist and have at least one item
+    if (!slides || slides.length === 0 || !slides[currentIndex]) return null;
+    
+    const currentSlide = slides[currentIndex];
+    
+    // Pick the best available date
+    const getStartDate = (slide) =>
+      slide?.dateTimeStart || slide?.dateStart || slide?.date || null;
+    
+    const getEndDate = (slide) =>
+      slide?.dateTimeEnd || slide?.dateEnd || null;
+    
+    // Format dates
+    const dateStartRaw = getStartDate(currentSlide);
+    const dateEndRaw = getEndDate(currentSlide);
+    
+    const dateStart = dateStartRaw ? parseISO(dateStartRaw) : null;
+    const dateEnd = dateEndRaw ? parseISO(dateEndRaw) : null;
+    
     const formattedDateStart = dateStart ? format(dateStart, 'MMMM dd, yyyy') : null;
     const formattedDateEnd = dateEnd ? format(dateEnd, 'MMMM dd, yyyy') : null;
     return (

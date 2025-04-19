@@ -357,13 +357,7 @@ const ArticleViewComponent = () => {
               ) : null}
             </Row>
 
-            {/* Image Modal with Navigation */}
-<FullImageModal
-            showImageModal={showModal}
-            closeImageModal={() => setShowModal(false)}
-            selectedImage={section.image}
-            
-          />
+
           </>
           ))}
 
@@ -503,6 +497,13 @@ const ArticleViewComponent = () => {
           />
         </Modal.Body>
       </Modal>
+
+                  {/* Image Modal with Navigation */}
+      <FullImageModal
+            showImageModal={showModal}
+            closeImageModal={() => setShowModal(false)}
+            
+          />
 
 
       <FooterCustomized />
