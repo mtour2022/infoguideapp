@@ -19,6 +19,9 @@ import tripadvisorlogo from "../assets/images/logos/tripadvisorlogo.png";
 import googlemaplogo from "../assets/images/logos/googlemaplogo.png";
 import DOTlogo from "../assets/images/DepartmentOfTourismAccreditationLogo.png";
 import { FacebookShareButton, FacebookIcon, EmailShareButton, EmailIcon, TwitterShareButton, TwitterIcon, LinkedinShareButton, LinkedinIcon, WhatsappShareButton, WhatsappIcon } from 'react-share';
+import { Helmet } from "react-helmet";
+
+
 
 const ArticleViewComponent = () => {
   const navigate = useNavigate();
@@ -111,7 +114,19 @@ const ArticleViewComponent = () => {
   const formattedDateOnly = dateOnly ? format(dateOnly, 'MMMM dd, yyyy') : null;
 
   return (
+    <>
+     <Helmet>
+      <title>{data.title}</title>
+      <meta property="og:title" content={data.title} />
+      <meta property="og:description" content={data.description || "Discover Boracay insights."} />
+      {/* Use headerImage if available, fallback to default image */}
+      <meta property="og:image" content={data.headerImage || "https://firebasestorage.googleapis.com/v0/b/infoguide-13007.firebasestorage.app/o/homeButtons%2Fwhitebach_backdrop.jpg?alt=media&token=2d712ede-915f-4ca5-ba1d-b650bce45cf7"} />
+      <meta property="og:url" content={`https://www.boracayinfoguide.com/read/${collectionName}/${data.id}`} />
+    </Helmet>
+
+
     <div className="home-section">
+      
 
       {/* Header Image with Gaussian Blur Background */}
       {data.headerImage && (
@@ -184,7 +199,14 @@ const ArticleViewComponent = () => {
 
           {/* Share Buttons */}
           <div className="d-flex mb-4 align-items-center gap-3 justify-content-center">
-            <a
+              <FacebookShareButton
+                url={`https://www.boracayinfoguide.com/read/${collectionName}/${data.id}`}
+                quote={data.title}  // Custom quote text
+                hashtag="#WorldsBestBeach"  // Custom hashtag
+              >
+                <FacebookIcon size={40} round />
+              </FacebookShareButton>
+            {/* <a
               href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(`https://www.boracayinfoguide.com/read/${collectionName}/${data.id}?image=${data.headerImage}`)}`}
               target="_blank"
               rel="noreferrer"
@@ -197,7 +219,7 @@ const ArticleViewComponent = () => {
               }}
             >
               <img src={facebooklogo} alt="Facebook" style={{ width: "20px", height: "20px" }} />
-            </a>
+            </a> */}
 
 
             {/* Email */}
@@ -507,7 +529,7 @@ const ArticleViewComponent = () => {
 
 
       <FooterCustomized />
-    </div>
+    </div></>
   );
 };
 
