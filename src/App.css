@@ -2124,7 +2124,9 @@ body {
 .article-body-image {
   object-fit: cover;
   /* Ensures images fill the space without distorting */
-  height: 300px !important;
+  /* height: 300px !important; */
+  height: auto !important;
+
   /* Set the same fixed height for gallery images */
   width: 100%;
   /* Ensure full width */

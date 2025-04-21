@@ -4,6 +4,10 @@ import { db } from "../config/firebase";
 import { useParams, useNavigate } from "react-router-dom";
 import FooterCustomized from "../components/footer/Footer";
 import { Row, Col} from "react-bootstrap";
+import { parseISO, format } from "date-fns";
+import { NavLink } from "react-router-dom";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faChevronLeft, faChevronRight } from "@fortawesome/free-solid-svg-icons";
 
 
 
@@ -110,64 +114,18 @@ const CarouselListPage = ({ title, caption }) => {
           const totalSlides = items.length;
           const start = slideIndex;
           const end = start + itemsPerPage;
-          const currentItems = Array.from({ length: itemsPerPage }, (_, i) => {
-            return items[(start + i) % items.length];
-          });
+          const currentItems = items;
+
           
           return (
             <div key={category} className="mb-5 mt-4">
               <h3 className="text-center mb-4 carousel-title mt-5">{category}</h3>
 
               <div className="carousel-slide-container position-relative">
-              <button
-                className="btn btn-light position-absolute"
-                  style={{ top: "40%", left: "-10px", zIndex: 9999 }} // Increased zIndex for left button
-                  onClick={() => handleSlide(category, "prev")}
-                >
-                  &#10094;
-                </button> 
+             
 
-                <div className="row carousel-slide">
-                  {currentItems.map((item, index) => {
-                    let colClass = index === 1
-                      ? "col-12 col-sm-12 col-md-6 scale-up"
-                      : "d-none d-sm-block col-sm-6 col-md-3";
-                    return (
-                      <>
-                      <div className={`${colClass} d-flex justify-content-center`} key={item.id}>
-                        <SustainableCard
-                          item={item}
-                          collectionName={collectionName}
-                          onReadMore={() => handleReadMore(collectionName, item.id)}
-                        />
-                      </div>
-                      </>
-                    );
-                  })}
-                </div>
-
-                <button
-                  className="btn btn-light position-absolute"
-                  style={{ top: "40%", right: "-10px", zIndex: 9999 }} // Increased zIndex for right button
-                  onClick={() => handleSlide(category, "next")}
-                >
-                  &#10095;
-                </button>
-
+                <Slideshow collectionName={collectionName} slides={currentItems} />
               </div>
-
-            {/* Pagination Dots */}
-              <div className="d-flex justify-content-center align-items-center mt-1 mb-5 customized-dot-pagination">
-                {[...Array(totalSlides)].map((_, i) => (
-                  <div
-                    key={i}
-                    className={`dot ${i === slideIndex ? "active" : ""}`}
-                    onClick={() => handleDotClick(category, i)}
-                  ></div>
-                ))}
-              </div>
-
-
             </div>
           );
         })}
@@ -177,35 +135,115 @@ const CarouselListPage = ({ title, caption }) => {
   );
 };
 
-const SustainableCard = ({ item, onReadMore }) => {
-  const [isLoading, setIsLoading] = useState(true);
+const Slideshow = ({ slides, collectionName }) => {
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const navigate = useNavigate();
 
   useEffect(() => {
-    const img = new Image();
-    img.src = item.headerImage;
-    img.onload = () => setIsLoading(false);
-  }, [item.headerImage]);
+    const interval = setInterval(() => {
+      setCurrentIndex((prevIndex) => (prevIndex + 1) % slides.length);
+    }, 8000);
+    return () => clearInterval(interval);
+  }, [slides.length]);
+
+  if (!slides || slides.length === 0 || !slides[currentIndex]) return null;
+
+  const currentSlide = slides[currentIndex];
+
+  const getStartDate = (slide) =>
+    slide?.dateTimeStart || slide?.dateStart || slide?.date || null;
+
+  const getEndDate = (slide) =>
+    slide?.dateTimeEnd || slide?.dateEnd || null;
+
+  const dateStartRaw = getStartDate(currentSlide);
+  const dateEndRaw = getEndDate(currentSlide);
+
+  const dateStart = dateStartRaw ? parseISO(dateStartRaw) : null;
+  const dateEnd = dateEndRaw ? parseISO(dateEndRaw) : null;
+
+  const formattedDateStart = dateStart ? format(dateStart, 'MMMM dd, yyyy') : null;
+  const formattedDateEnd = dateEnd ? format(dateEnd, 'MMMM dd, yyyy') : null;
 
   return (
-    <div className="pagination-component-card" onClick={onReadMore} style={{ cursor: 'pointer' }}>
-      <div className="image-slider-container">
-        {isLoading && (
-          <div className="image-loader">
-            <div className="spinner"></div>
-          </div>
-        )}
+    <div className="slideshow rounded" style={{
+      height: "350px",
+      overflow: "hidden",
+      boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)"
+    }}>
+      {slides.map((slide, index) => (
         <div
-          className="image-slider"
+          key={index}
+          className={`slide ${index === currentIndex ? "active" : ""}`}
           style={{
-            backgroundImage: `url(${item.headerImage})`,
-            opacity: isLoading ? 0 : 1
-          }}
-        ></div>
-      </div>
-      <div className="home-button-content text-background-solid-color">
-        <p className="card-button-name ">{item.title}</p>
-        <p className="card-button-caption d-none d-sm-block">{item.category}</p>
-      </div>
+            opacity: index === currentIndex ? 1 : 0,
+            transition: "opacity 1s ease-in-out"
+          }}>
+          <div
+            className="slide-image"
+            style={{
+              backgroundImage: `url(${slide.headerImage})`,
+              height: "300px",
+              backgroundSize: "cover",
+              backgroundPosition: "center"
+            }}>
+            <div className="upper-row">
+              <div className="dots">
+                {slides.map((_, dotIndex) => (
+                  <span
+                    key={dotIndex}
+                    className={`dot ${dotIndex === currentIndex ? "active" : ""}`}
+                    onClick={() => setCurrentIndex(dotIndex)}
+                  ></span>
+                ))}
+              </div>
+            </div>
+          </div>
+          <div className="home-button-content text-background-solid-color">
+            <div className="d-flex justify-content-between align-items-center">
+              <div>
+                <p className="card-button-name">{slide.title}</p>
+                <p className="card-button-caption d-none d-sm-block">
+                  {Array.isArray(slide.origin) ? slide.origin.join(", ") : ""}
+                </p>
+                <div className="d-flex align-items-start">
+                  <p className="card-button-caption d-none d-sm-block mb-0">
+                    {slide.name}
+                    {formattedDateStart && (
+                      <>
+                        {" - "}
+                        {collectionName === "updates"
+                          ? formattedDateStart
+                          : formattedDateStart && formattedDateEnd
+                            ? `${formattedDateStart} - ${formattedDateEnd}`
+                            : formattedDateStart}
+                      </>
+                    )}
+                  </p>
+                </div>
+              </div>
+
+              <NavLink
+                to={`/read/${collectionName}/${slide.id}`}
+                className="discover-more-btn ms-0 fw-bold"
+                style={{ textDecoration: "none" }}>
+                Read
+              </NavLink>
+            </div>
+          </div>
+        </div>
+      ))}
+
+      <button
+        className="nav-button left"
+        onClick={() => setCurrentIndex((currentIndex - 1 + slides.length) % slides.length)}>
+        <FontAwesomeIcon icon={faChevronLeft} />
+      </button>
+      <button
+        className="nav-button right"
+        onClick={() => setCurrentIndex((currentIndex + 1) % slides.length)}>
+        <FontAwesomeIcon icon={faChevronRight} />
+      </button>
     </div>
   );
 };

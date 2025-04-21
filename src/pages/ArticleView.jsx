@@ -18,7 +18,7 @@ import whatsapplogo from "../assets/images/logos/whats-app-logo.png";
 import tripadvisorlogo from "../assets/images/logos/tripadvisorlogo.png";
 import googlemaplogo from "../assets/images/logos/googlemaplogo.png";
 import DOTlogo from "../assets/images/DepartmentOfTourismAccreditationLogo.png";
-import { FacebookShareButton, FacebookIcon, EmailShareButton, EmailIcon, TwitterShareButton, TwitterIcon, LinkedinShareButton, LinkedinIcon, WhatsappShareButton, WhatsappIcon } from 'react-share';
+import { FacebookShareButton, FacebookIcon, FacebookMessengerShareButton, FacebookMessengerIcon, EmailShareButton, EmailIcon, TwitterShareButton, TwitterIcon, LinkedinShareButton, LinkedinIcon, WhatsappShareButton, WhatsappIcon } from 'react-share';
 import { Helmet } from "react-helmet";
 
 
@@ -118,7 +118,7 @@ const ArticleViewComponent = () => {
      <Helmet>
       <title>{data.title}</title>
       <meta property="og:title" content={data.title} />
-      <meta property="og:description" content={data.description || "Discover Boracay insights."} />
+      <meta property="og:description" content={"For your all things Boracay."} />
       {/* Use headerImage if available, fallback to default image */}
       <meta property="og:image" content={data.headerImage || "https://firebasestorage.googleapis.com/v0/b/infoguide-13007.firebasestorage.app/o/homeButtons%2Fwhitebach_backdrop.jpg?alt=media&token=2d712ede-915f-4ca5-ba1d-b650bce45cf7"} />
       <meta property="og:url" content={`https://www.boracayinfoguide.com/read/${collectionName}/${data.id}`} />
@@ -186,12 +186,19 @@ const ArticleViewComponent = () => {
           <h2 className="article-title mb-3">{data.title}</h2>
           <div className="d-flex justify-content-center align-items-center mb-2 text-start flex-wrap">
             <p className="mb-0 text-center">
-              {data.origin?.length > 0 && data.origin.join(', ')}
-              {data.origin?.length > 0 && data.formattedDateOnly && ' - '}
+            {data.origin?.length > 0 && data.origin.join(', ')}
+              {data.origin?.length > 0 && data.formattedDateOnly && (
+                collectionName === "incomingEvents" ? " - on " : " - "
+              )}
               {data.formattedDateOnly && !isNaN(new Date(formattedDateOnly)) && formattedDateOnly}
-              {(data.origin || data.formattedDateOnly) && data.name && ' - '}
+              {(data.origin || data.formattedDateOnly) && data.name && (
+                collectionName === "incomingEvents" ? " - on " : " - "
+              )}
               {data.name}
-              {data.dateTimeStart && !isNaN(new Date(data.dateTimeStart)) && ` - ${formattedDateStart}`}
+              {data.dateTimeStart && !isNaN(new Date(data.dateTimeStart)) && (
+                `${collectionName === "incomingEvents" ? " - on " : " - "}${formattedDateStart}`
+              )}
+
             </p>
           </div>
 
@@ -206,6 +213,13 @@ const ArticleViewComponent = () => {
               >
                 <FacebookIcon size={40} round />
               </FacebookShareButton>
+              <FacebookMessengerShareButton
+                url={`https://www.boracayinfoguide.com/read/${collectionName}/${data.id}`}
+                redirectUri="https://www.boracayinfoguide.com/home" // Optional
+              >
+                <FacebookMessengerIcon size={40} round />
+              </FacebookMessengerShareButton>
+
             {/* <a
               href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(`https://www.boracayinfoguide.com/read/${collectionName}/${data.id}?image=${data.headerImage}`)}`}
               target="_blank"
@@ -279,7 +293,7 @@ const ArticleViewComponent = () => {
             </a>
 
             {/* Messenger */}
-            <a
+            {/* <a
               href={`fb-messenger://share?link=${encodeURIComponent(
                 `https://www.boracayinfoguide.com/read/${collectionName}/${data.id}&image=${data?.headerImage}`
               )}&image=${encodeURIComponent(data?.headerImage || '/path/to/default-image.jpg')}`}
@@ -294,7 +308,7 @@ const ArticleViewComponent = () => {
               }}
             >
               <img src={messengerlogo} alt="Messenger" style={{ width: "20px", height: "20px" }} />
-            </a>
+            </a> */}
 
           </div>
 
@@ -319,7 +333,7 @@ const ArticleViewComponent = () => {
                   )}
 
                   <div
-                    className="section-body"
+                    className="section-body text-break d-inline-block"
                     dangerouslySetInnerHTML={{ __html: section.body }}
                   />
                 </Col>
@@ -344,7 +358,7 @@ const ArticleViewComponent = () => {
                   <Col md={12}>
 
                     <div
-                      className="section-body"
+                      className="section-body text-break d-inline-block"
                       dangerouslySetInnerHTML={{ __html: section.body }}
                     />
                   </Col>
@@ -372,7 +386,7 @@ const ArticleViewComponent = () => {
                     <strong>{section.subtitle}</strong>
                   </h4>
                   <div
-                    className="section-body"
+                    className="section-body text-break d-inline-block"
                     dangerouslySetInnerHTML={{ __html: section.body }}
                   />
                 </Col>

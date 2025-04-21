@@ -444,7 +444,7 @@ const capitalizeFirstLetter = (str) => {
                             <small className="text-break d-inline-block text-muted d-block mt-1">Source: {section.image_source}</small>
                           )}
                           <div
-                            className="section-body"
+                            className="section-body text-break d-inline-block"
                             dangerouslySetInnerHTML={{ __html: section.body }}
                           />
                         </Col>
@@ -467,7 +467,7 @@ const capitalizeFirstLetter = (str) => {
                             )}
                           </Col>
                             <div
-                              className="section-body mx-0 px-0"
+                              className="section-body mx-0 px-0 text-break d-inline-block"
                               dangerouslySetInnerHTML={{ __html: section.body }}
                             />
                         </>
@@ -494,7 +494,7 @@ const capitalizeFirstLetter = (str) => {
                            {section.subtitle}
                           </h5>
                           <div
-                            className="section-body"
+                            className="section-body text-break d-inline-block"
                             dangerouslySetInnerHTML={{ __html: section.body }}
                           />
                         </Col>
