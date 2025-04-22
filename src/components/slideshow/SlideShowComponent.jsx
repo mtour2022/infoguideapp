@@ -1,213 +1,360 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { collection, getDocs } from "firebase/firestore";
 import { db } from "../../config/firebase";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faChevronLeft, faChevronRight, faPlay, faPause, faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
+import {
+  faChevronLeft,
+  faChevronRight,
+  faPlay,
+  faPause,
+  faEye,
+  faEyeSlash,
+  faVolumeMute,
+  faVolumeUp,
+} from "@fortawesome/free-solid-svg-icons";
 import BestBeachLogo from "../../assets/images/Boracay-Worlds-Best-Beach-Logo.png";
-import ImageLoader from "../../assets/images/whitebach_backdrop.png"; // Dummy loader image
-import { Container } from "react-bootstrap";
-import { useNavigate } from 'react-router-dom';
+import ImageLoader from "../../assets/images/whitebach_backdrop.png";
+import { useNavigate } from "react-router-dom";
 
+const videoUrl =
+  "https://firebasestorage.googleapis.com/v0/b/infoguide-13007.firebasestorage.app/o/boracay%20video%20preview.mp4?alt=media&token=1a3e9db3-e1d2-45ed-a812-dc2206b2c49e";
 
-const videoUrl = "https://firebasestorage.googleapis.com/v0/b/infoguide-13007.firebasestorage.app/o/boracay%20video%20preview.mp4?alt=media&token=1a3e9db3-e1d2-45ed-a812-dc2206b2c49e";
+const linkedVideos = [
+  {
+    title: "Love Boracay v5. 2025",
+    headerImage:
+      "https://firebasestorage.googleapis.com/v0/b/infoguide-13007.firebasestorage.app/o/highlightvideos%2Flove-boracay-2025.mp4?alt=media&token=ae2064a9-df06-41ab-8096-e38402a71c45",
+    link: "/read/incomingEvents/TSS3xCQcJlPsyhuQWSy2",
+  },
+  {
+    title: "22nd Fiesta De Obreros 2025",
+    headerImage:
+      "https://firebasestorage.googleapis.com/v0/b/infoguide-13007.firebasestorage.app/o/highlightvideos%2Ffiesta-de-obreros.mp4?alt=media&token=feb1f3d6-a7dc-4e1b-89d7-2133ce5730cb",
+    link: "/read/incomingEvents/cCW9d9XpzyIZxhxPTUdl",
+  },
+];
 
 const Slideshow = () => {
   const navigate = useNavigate();
 
-  const handleReadMore = (collectionName, dataId) => {
-    navigate(`/read/${collectionName}/${dataId}`);
-  };
-
-
-  const [slides, setSlides] = useState([{ title: "", headerImage: ImageLoader }]); // Start with loader
+  const [slides, setSlides] = useState([{ title: "", headerImage: ImageLoader }]);
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [isVideoPlaying, setIsVideoPlaying] = useState(true);
-  const [isLogoVisible, setIsLogoVisible] = useState(true);
-  const [videoLoaded, setVideoLoaded] = useState(false);
-  const [videoFinished, setVideoFinished] = useState(false);
+  const [videoStates, setVideoStates] = useState({});
+  const [videoLoadedFlags, setVideoLoadedFlags] = useState({});
 
+  const videoRefs = useRef({});
+
+  const handleReadMore = (url) => {
+    navigate(url);
+  };
 
   useEffect(() => {
     async function fetchData() {
       const querySnapshot = await getDocs(collection(db, "tourismMarkets"));
-      const data = querySnapshot.docs.map((doc) => doc.data());
+      const data = querySnapshot.docs.map((doc) => ({
+        ...doc.data(),
+        id: doc.id,
+      }));
 
       if (data.length === 0) return;
 
-      // Find the slide with "Best Beach" in the title
       const bestBeachIndex = data.findIndex((slide) =>
         slide.title.toLowerCase().includes("best beach")
       );
 
-      // Rearrange slides to make "Best Beach" the second slide
       if (bestBeachIndex !== -1) {
         const bestBeachSlide = data.splice(bestBeachIndex, 1)[0];
         data.splice(0, 0, bestBeachSlide);
       }
 
-      // Append video as the first slide
-      setSlides([{ title: "", headerImage: videoUrl }, ...data]);
+      setSlides([...linkedVideos, { title: "", headerImage: videoUrl }, ...data]);
     }
+
     fetchData();
   }, []);
 
+  // useEffect(() => {
+  //   const currentSlide = slides[currentIndex];
+  //   const isVideo = currentSlide?.headerImage.includes("mp4");
+
+  //   if (!isVideo) {
+  //     // Stop video when transitioning away from a video slide
+  //     const prevVideo = videoRefs.current[currentIndex];
+  //     if (prevVideo) {
+  //       prevVideo.pause();
+  //     }
+  //   }
+
+  //   const interval = setInterval(() => {
+  //     const nextIndex = (currentIndex + 1) % slides.length;
+  //     setCurrentIndex(nextIndex);
+  //   }, 8000);
+
+  //   return () => clearInterval(interval);
+  // }, [currentIndex, slides]);
+
   useEffect(() => {
-    if (!videoFinished) return;
-  
-    const interval = setInterval(() => {
-      setCurrentIndex((prevIndex) =>
-        (prevIndex + 1) % slides.length
-      );
-    }, 4000);
-  
-    return () => clearInterval(interval);
-  }, [videoFinished, slides.length]);
-
-  // Reset video and transition when slideshow loops back to index 0
-useEffect(() => {
-  if (currentIndex === 0 && videoLoaded) {
-    const videoElement = document.querySelector(".slide-video");
-    if (videoElement) {
-      videoElement.currentTime = 0;
-      videoElement.play();
-      setVideoFinished(false);
-      setIsVideoPlaying(true);
+    const video = videoRefs.current[currentIndex];
+    if (video) {
+      video.play().catch(() => {});
     }
-  }
-}, [currentIndex, videoLoaded]);
+  }, [currentIndex]);
 
-  
-
-  const toggleVideoPlayback = () => {
-    const videoElement = document.querySelector(".slide-video");
-    if (videoElement) {
-      if (isVideoPlaying) {
-        videoElement.pause();
-      } else {
-        videoElement.play();
-      }
-      setIsVideoPlaying(!isVideoPlaying);
+  const initializeVideoState = (index) => {
+    if (!videoStates[index]) {
+      setVideoStates((prev) => ({
+        ...prev,
+        [index]: {
+          playing: true,
+          muted: true,
+          logoVisible: true,
+        },
+      }));
     }
   };
 
-  const toggleLogoVisibility = () => {
-    setIsLogoVisible(!isLogoVisible);
+  const togglePlayback = (index) => {
+    const video = videoRefs.current[index];
+    const isPlaying = videoStates[index]?.playing;
+    if (video) {
+      if (isPlaying) {
+        video.pause();
+        setVideoStates((prev) => ({
+          ...prev,
+          [index]: {
+            ...prev[index],
+            playing: false,
+          },
+        }));
+      } else {
+        video.play().catch(() => {});
+        setVideoStates((prev) => ({
+          ...prev,
+          [index]: {
+            ...prev[index],
+            playing: true,
+          },
+        }));
+      }
+    }
+  };
+
+  const toggleMute = (index) => {
+    const video = videoRefs.current[index];
+    if (video) {
+      video.muted = !videoStates[index]?.muted;
+      setVideoStates((prev) => ({
+        ...prev,
+        [index]: {
+          ...prev[index],
+          muted: !prev[index]?.muted,
+        },
+      }));
+    }
+  };
+
+  const toggleLogo = (index) => {
+    if (index === 0 || index === 1) {
+      // Toggle visibility of the title and read more button instead of the logo for index 0 and 1
+      setVideoStates((prev) => ({
+        ...prev,
+        [index]: {
+          ...prev[index],
+          titleVisible: !prev[index]?.titleVisible,
+          readMoreVisible: !prev[index]?.readMoreVisible,
+        },
+      }));
+    } else {
+      setVideoStates((prev) => ({
+        ...prev,
+        [index]: {
+          ...prev[index],
+          logoVisible: !prev[index]?.logoVisible,
+        },
+      }));
+    }
+  };
+
+  const handleNavClick = (direction) => {
+    // Stop video for the current slide
+    const currentVideo = videoRefs.current[currentIndex];
+    if (currentVideo) {
+      currentVideo.pause();
+    }
+
+    // Move to the next or previous slide
+    setCurrentIndex((prevIndex) => {
+      let newIndex = prevIndex + direction;
+      if (newIndex < 0) newIndex = slides.length - 1;
+      if (newIndex >= slides.length) newIndex = 0;
+      return newIndex;
+    });
   };
 
   return (
     <div className="slideshow">
       <div className="slideshow-shadow left-shadow"></div>
       <div className="slideshow-shadow right-shadow"></div>
-      {slides.map((slide, index) => (
-        <div
-          key={index}
-          className={`slide ${index === currentIndex ? "active" : ""}`}
-        >
-          {/* Render Video or Image based on headerImage */}
-          {slide.headerImage.includes("mp4") ? (
-            <div className="video-container">
-              {!videoLoaded && (
-                <img src={ImageLoader} alt="Loading Video..." className="loading-image" />
-              )}
-              <video
-                className="slide-video"
-                autoPlay
-                muted
-                loop={false}
-                onLoadedData={() => setVideoLoaded(true)}
-                onEnded={() => setVideoFinished(true)}
-                style={{ display: videoLoaded ? "block" : "none" }}
-              >
-                <source src={slide.headerImage} type="video/mp4" />
-              </video>
 
-            </div>
-          ) : (
-            <div
-              className="slide-image"
-              style={{ backgroundImage: `url(${slide.headerImage})` }}
-            ></div>
-          )}
+      {slides.map((slide, index) => {
+        const isActive = index === currentIndex;
+        const isVideo = slide.headerImage.includes("mp4");
+        const state = videoStates[index] || {};
+        const videoLoaded = videoLoadedFlags[index] || false;
 
-          {/* Title & Button */}
-          {/* Your slide content here */}
-          {index !== 0 && (
-            <div className="slide-content">
-              <h1
-                className={
-                  window.innerWidth <= 640
-                    ? 'slideshow-title-small'
-                    : 'slideshow-title'
-                }
-                data-text={slide.title}
-              >
-                {slide.title}
-              </h1>
-              <button
-                className="read-more"
-                onClick={() => {                 
-                   handleReadMore("tourismMarkets", slide.id)
-                   console.log("slide id" + slide.id)
-                }
-                  
-                }
-              >
-                Read More
-              </button>
-            </div>
-          )}
+        return (
+          <div
+            key={index}
+            className={`slide ${isActive ? "active" : ""}`}
+            onMouseEnter={() => initializeVideoState(index)}
+          >
+            {!videoLoaded && isVideo && isActive && (
+              <div
+                className="slide-image"
+                style={{ backgroundImage: `url(${ImageLoader})` }}
+              />
+            )}
 
-          {index === 0 && (
-            <div className="slide-content">
-              {isLogoVisible && (
+            {isVideo ? (
+              <div className="video-container">
+                <video
+                  ref={(el) => (videoRefs.current[index] = el)}
+                  className="slide-video"
+                  autoPlay={isActive}
+                  muted={state.muted}
+                  loop={false}
+                  onCanPlay={() => {
+                    setVideoLoadedFlags((prev) => ({
+                      ...prev,
+                      [index]: true,
+                    }));
+                  }}
+                  onEnded={() => {
+                    if (isActive) setVideoStates((prev) => ({
+                      ...prev,
+                      [index]: {
+                        ...prev[index],
+                        playing: false,
+                      },
+                    }));
+                  }}
+                  style={{ display: isActive && videoLoaded ? "block" : "none" }}
+                >
+                  <source src={slide.headerImage} type="video/mp4" />
+                </video>
+              </div>
+            ) : (
+              <div
+                className="slide-image"
+                style={{ backgroundImage: `url(${slide.headerImage})` }}
+              />
+            )}
+
+            {(index === 0 || index === 1) ? (
+              <div className="slide-content">
+                {state.titleVisible && (
+                  <h1
+                    className={
+                      window.innerWidth <= 640
+                        ? "slideshow-title-small"
+                        : "slideshow-title"
+                    }
+                    data-text={slide.title}
+                  >
+                    {slide.title}
+                  </h1>
+                )}
+                {state.readMoreVisible && (
+                  <button
+                    className="read-more"
+                    onClick={() => handleReadMore(slide.link)}
+                  >
+                    Read More
+                  </button>
+                )}
+              </div>
+            ) : (
+              <div className="slide-content">
+                <h1
+                  className={
+                    window.innerWidth <= 640
+                      ? "slideshow-title-small"
+                      : "slideshow-title"
+                  }
+                  data-text={slide.title}
+                >
+                  {slide.title}
+                </h1>
+                {slide.id && (
+                  <button
+                    className="read-more"
+                    onClick={() => handleReadMore("tourismMarkets", slide.id)}
+                  >
+                    Read More
+                  </button>
+                )}
+              </div>
+            )}
+
+            {index === 2 && state.logoVisible && (
+              <div className="slide-content">
                 <img
                   src={BestBeachLogo}
                   alt="Boracay Best Beach Logo"
                   className="beach-logo"
                 />
+              </div>
+            )}
+
+            <div className="bottom-row">
+              <div className="dots">
+                {slides.map((_, dotIndex) => (
+                  <span
+                    key={dotIndex}
+                    className={`dot ${dotIndex === currentIndex ? "active" : ""}`}
+                    onClick={() => setCurrentIndex(dotIndex)}
+                  ></span>
+                ))}
+              </div>
+
+              {isVideo && (
+                <div className="button-group">
+                  <button
+                    className="video-control me-2"
+                    onClick={() => toggleLogo(index)}
+                  >
+                    <FontAwesomeIcon icon={state.logoVisible ? faEyeSlash : faEye} />
+                  </button>
+                  <button
+                    className="video-control me-2"
+                    onClick={() => togglePlayback(index)}
+                  >
+                    <FontAwesomeIcon icon={state.playing ? faPause : faPlay} />
+                  </button>
+                  {index != 2 && (
+                    <button
+                      className="video-control"
+                      onClick={() => toggleMute(index)}
+                    >
+                      <FontAwesomeIcon icon={state.muted ? faVolumeMute : faVolumeUp} />
+                    </button>
+                  )}
+                </div>
               )}
             </div>
-            
-          )}
-
-          {/* Dots Indicator & Video Controls */}
-          <div className="bottom-row">
-            <div className="dots">
-              {slides.map((_, dotIndex) => (
-                <span
-                  key={dotIndex}
-                  className={`dot ${dotIndex === currentIndex ? "active" : ""}`}
-                  onClick={() => setCurrentIndex(dotIndex)}
-                ></span>
-              ))}
-            </div>
-            {index === 0 && (
-              <div className="button-group">
-              <button className="video-control me-2" onClick={toggleLogoVisibility}>
-                <FontAwesomeIcon icon={isLogoVisible ? faEyeSlash : faEye} />
-              </button>
-              <button className="video-control me-2" onClick={toggleVideoPlayback}>
-                <FontAwesomeIcon icon={isVideoPlaying ? faPause : faPlay} />
-              </button>
-            </div>
-          )}
-            
           </div>
-        </div>
-      ))}
+        );
+      })}
 
-      {/* Navigation Buttons */}
       <button
         className="nav-button left"
-        onClick={() =>
-          setCurrentIndex((currentIndex - 1 + slides.length) % slides.length)
-        }
+        onClick={() => handleNavClick(-1)}
       >
         <FontAwesomeIcon icon={faChevronLeft} />
       </button>
       <button
         className="nav-button right"
-        onClick={() => setCurrentIndex((currentIndex + 1) % slides.length)}
+        onClick={() => handleNavClick(1)}
       >
         <FontAwesomeIcon icon={faChevronRight} />
       </button>

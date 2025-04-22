@@ -115,14 +115,33 @@ const ArticleViewComponent = () => {
 
   return (
     <>
-     <Helmet>
+     {/* <Helmet>
       <title>{data.title}</title>
       <meta property="og:title" content={data.title} />
       <meta property="og:description" content={"For your all things Boracay."} />
-      {/* Use headerImage if available, fallback to default image */}
       <meta property="og:image" content={data.headerImage || "https://firebasestorage.googleapis.com/v0/b/infoguide-13007.firebasestorage.app/o/homeButtons%2Fwhitebach_backdrop.jpg?alt=media&token=2d712ede-915f-4ca5-ba1d-b650bce45cf7"} />
       <meta property="og:url" content={`https://www.boracayinfoguide.com/read/${collectionName}/${data.id}`} />
-    </Helmet>
+    </Helmet> */}
+    <Helmet>
+        {/* Title Tag */}
+        <title>{data.title} | Boracay Info Guide</title>
+
+        {/* Meta Tags for SEO */}
+        <meta name="description" content={"Boracay Infog Guide - For all things Boracay."} />
+        
+        {/* Open Graph Meta Tags for Facebook & Social Media Sharing */}
+        <meta property="og:title" content={data.title} />
+        <meta property="og:description" content={"Click here and discover all things Boracay."} />
+        <meta property="og:image" content={data.headerImage} />
+        <meta property="og:url" content={`https://www.boracayinfoguide.com/read/${collectionName}/${data.id}`} />
+        <meta property="og:type" content="article" />
+        
+        {/* Twitter Cards */}
+        <meta name="twitter:title" content={data.title}/>
+        <meta name="twitter:description" content={"Click here and discover all things Boracay."} />
+        <meta name="twitter:image" content={data.headerImage}/>
+        <meta name="twitter:card" content="summary_large_image" />
+      </Helmet>
 
 
     <div className="home-section">
@@ -207,6 +226,7 @@ const ArticleViewComponent = () => {
           {/* Share Buttons */}
           <div className="d-flex mb-4 align-items-center gap-3 justify-content-center">
               <FacebookShareButton
+              title={data.title}
                 url={`https://www.boracayinfoguide.com/read/${collectionName}/${data.id}`}
                 quote={data.title}  // Custom quote text
                 hashtag="#WorldsBestBeach"  // Custom hashtag
@@ -214,6 +234,7 @@ const ArticleViewComponent = () => {
                 <FacebookIcon size={40} round />
               </FacebookShareButton>
               <FacebookMessengerShareButton
+              title={data.title}
                 url={`https://www.boracayinfoguide.com/read/${collectionName}/${data.id}`}
                 redirectUri="https://www.boracayinfoguide.com/home" // Optional
               >
