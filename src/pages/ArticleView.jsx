@@ -113,120 +113,122 @@ const ArticleViewComponent = () => {
   const dateOnly = data.date ? parseISO(data.date) : null;
   const formattedDateOnly = dateOnly ? format(dateOnly, 'MMMM dd, yyyy') : null;
 
+  const scrollToSection = (id) => {
+    const el = document.getElementById(id);
+    if (el) {
+      el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  };
+
+
   return (
     <>
-     {/* <Helmet>
-      <title>{data.title}</title>
-      <meta property="og:title" content={data.title} />
-      <meta property="og:description" content={"For your all things Boracay."} />
-      <meta property="og:image" content={data.headerImage || "https://firebasestorage.googleapis.com/v0/b/infoguide-13007.firebasestorage.app/o/homeButtons%2Fwhitebach_backdrop.jpg?alt=media&token=2d712ede-915f-4ca5-ba1d-b650bce45cf7"} />
-      <meta property="og:url" content={`https://www.boracayinfoguide.com/read/${collectionName}/${data.id}`} />
-    </Helmet> */}
-    <Helmet>
+
+      <Helmet>
         {/* Title Tag */}
         <title>{data.title} | Boracay Info Guide</title>
 
         {/* Meta Tags for SEO */}
         <meta name="description" content={"Boracay Infog Guide - For all things Boracay."} />
-        
+
         {/* Open Graph Meta Tags for Facebook & Social Media Sharing */}
         <meta property="og:title" content={data.title} />
         <meta property="og:description" content={"Click here and discover all things Boracay."} />
         <meta property="og:image" content={data.headerImage} />
         <meta property="og:url" content={`https://www.boracayinfoguide.com/read/${collectionName}/${data.id}`} />
         <meta property="og:type" content="article" />
-        
+
         {/* Twitter Cards */}
-        <meta name="twitter:title" content={data.title}/>
+        <meta name="twitter:title" content={data.title} />
         <meta name="twitter:description" content={"Click here and discover all things Boracay."} />
-        <meta name="twitter:image" content={data.headerImage}/>
+        <meta name="twitter:image" content={data.headerImage} />
         <meta name="twitter:card" content="summary_large_image" />
       </Helmet>
 
 
-    <div className="home-section">
-      
+      <div className="home-section">
 
-      {/* Header Image with Gaussian Blur Background */}
-      {data.headerImage && (
-        <div
-          style={{
-            backgroundImage: `url(${data.headerImage})`,
-            backgroundSize: 'cover',
-            backgroundPosition: 'center',
-            height: '50%',
-            filter: 'blur(10px)',
-            position: 'absolute',
-            top: 0,
-            left: 0,
-            right: 0,
-            bottom: 0,
-            zIndex: -1,
-          }}
+
+        {/* Header Image with Gaussian Blur Background */}
+        {data.headerImage && (
+          <div
+            style={{
+              backgroundImage: `url(${data.headerImage})`,
+              backgroundSize: 'cover',
+              backgroundPosition: 'center',
+              height: '50%',
+              filter: 'blur(10px)',
+              position: 'absolute',
+              top: 0,
+              left: 0,
+              right: 0,
+              bottom: 0,
+              zIndex: -1,
+            }}
+          />
+        )}
+        <Row className='mt-2'>
+          <Col md={12}>
+            <a
+              className="text-decoration-none d-block mb-3"
+              style={{ cursor: "pointer", color: "black" }}
+            >
+              <span
+                onClick={() => navigate(`/home`)}
+                style={{ color: "white", fontSize: "0.70rem" }}
+              >
+                home
+              </span>
+
+              <span
+                onClick={() =>
+                  navigate(`/${collectionName === "sustainableTourism" ? "slideshow" : "update"}/${collectionName}`)
+                }
+                style={{ color: "white", margin: "0 5px", fontSize: "0.70rem" }}
+              >
+                / {collectionName.replace(/([A-Z])/g, ' $1').replace(/^./, str => str.toUpperCase())}
+              </span>
+              <span style={{ color: "white", fontSize: "0.70rem" }}>/ {data.title}</span>
+            </a>
+          </Col>
+        </Row>
+
+        <Image
+          src={data.headerImage}
+          alt="Header"
+          fluid
+          rounded
+          className="article-headerImage mb-4"
         />
-      )}
-      <Row className='mt-2'>
-        <Col md={12}>
-          <a
-            className="text-decoration-none d-block mb-3"
-            style={{ cursor: "pointer", color: "black" }}
-          >
-            <span
-              onClick={() => navigate(`/home`)}
-              style={{ color: "white", fontSize: "0.70rem" }}
-            >
-              home
-            </span>
 
-            <span
-              onClick={() =>
-                navigate(`/${collectionName === "sustainableTourism" ? "slideshow" : "update"}/${collectionName}`)
-              }
-              style={{ color: "white", margin: "0 5px", fontSize: "0.70rem" }}
-            >
-              / {collectionName.replace(/([A-Z])/g, ' $1').replace(/^./, str => str.toUpperCase())}
-            </span>
-            <span style={{ color: "white", fontSize: "0.70rem" }}>/ {data.title}</span>
-          </a>
-        </Col>
-      </Row>
+        <Row className="justify-content-center align-items-center row">
+          <Col md={9} className='col'>
+            {/* Title */}
+            <h2 className="article-title mb-3">{data.title}</h2>
+            <div className="d-flex justify-content-center align-items-center mb-2 text-start flex-wrap">
+              <p className="mb-0 text-center">
+                {data.origin?.length > 0 && data.origin.join(', ')}
+                {data.origin?.length > 0 && data.formattedDateOnly && (
+                  collectionName === "incomingEvents" ? " - on " : " - "
+                )}
+                {data.formattedDateOnly && !isNaN(new Date(formattedDateOnly)) && formattedDateOnly}
+                {(data.origin || data.formattedDateOnly) && data.name && (
+                  collectionName === "incomingEvents" ? " - on " : " - "
+                )}
+                {data.name}
+                {data.dateTimeStart && !isNaN(new Date(data.dateTimeStart)) && (
+                  `${collectionName === "incomingEvents" ? " - on " : " - "}${formattedDateStart}`
+                )}
 
-      <Image
-        src={data.headerImage}
-        alt="Header"
-        fluid
-        rounded
-        className="article-headerImage mb-4"
-      />
-
-      <Row className="justify-content-center align-items-center row">
-        <Col md={9} className='col'>
-          {/* Title */}
-          <h2 className="article-title mb-3">{data.title}</h2>
-          <div className="d-flex justify-content-center align-items-center mb-2 text-start flex-wrap">
-            <p className="mb-0 text-center">
-            {data.origin?.length > 0 && data.origin.join(', ')}
-              {data.origin?.length > 0 && data.formattedDateOnly && (
-                collectionName === "incomingEvents" ? " - on " : " - "
-              )}
-              {data.formattedDateOnly && !isNaN(new Date(formattedDateOnly)) && formattedDateOnly}
-              {(data.origin || data.formattedDateOnly) && data.name && (
-                collectionName === "incomingEvents" ? " - on " : " - "
-              )}
-              {data.name}
-              {data.dateTimeStart && !isNaN(new Date(data.dateTimeStart)) && (
-                `${collectionName === "incomingEvents" ? " - on " : " - "}${formattedDateStart}`
-              )}
-
-            </p>
-          </div>
+              </p>
+            </div>
 
 
 
-          {/* Share Buttons */}
-          <div className="d-flex mb-4 align-items-center gap-3 justify-content-center">
+            {/* Share Buttons */}
+            <div className="d-flex mb-4 align-items-center gap-3 justify-content-center">
               <FacebookShareButton
-              title={data.title}
+                title={data.title}
                 url={`https://www.boracayinfoguide.com/read/${collectionName}/${data.id}`}
                 quote={data.title}  // Custom quote text
                 hashtag="#WorldsBestBeach"  // Custom hashtag
@@ -234,87 +236,70 @@ const ArticleViewComponent = () => {
                 <FacebookIcon size={40} round />
               </FacebookShareButton>
               <FacebookMessengerShareButton
-              title={data.title}
+                title={data.title}
                 url={`https://www.boracayinfoguide.com/read/${collectionName}/${data.id}`}
                 redirectUri="https://www.boracayinfoguide.com/home" // Optional
               >
                 <FacebookMessengerIcon size={40} round />
               </FacebookMessengerShareButton>
+              {/* Email */}
+              <a
+                href={`mailto:?subject=${encodeURIComponent(data?.title || '')}&body=${encodeURIComponent(
+                  `https://www.boracayinfoguide.com/read/${collectionName}/${data.id}&image=${data?.headerImage}`
+                )}`}
+                target="_blank"
+                rel="noreferrer"
+                className="rounded-circle d-flex align-items-center justify-content-center border"
+                style={{
+                  width: "40px",
+                  height: "40px",
+                  backgroundColor: "#f0f0f0",
+                  overflow: "hidden"
+                }}
+              >
+                <img src={emaillogo} alt="Email" style={{ width: "20px", height: "20px" }} />
+              </a>
 
-            {/* <a
-              href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(`https://www.boracayinfoguide.com/read/${collectionName}/${data.id}?image=${data.headerImage}`)}`}
-              target="_blank"
-              rel="noreferrer"
-              className="rounded-circle d-flex align-items-center justify-content-center border"
-              style={{
-                width: "40px",
-                height: "40px",
-                backgroundColor: "#f0f0f0",
-                overflow: "hidden"
-              }}
-            >
-              <img src={facebooklogo} alt="Facebook" style={{ width: "20px", height: "20px" }} />
-            </a> */}
+              {/* Twitter (X) */}
+              <a
+                href={`https://twitter.com/intent/tweet?url=${encodeURIComponent(`https://www.boracayinfoguide.com/read/${collectionName}/${data.id}&image=${data?.headerImage}`)}&text=${encodeURIComponent(
+                  data?.title || 'Check this out!'
+                )}&image=${encodeURIComponent(data?.headerImage || '/path/to/default-image.jpg')}`}
+                target="_blank"
+                rel="noreferrer"
+                className="rounded-circle d-flex align-items-center justify-content-center border"
+                style={{
+                  width: "40px",
+                  height: "40px",
+                  backgroundColor: "#f0f0f0",
+                  overflow: "hidden"
+                }}
+              >
+                <img src={xtwitterlogo} alt="X / Twitter" style={{ width: "20px", height: "20px" }} />
+              </a>
 
+              {/* WhatsApp */}
+              <a
+                href={`https://api.whatsapp.com/send?text=${encodeURIComponent(
+                  data?.title || 'Check this out!'
+                )}%20${encodeURIComponent(
+                  `https://www.boracayinfoguide.com/read/${collectionName}/${data.id}&image=${data?.headerImage}`
+                )}&image=${encodeURIComponent(data?.headerImage)}`}
+                target="_blank"
+                rel="noreferrer"
+                className="rounded-circle d-flex align-items-center justify-content-center border"
+                style={{
+                  width: "40px",
+                  height: "40px",
+                  backgroundColor: "#f0f0f0",
+                  overflow: "hidden"
+                }}
+              >
+                <img src={whatsapplogo} alt="WhatsApp" style={{ width: "20px", height: "20px" }} />
+              </a>
 
-            {/* Email */}
-            <a
-              href={`mailto:?subject=${encodeURIComponent(data?.title || '')}&body=${encodeURIComponent(
-                `https://www.boracayinfoguide.com/read/${collectionName}/${data.id}&image=${data?.headerImage}`
-              )}`}
-              target="_blank"
-              rel="noreferrer"
-              className="rounded-circle d-flex align-items-center justify-content-center border"
-              style={{
-                width: "40px",
-                height: "40px",
-                backgroundColor: "#f0f0f0",
-                overflow: "hidden"
-              }}
-            >
-              <img src={emaillogo} alt="Email" style={{ width: "20px", height: "20px" }} />
-            </a>
-
-            {/* Twitter (X) */}
-            <a
-              href={`https://twitter.com/intent/tweet?url=${encodeURIComponent(`https://www.boracayinfoguide.com/read/${collectionName}/${data.id}&image=${data?.headerImage}`)}&text=${encodeURIComponent(
-                data?.title || 'Check this out!'
-              )}&image=${encodeURIComponent(data?.headerImage || '/path/to/default-image.jpg')}`}
-              target="_blank"
-              rel="noreferrer"
-              className="rounded-circle d-flex align-items-center justify-content-center border"
-              style={{
-                width: "40px",
-                height: "40px",
-                backgroundColor: "#f0f0f0",
-                overflow: "hidden"
-              }}
-            >
-              <img src={xtwitterlogo} alt="X / Twitter" style={{ width: "20px", height: "20px" }} />
-            </a>
-
-            {/* WhatsApp */}
-            <a
-              href={`https://api.whatsapp.com/send?text=${encodeURIComponent(
-                data?.title || 'Check this out!'
-              )}%20${encodeURIComponent(
-                `https://www.boracayinfoguide.com/read/${collectionName}/${data.id}&image=${data?.headerImage}`
-              )}&image=${encodeURIComponent(data?.headerImage)}`}
-              target="_blank"
-              rel="noreferrer"
-              className="rounded-circle d-flex align-items-center justify-content-center border"
-              style={{
-                width: "40px",
-                height: "40px",
-                backgroundColor: "#f0f0f0",
-                overflow: "hidden"
-              }}
-            >
-              <img src={whatsapplogo} alt="WhatsApp" style={{ width: "20px", height: "20px" }} />
-            </a>
-
-            {/* Messenger */}
-            {/* <a
+              {/* Messenger */}
+              {/* <a
               href={`fb-messenger://share?link=${encodeURIComponent(
                 `https://www.boracayinfoguide.com/read/${collectionName}/${data.id}&image=${data?.headerImage}`
               )}&image=${encodeURIComponent(data?.headerImage || '/path/to/default-image.jpg')}`}
@@ -331,240 +316,271 @@ const ArticleViewComponent = () => {
               <img src={messengerlogo} alt="Messenger" style={{ width: "20px", height: "20px" }} />
             </a> */}
 
-          </div>
+            </div>
+
+            {/* Table of Contents */}
+            {(() => {
+              const validSubtitles = data.body?.filter(section => {
+                const subtitle = section.subtitle?.trim();
+                return subtitle && subtitle !== '' && subtitle !== 'NaN' && !/^\d/.test(subtitle);
+              });
+
+              if (validSubtitles?.length > 0) {
+                return (
+                  <div className="mb-5 mt-5 mx-3">
+                    <h3 className="mb-3"><strong>Table of Contents</strong></h3>
+                    <ul style={{ listStyleType: 'none', paddingLeft: 0 }}>
+                      {validSubtitles.map((section, validIndex) => {
+                        const id = `section-${data.body.indexOf(section)}`;
+                        return (
+                          <li key={id} className="mb-2">
+                            <span
+                              onClick={() => scrollToSection(id)}
+                              className="text-muted toc-link"
+                              style={{ cursor: 'pointer' }}
+                            >
+                              {validIndex + 1}. {section.subtitle.trim()}
+                            </span>
+                          </li>
+                        );
+                      })}
+                    </ul>
+                  </div>
+                );
+              }
+              return null;
+            })()}
 
 
 
 
-          {/* Body Sections */}
-          {data.body?.map((section, index) => (
-            <>
-            <Row className="mb-5" key={index}>
-              {isVideoUrl(section.image) ? (
-                <Col md={12}>
-                  <h4 className="mt-4">
-                    <strong>{section.subtitle}</strong>
-                  </h4>
-                  <video controls fluid className="article-body-video mt-2 mb-4">
-                    <source src={section.image} type="video/mp4" />
-                    Your browser does not support the video tag.
-                  </video>
-                  {section.image_source && (
-                    <small className="text-muted d-block mt-1">Source: {section.image_source}</small>
-                  )}
-
-                  <div
-                    className="section-body text-break d-inline-block"
-                    dangerouslySetInnerHTML={{ __html: section.body }}
-                  />
-                </Col>
-              ) : section.image && section.body ? (
-                <>
-                  <Col md={12}>
-                    <h4>
-                      <strong>{section.subtitle}</strong>
-                    </h4>
-                    <Image
-                      src={section.image}
-                      alt="Section"
-                      fluid
-                      rounded
-                      className="article-body-image mt-2 mb-4"
-                      onClick={() => openImageModal(section.image)} // Open modal on click
-                    />
-                    {section.image_source && (
-                      <small className="text-muted d-block mt-1 mb-4">Source: {section.image_source}</small>
-                    )}
-                  </Col>
-                  <Col md={12}>
-
-                    <div
-                      className="section-body text-break d-inline-block"
-                      dangerouslySetInnerHTML={{ __html: section.body }}
-                    />
-                  </Col>
-                </>
-              ) : section.image ? (
-                <Col md={12}>
-                  <h4>
-                    <strong>{section.subtitle}</strong>
-                  </h4>
-                  <Image
-                    src={section.image}
-                    alt="Section"
-                    fluid
-                    rounded
-                    className="article-body-image mt-1"
-                    onClick={() => openImageModal(section.image)} // Open modal on click
-                  />
-                  {section.image_source && (
-                    <small className="text-muted d-block mt-1 mb-1">Source: {section.image_source}</small>
-                  )}
-                </Col>
-              ) : section.body ? (
-                <Col md={12}>
-                  <h4>
-                    <strong>{section.subtitle}</strong>
-                  </h4>
-                  <div
-                    className="section-body text-break d-inline-block"
-                    dangerouslySetInnerHTML={{ __html: section.body }}
-                  />
-                </Col>
-              ) : null}
-            </Row>
-
-
-          </>
-          ))}
-
-          {data.description && (
-            <Row>
-              <Col md={12}>
-                <div
-                  className="section-body"
-                  dangerouslySetInnerHTML={{ __html: data.description }}
-                />
-              </Col>
-            </Row>
-          )}
-
-
-          {/* Image Gallery */}
-          {data.images?.length > 0 && (
-            <>
-              <h4 className="mt-5 mb-5 text-center">
-                <strong>Gallery</strong>
-              </h4>
-              <Row>
-                {data.images.map((img, idx) => (
-                  <Col md={4} sm={6} xs={12} className="mb-4 article-gallery-col" key={idx}>
-                    {isImageUrl(img) ? (
-                      <Image
-                        src={img}
-                        alt={`Gallery ${idx}`}
-                        fluid
-                        rounded
-                        className="article-gallery"
-                        onClick={() => handleImageClick(idx)}
-                        style={{ cursor: 'pointer' }}
-                      />
-                    ) : isVideoUrl(img) ? (
-                      <video controls className="article-gallery-video">
-                        <source src={img} type="video/mp4" />
+            {/* Body Sections */}
+            {data.body?.map((section, index) => {
+              const id = `section-${index}`;
+              return (
+                <Row className="mb-5" key={index}>
+                  {section.image && isVideoUrl(section.image) ? (
+                    <Col md={12}>
+                      <h4 id={id} className="mt-4">
+                        <strong>{section.subtitle}</strong>
+                      </h4>
+                      <video controls className="article-body-video mt-2 mb-4" style={{ width: '100%' }}>
+                        <source src={section.image} type="video/mp4" />
                         Your browser does not support the video tag.
                       </video>
-                    ) : null}
-                  </Col>
-                ))}
+                      {section.image_source && (
+                        <small className="text-muted d-block mt-1">Source: {section.image_source}</small>
+                      )}
+                      <div
+                        className="section-body text-break d-inline-block"
+                        dangerouslySetInnerHTML={{ __html: section.body }}
+                      />
+                    </Col>
+                  ) : section.image && section.body ? (
+                    <>
+                      <Col md={12}>
+                        <h4 id={id}>
+                          <strong>{section.subtitle}</strong>
+                        </h4>
+                        <Image
+                          src={section.image}
+                          alt="Section"
+                          fluid
+                          rounded
+                          className="article-body-image mt-2 mb-4"
+                          onClick={() => openImageModal(section.image)}
+                        />
+                        {section.image_source && (
+                          <small className="text-muted d-block mt-1 mb-4">Source: {section.image_source}</small>
+                        )}
+                      </Col>
+                      <Col md={12}>
+                        <div
+                          className="section-body text-break d-inline-block"
+                          dangerouslySetInnerHTML={{ __html: section.body }}
+                        />
+                      </Col>
+                    </>
+                  ) : section.image ? (
+                    <Col md={12}>
+                      <h4 id={id}>
+                        <strong>{section.subtitle}</strong>
+                      </h4>
+                      <Image
+                        src={section.image}
+                        alt="Section"
+                        fluid
+                        rounded
+                        className="article-body-image mt-1"
+                        onClick={() => openImageModal(section.image)}
+                      />
+                      {section.image_source && (
+                        <small className="text-muted d-block mt-1 mb-1">Source: {section.image_source}</small>
+                      )}
+                    </Col>
+                  ) : section.body ? (
+                    <Col md={12}>
+                      <h4 id={id}>
+                        <strong>{section.subtitle}</strong>
+                      </h4>
+                      <div
+                        className="section-body text-break d-inline-block"
+                        dangerouslySetInnerHTML={{ __html: section.body }}
+                      />
+                    </Col>
+                  ) : null}
+                </Row>
+              );
+            })}
+
+
+            {data.description && (
+              <Row>
+                <Col md={12}>
+                  <div
+                    className="section-body"
+                    dangerouslySetInnerHTML={{ __html: data.description }}
+                  />
+                </Col>
               </Row>
-            </>
-          )}
-
-          
+            )}
 
 
+            {/* Image Gallery */}
+            {data.images?.length > 0 && (
+              <>
+                <h4 className="mt-5 mb-5 text-center">
+                  <strong>Gallery</strong>
+                </h4>
+                <Row>
+                  {data.images.map((img, idx) => (
+                    <Col md={4} sm={6} xs={12} className="mb-4 article-gallery-col" key={idx}>
+                      {isImageUrl(img) ? (
+                        <Image
+                          src={img}
+                          alt={`Gallery ${idx}`}
+                          fluid
+                          rounded
+                          className="article-gallery"
+                          onClick={() => handleImageClick(idx)}
+                          style={{ cursor: 'pointer' }}
+                        />
+                      ) : isVideoUrl(img) ? (
+                        <video controls className="article-gallery-video">
+                          <source src={img} type="video/mp4" />
+                          Your browser does not support the video tag.
+                        </video>
+                      ) : null}
+                    </Col>
+                  ))}
+                </Row>
+              </>
+            )}
 
-          {/* References */}
-          {data.references?.length > 0 && (
-            <div className="mt-5 mx-2">
-              <h5>References</h5>
-              <ul>
-                {data.references.map((ref, idx) => (
-                  <li key={idx}>
-                    <a
-                      href={ref} target="_blank" rel="noopener noreferrer" className="text-break d-inline-block">
-                      {ref}
-                    </a>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          )}
 
-          {/* References */}
-          {data.socials?.length > 0 && (
-            <div className="mt-5 mx-2">
-              <h5>Helpful Links</h5>
-              <ul>
-                {data.socials.map((ref, idx) => (
-                  <li key={idx}>
-                    <a href={ref} className="text-break d-inline-block"
-                      target="_blank" rel="noopener noreferrer">
-                      {ref}
-                    </a>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          )}
 
-          {data.tags?.length > 0 && (
-            <div className="mt-5  mx-2">
-              <h5>Tags</h5>
-              <div >
-                {data.tags.map((ref, idx) => {
-                  // Remove spaces and capitalize the first letter of each word
-                  const formattedTag = ref
-                    .split(' ')
-                    .map(word => word.charAt(0).toUpperCase() + word.slice(1))
-                    .join('');
 
-                  return (
-                    <span key={idx}>
+
+            {/* References */}
+            {data.references?.length > 0 && (
+              <div className="mt-5 mx-2">
+                <h5>References</h5>
+                <ul>
+                  {data.references.map((ref, idx) => (
+                    <li key={idx}>
                       <a
-                        href={`https://www.google.com/search?q=%23${formattedTag}`}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                      >
-                        #{formattedTag}
+                        href={ref} target="_blank" rel="noopener noreferrer" className="text-break d-inline-block">
+                        {ref}
                       </a>
-                      {idx < data.tags.length - 1 && ', '}
-                    </span>
-                  );
-                })}
+                    </li>
+                  ))}
+                </ul>
               </div>
-            </div>
-          )}
+            )}
+
+            {/* References */}
+            {data.socials?.length > 0 && (
+              <div className="mt-5 mx-2">
+                <h5>Helpful Links</h5>
+                <ul>
+                  {data.socials.map((ref, idx) => (
+                    <li key={idx}>
+                      <a href={ref} className="text-break d-inline-block"
+                        target="_blank" rel="noopener noreferrer">
+                        {ref}
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
+
+            {data.tags?.length > 0 && (
+              <div className="mt-5  mx-2">
+                <h5>Tags</h5>
+                <div >
+                  {data.tags.map((ref, idx) => {
+                    // Remove spaces and capitalize the first letter of each word
+                    const formattedTag = ref
+                      .split(' ')
+                      .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+                      .join('');
+
+                    return (
+                      <span key={idx}>
+                        <a
+                          href={`https://www.google.com/search?q=%23${formattedTag}`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          #{formattedTag}
+                        </a>
+                        {idx < data.tags.length - 1 && ', '}
+                      </span>
+                    );
+                  })}
+                </div>
+              </div>
+            )}
 
 
 
 
 
 
-        </Col>
-      </Row>
+          </Col>
+        </Row>
 
-      {/* Full Image Modal for Body Image */}
-      {/* Full Image Modal for Body Image */}
-      <Modal show={showImageModal} onHide={closeImageModal} centered size="lg">
-        <Modal.Body className="gallery-modal d-flex justify-content-center align-items-center">
-          {imageLoading && (
-            <div className="spinner-border text-primary" role="status">
-              <span className="visually-hidden">Loading...</span>
-            </div>
-          )}
+        {/* Full Image Modal for Body Image */}
+        {/* Full Image Modal for Body Image */}
+        <Modal show={showImageModal} onHide={closeImageModal} centered size="lg">
+          <Modal.Body className="gallery-modal d-flex justify-content-center align-items-center">
+            {imageLoading && (
+              <div className="spinner-border text-primary" role="status">
+                <span className="visually-hidden">Loading...</span>
+              </div>
+            )}
 
-          <Image
-            src={selectedImage}
-            alt="Full View"
-            fluid
-            onLoad={handleImageLoad}
-            style={{ display: imageLoading ? 'none' : 'block' }}
-          />
-        </Modal.Body>
-      </Modal>
+            <Image
+              src={selectedImage}
+              alt="Full View"
+              fluid
+              onLoad={handleImageLoad}
+              style={{ display: imageLoading ? 'none' : 'block' }}
+            />
+          </Modal.Body>
+        </Modal>
 
-                  {/* Image Modal with Navigation */}
-      <FullImageModal
-            showImageModal={showModal}
-            closeImageModal={() => setShowModal(false)}
-            
-          />
+        {/* Image Modal with Navigation */}
+        <FullImageModal
+          showImageModal={showModal}
+          closeImageModal={() => setShowModal(false)}
+
+        />
 
 
-      <FooterCustomized />
-    </div></>
+        <FooterCustomized />
+      </div></>
   );
 };
 

@@ -2286,6 +2286,10 @@ body {
   color: #555;
 }
 
+.toc-link:hover {
+  color: #0d6efd; /* Bootstrap primary blue */
+  text-decoration: underline; /* optional if you want underline on hover */
+}
 
 
 /* Responsive Design for Mobile */
