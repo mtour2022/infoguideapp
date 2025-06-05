@@ -4,13 +4,19 @@ import WeatherNav from '../Weather';
 import { useState, useEffect } from 'react';
 import logo from '../../assets/images/logo_with_title.png';
 import whitelogo from '../../assets/images/logoWhiteText.png';
+import circlelogo from '../../assets/images/white-circle-logo.png';
 import { Container, Navbar, Nav, Image, NavDropdown, Form, FormControl, Button, InputGroup, Offcanvas } from 'react-bootstrap';
 import { Link, NavLink } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faBell, faLeaf, faSearch, faFire, faCalendarDay, faBinoculars, faPersonSwimming, faBars, faBookOpen, faCompass, faHotel, faFlag, faUtensils, faPlane, faSailboat, faShop, faHome, faShuttleVan, faCross, faAmbulance, faMedal, faStore, faUserGroup, faHeart, faIdCard, faWalking, faLink, faQuestion, faHandPaper, faCheck } from '@fortawesome/free-solid-svg-icons';
-import { useNavigate } from 'react-router-dom';
+import {
+  faBell, faLeaf, faSearch, faFire, faCalendarDay, faBinoculars, faPersonSwimming, faBagShopping
+  , faBars, faBookOpen, faCompass, faHotel, faFlag, faUtensils, faPlane, faSailboat, faShop, faHome, faShuttleVan, faCross, faAmbulance, faMedal, faStore, faUserGroup, faHeart, faIdCard, faWalking, faLink, faQuestion, faHandPaper, faCheck
+} from '@fortawesome/free-solid-svg-icons';
+import { Hotel, Luggage, Home, BookHeart, Bell, BookMarked, Sailboat } from 'lucide-react'; // If available or use a similar one like Building or Landmark
+import { useLocation, useNavigate } from 'react-router-dom';
 
 export default function AppNavBar() {
+  const location = useLocation();
   const navigate = useNavigate();
 
   const [scrolling, setScrolling] = useState(false);
@@ -66,37 +72,37 @@ export default function AppNavBar() {
         </Nav.Link>
         <NavDropdown className='ms-lg-2 me-lg-2 ms-md-2 ms-sm-2 my-2' title={<span className="text-dark" style={{ fontSize: '0.80rem' }}>HOSPITALITY AND LODGING</span>}
           id="basic-nav-dropdown-title">
-          <NavDropdown.Item as={NavLink} className='text-dark'   to={`/enterprises/accommodations`} id='basic-nav-dropdown-item'>
-          {<span className="text-dark" style={{ fontSize: '0.80rem' }}> <FontAwesomeIcon icon={faHotel} size="md" className=' pe-2' fixedWidth /> BORACAY ACCOMMODATIONS</span>}
+          <NavDropdown.Item as={NavLink} className='text-dark' to={`/enterprises/accommodations`} id='basic-nav-dropdown-item'>
+            {<span className="text-dark" style={{ fontSize: '0.80rem' }}> <FontAwesomeIcon icon={faHotel} size="md" className=' pe-2' fixedWidth /> BORACAY ACCOMMODATIONS</span>}
           </NavDropdown.Item>
         </NavDropdown>
         <NavDropdown className='ms-lg-2 me-lg-2 ms-md-2 ms-sm-2  my-2' title={<span className="text-dark" style={{ fontSize: '0.80rem' }}>FOODS AND BEVERAGES</span>}
           id="basic-nav-dropdown-title">
-          <NavDropdown.Item as={NavLink} className='text-dark'   to={`/enterprises/restaurants`} id='basic-nav-dropdown-item'>
-          {<span className="text-dark" style={{ fontSize: '0.80rem' }}> <FontAwesomeIcon icon={faUtensils} size="md" className=' pe-2' fixedWidth /> RESTAURANTS</span>}
+          <NavDropdown.Item as={NavLink} className='text-dark' to={`/enterprises/restaurants`} id='basic-nav-dropdown-item'>
+            {<span className="text-dark" style={{ fontSize: '0.80rem' }}> <FontAwesomeIcon icon={faUtensils} size="md" className=' pe-2' fixedWidth /> RESTAURANTS</span>}
           </NavDropdown.Item>
-        </NavDropdown> 
+        </NavDropdown>
         <NavDropdown className='ms-lg-2 me-lg-2 ms-md-2 ms-sm-2  my-2' title={<span className="text-dark" style={{ fontSize: '0.80rem' }}>TRANSPORT AND PARKING</span>}
           id="basic-nav-dropdown-title">
-          <NavDropdown.Item as={NavLink} className='text-dark'  to={`/enterprises/touristLandAndAirTransportOperators`} id='basic-nav-dropdown-item'>
-          {<span className="text-dark" style={{ fontSize: '0.80rem' }}> <FontAwesomeIcon icon={faShuttleVan} size="md" className=' pe-2' fixedWidth /> LAND AND AIR TRANSPORTS</span>}
+          <NavDropdown.Item as={NavLink} className='text-dark' to={`/enterprises/touristLandAndAirTransportOperators`} id='basic-nav-dropdown-item'>
+            {<span className="text-dark" style={{ fontSize: '0.80rem' }}> <FontAwesomeIcon icon={faShuttleVan} size="md" className=' pe-2' fixedWidth /> LAND AND AIR TRANSPORTS</span>}
           </NavDropdown.Item>
-        </NavDropdown> 
+        </NavDropdown>
         <NavDropdown className='ms-lg-2 me-lg-2 ms-md-2 ms-sm-2  my-2' title={<span className="text-dark" style={{ fontSize: '0.80rem' }}>TOURISM AND LEISURE</span>}
           id="basic-nav-dropdown-title">
-          <NavDropdown.Item as={NavLink} className='text-dark   my-2'   to={`/enterprises/tourguides`} id='basic-nav-dropdown-item'>
-          {<span className="text-dark" style={{ fontSize: '0.80rem' }}> <FontAwesomeIcon icon={faFlag} size="md" className=' pe-2' fixedWidth /> TOUR GUIDES</span>}
+          <NavDropdown.Item as={NavLink} className='text-dark   my-2' to={`/enterprises/tourguides`} id='basic-nav-dropdown-item'>
+            {<span className="text-dark" style={{ fontSize: '0.80rem' }}> <FontAwesomeIcon icon={faFlag} size="md" className=' pe-2' fixedWidth /> TOUR GUIDES</span>}
           </NavDropdown.Item>
-          <NavDropdown.Item as={NavLink} className='text-dark  my-2'   to={`/enterprises/travelAndTourOperators`} id='basic-nav-dropdown-item'>
-          {<span className="text-dark" style={{ fontSize: '0.80rem' }}> <FontAwesomeIcon icon={faPlane} size="md" className=' pe-2' fixedWidth /> TRAVEL AND TOUR OPERATORS</span>}
+          <NavDropdown.Item as={NavLink} className='text-dark  my-2' to={`/enterprises/travelAndTourOperators`} id='basic-nav-dropdown-item'>
+            {<span className="text-dark" style={{ fontSize: '0.80rem' }}> <FontAwesomeIcon icon={faPlane} size="md" className=' pe-2' fixedWidth /> TRAVEL AND TOUR OPERATORS</span>}
           </NavDropdown.Item>
-          <NavDropdown.Item as={NavLink} className='text-dark  my-2'   to={`/enterprises/touristActivityProviders`} id='basic-nav-dropdown-item'>
-          {<span className="text-dark" style={{ fontSize: '0.80rem' }}> <FontAwesomeIcon icon={faSailboat} size="md" className=' pe-2' fixedWidth /> TOURIST ACTIVITY PROVIDERS</span>}
+          <NavDropdown.Item as={NavLink} className='text-dark  my-2' to={`/enterprises/touristActivityProviders`} id='basic-nav-dropdown-item'>
+            {<span className="text-dark" style={{ fontSize: '0.80rem' }}> <FontAwesomeIcon icon={faSailboat} size="md" className=' pe-2' fixedWidth /> TOURIST ACTIVITY PROVIDERS</span>}
           </NavDropdown.Item>
-          <NavDropdown.Item as={NavLink} className='text-dark my-2'   to={`/enterprises/touristAndSpecialtyShops`} id='basic-nav-dropdown-item'>
-          {<span className="text-dark" style={{ fontSize: '0.80rem' }}> <FontAwesomeIcon icon={faShop} size="md" className=' pe-2' fixedWidth /> TOURISTS AND SPECIALTY SHOPS</span>}
+          <NavDropdown.Item as={NavLink} className='text-dark my-2' to={`/enterprises/touristAndSpecialtyShops`} id='basic-nav-dropdown-item'>
+            {<span className="text-dark" style={{ fontSize: '0.80rem' }}> <FontAwesomeIcon icon={faShop} size="md" className=' pe-2' fixedWidth /> TOURISTS AND SPECIALTY SHOPS</span>}
           </NavDropdown.Item>
-        </NavDropdown> 
+        </NavDropdown>
         <Nav.Link className='ms-lg-2 mb-1' id='basic-nav-sidebar' as={NavLink} to={`/enterprises/attractions`}>
           <FontAwesomeIcon icon={faCompass} size="md" className=' pe-2' fixedWidth /> ATTRACTIONS
         </Nav.Link>
@@ -105,23 +111,23 @@ export default function AppNavBar() {
         </Nav.Link>
         <NavDropdown className='ms-lg-2 me-lg-2 ms-md-2 ms-sm-2 my-2' title={<span className="text-dark" style={{ fontSize: '0.80rem' }}>ESSENTIALS</span>}
           id="basic-nav-dropdown-title">
-          <NavDropdown.Item as={NavLink} className='text-dark my-2'   to={`/listview/hotlines`} id='basic-nav-dropdown-item'>
-          {<span className="text-dark" style={{ fontSize: '0.80rem' }}> <FontAwesomeIcon icon={faAmbulance} size="md" className=' pe-2' fixedWidth /> EMERGENCY HOTLINES</span>}
+          <NavDropdown.Item as={NavLink} className='text-dark my-2' to={`/listview/hotlines`} id='basic-nav-dropdown-item'>
+            {<span className="text-dark" style={{ fontSize: '0.80rem' }}> <FontAwesomeIcon icon={faAmbulance} size="md" className=' pe-2' fixedWidth /> EMERGENCY HOTLINES</span>}
           </NavDropdown.Item>
-          <NavDropdown.Item as={NavLink} className='text-dark my-2'   to={`/listview/requirements`} id='basic-nav-dropdown-item'>
-          {<span className="text-dark" style={{ fontSize: '0.80rem' }}> <FontAwesomeIcon icon={faIdCard} size="md" className=' pe-2' fixedWidth /> TOURIST REQUIREMENTS</span>}
+          <NavDropdown.Item as={NavLink} className='text-dark my-2' to={`/listview/requirements`} id='basic-nav-dropdown-item'>
+            {<span className="text-dark" style={{ fontSize: '0.80rem' }}> <FontAwesomeIcon icon={faIdCard} size="md" className=' pe-2' fixedWidth /> TOURIST REQUIREMENTS</span>}
           </NavDropdown.Item>
-          <NavDropdown.Item as={NavLink} className='text-dark my-2'   to={`/listview/ordinances`} id='basic-nav-dropdown-item'>
-          {<span className="text-dark" style={{ fontSize: '0.80rem' }}> <FontAwesomeIcon icon={faCheck} size="md" className=' pe-2' fixedWidth /> BEACH LAWS</span>}
+          <NavDropdown.Item as={NavLink} className='text-dark my-2' to={`/listview/ordinances`} id='basic-nav-dropdown-item'>
+            {<span className="text-dark" style={{ fontSize: '0.80rem' }}> <FontAwesomeIcon icon={faCheck} size="md" className=' pe-2' fixedWidth /> BEACH LAWS</span>}
           </NavDropdown.Item>
-          <NavDropdown.Item as={NavLink} className='text-dark my-2'   to={`/update/lifeStyles`} id='basic-nav-dropdown-item'>
-          {<span className="text-dark" style={{ fontSize: '0.80rem' }}> <FontAwesomeIcon icon={faWalking} size="md" className=' pe-2' fixedWidth /> LIFESTYLES AND FACILITIES</span>}
+          <NavDropdown.Item as={NavLink} className='text-dark my-2' to={`/update/lifeStyles`} id='basic-nav-dropdown-item'>
+            {<span className="text-dark" style={{ fontSize: '0.80rem' }}> <FontAwesomeIcon icon={faWalking} size="md" className=' pe-2' fixedWidth /> LIFESTYLES AND FACILITIES</span>}
           </NavDropdown.Item>
-          <NavDropdown.Item as={NavLink} className='text-dark my-2'   to={`/update/helpfulLinks`} id='basic-nav-dropdown-item'>
-          {<span className="text-dark" style={{ fontSize: '0.80rem' }}> <FontAwesomeIcon icon={faLink} size="md" className=' pe-2' fixedWidth /> HELPFUL LINKS</span>}
+          <NavDropdown.Item as={NavLink} className='text-dark my-2' to={`/update/helpfulLinks`} id='basic-nav-dropdown-item'>
+            {<span className="text-dark" style={{ fontSize: '0.80rem' }}> <FontAwesomeIcon icon={faLink} size="md" className=' pe-2' fixedWidth /> HELPFUL LINKS</span>}
           </NavDropdown.Item>
-          <NavDropdown.Item as={NavLink} className='text-dark my-2'   to={`/listview/touristFAQs`} id='basic-nav-dropdown-item'>
-          {<span className="text-dark" style={{ fontSize: '0.80rem' }}> <FontAwesomeIcon icon={faQuestion} size="md" className=' pe-2' fixedWidth /> TOURIST FAQS</span>}
+          <NavDropdown.Item as={NavLink} className='text-dark my-2' to={`/listview/touristFAQs`} id='basic-nav-dropdown-item'>
+            {<span className="text-dark" style={{ fontSize: '0.80rem' }}> <FontAwesomeIcon icon={faQuestion} size="md" className=' pe-2' fixedWidth /> TOURIST FAQS</span>}
           </NavDropdown.Item>
         </NavDropdown>
         <Nav.Link className='ms-lg-2 mb-1' id='basic-nav-sidebar' as={NavLink} to={`/update/cruiseShips`}>
@@ -129,17 +135,17 @@ export default function AppNavBar() {
         </Nav.Link>
         <NavDropdown className='ms-lg-2 me-lg-2 ms-md-2 ms-sm-2 my-2' title={<span className="text-dark" style={{ fontSize: '0.80rem' }}>ACHIEVEMENTS</span>}
           id="basic-nav-dropdown-title">
-          <NavDropdown.Item as={NavLink} className='text-dark  my-2'   to={`/update/awardsAndRecognitions`} id='basic-nav-dropdown-item'>
-          {<span className="text-dark" style={{ fontSize: '0.80rem' }}> <FontAwesomeIcon icon={faMedal} size="md" className=' pe-2' fixedWidth /> AWARDS AND RECOGNITIONS</span>}
+          <NavDropdown.Item as={NavLink} className='text-dark  my-2' to={`/update/awardsAndRecognitions`} id='basic-nav-dropdown-item'>
+            {<span className="text-dark" style={{ fontSize: '0.80rem' }}> <FontAwesomeIcon icon={faMedal} size="md" className=' pe-2' fixedWidth /> AWARDS AND RECOGNITIONS</span>}
           </NavDropdown.Item>
-          <NavDropdown.Item as={NavLink} className='text-dark  my-2'   to={`/update/travelExpos`} id='basic-nav-dropdown-item'>
-          {<span className="text-dark" style={{ fontSize: '0.80rem' }}> <FontAwesomeIcon icon={faStore} size="md" className=' pe-2' fixedWidth /> TRAVEL EXPOS, EXHIBITS, CONVENTIONS, B2B AND ROADSHOWS</span>}
+          <NavDropdown.Item as={NavLink} className='text-dark  my-2' to={`/update/travelExpos`} id='basic-nav-dropdown-item'>
+            {<span className="text-dark" style={{ fontSize: '0.80rem' }}> <FontAwesomeIcon icon={faStore} size="md" className=' pe-2' fixedWidth /> TRAVEL EXPOS, EXHIBITS, CONVENTIONS, B2B AND ROADSHOWS</span>}
           </NavDropdown.Item>
-          <NavDropdown.Item as={NavLink} className='text-dark  my-2'    to={`/update/tourismProjects`} id='basic-nav-dropdown-item'>
-          {<span className="text-dark" style={{ fontSize: '0.80rem' }}> <FontAwesomeIcon icon={faUserGroup} size="md" className=' pe-2' fixedWidth /> TOURISM PROJECTS</span>}
+          <NavDropdown.Item as={NavLink} className='text-dark  my-2' to={`/update/tourismProjects`} id='basic-nav-dropdown-item'>
+            {<span className="text-dark" style={{ fontSize: '0.80rem' }}> <FontAwesomeIcon icon={faUserGroup} size="md" className=' pe-2' fixedWidth /> TOURISM PROJECTS</span>}
           </NavDropdown.Item>
-          <NavDropdown.Item as={NavLink} className='text-dark  my-2'    to={`/update/tourismMarkets`} id='basic-nav-dropdown-item'>
-          {<span className="text-dark" style={{ fontSize: '0.80rem' }}> <FontAwesomeIcon icon={faHeart} size="md" className=' pe-2' fixedWidth /> TOURISM NICHE</span>}
+          <NavDropdown.Item as={NavLink} className='text-dark  my-2' to={`/update/tourismMarkets`} id='basic-nav-dropdown-item'>
+            {<span className="text-dark" style={{ fontSize: '0.80rem' }}> <FontAwesomeIcon icon={faHeart} size="md" className=' pe-2' fixedWidth /> TOURISM NICHE</span>}
           </NavDropdown.Item>
         </NavDropdown>
         <Nav.Link className='ms-lg-2 mb-1' id='basic-nav-sidebar' as={NavLink} to={`/update/cruiseShips`}>
@@ -192,17 +198,35 @@ export default function AppNavBar() {
       {/* Second Row (Persistent) */}
       <Navbar expand="xl" className={`app-navbar ${scrolling ? 'scrolled' : ''}`}>
         <Container fluid>
-          {!isLargeScreen ? (
-            <Button variant="link" onClick={handleShow} className="me-2 text-white">
-              <FontAwesomeIcon icon={faBars} size="lg" />
-            </Button>
 
-          ) : null}
-          {scrolling && (
-            <Navbar.Brand as={Link} to="/" className='ps-3'>
-              <Image className='ms-lg-2 me-lg-2' src={whitelogo} alt="Logo" height="25" />
+          {!isLargeScreen ? (
+            <div className="d-flex text-white text-center w-100">
+              {/* {scrolling && (
+            <Navbar.Brand as={Link} to="/" className='p-0'>
+              <Image className='ms-lg-2 me-lg-2' src={circlelogo} alt="Logo" height="30" width="30" />
             </Navbar.Brand>
-          )}
+          )} */}
+              
+<NavIconButton icon={Home} path={['/home', '/']} />
+
+
+                    <NavIconButton icon={Hotel} path="/enterprises" />
+                    <NavIconButton icon={Sailboat} path="/experiences" />
+
+                                 <NavIconButton icon={Luggage} path="/essentials" />
+
+              <div className="d-flex flex-column align-items-center flex-fill" onClick={() => navigate('/')}>
+                <Button variant="link" className="text-white p-0">
+                  <Bell size={24} strokeWidth={1.5} />
+                </Button>
+              </div>
+            </div>
+          ) : null}
+
+
+
+
+
           {isLargeScreen ? (
             <Navbar.Collapse id="basic-navbar-nav">
               <Nav className="d-flex justify-content-center w-100">
@@ -386,3 +410,33 @@ export default function AppNavBar() {
     </div>
   );
 }
+
+
+const NavIconButton = ({ icon: Icon, path, activeColor = 'white', size = 24 }) => {
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  const paths = Array.isArray(path) ? path : [path];
+  const isActive = paths.includes(location.pathname);
+
+  return (
+    <div
+      className="d-flex flex-column align-items-center flex-fill"
+      onClick={() => navigate(paths[0])}
+      role="button"
+    >
+      <Button variant="link" className="text-white p-0">
+        <Icon size={size} strokeWidth={1.5} />
+      </Button>
+      <div
+        className="rounded-circle mt-1"
+        style={{
+          width: 4,
+          height: 4,
+          backgroundColor: isActive ? activeColor : 'transparent',
+        }}
+      />
+    </div>
+  );
+};
+

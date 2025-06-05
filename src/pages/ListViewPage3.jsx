@@ -205,9 +205,9 @@ const ListViewPageComponent3 = () => {
     <div className="home-section content-wrapper">
       <Row>
         <Col md={12}>
-          <a className="text-decoration-none d-block mb-5" style={{ cursor: "pointer", color: "black" }}>
-            <span onClick={() => navigate(`/home`)} style={{ color: "black", marginRight: "5px", fontSize: "0.90rem" }}>home</span>
-            <span onClick={() => navigate(`/update/${collectionName}`)} style={{ color: "black", margin: "0 5px", fontSize: "0.90rem" }}>/ {collectionName}</span>
+          <a className="text-decoration-none d-block mb-5" style={{ cursor: "pointer", color: "grey" }}>
+            <span onClick={() => navigate(`/home`)} style={{ color: "grey", marginRight: "5px", fontSize: "0.90rem" }}>home</span>
+            <span onClick={() => navigate(`/update/${collectionName}`)} style={{ color: "grey", margin: "0 5px", fontSize: "0.90rem" }}>/ {collectionName}</span>
           </a>
         </Col>
       </Row>

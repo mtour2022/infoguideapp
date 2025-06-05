@@ -81,6 +81,7 @@ import CruiseShipsTable from '../admin/TableCruiseShips';
 import TourismMarketsForm from '../components/tourismMarkets/TourismMarket';
 import TourismMarketsTable from '../admin/TableTourismMarkets';
 import MainlandMalayHotelsTable from '../admin/TableMainlandMalayHotels';
+import TourGuideTable from '../admin/TableTourGuides';
 
 // Sidebar link component using onClick to set active content.
 function NavlinkIcon({ icon, title, onClick, active }) {
@@ -210,10 +211,9 @@ export default function AdminDashboard() {
       case 'tourguides':
         return (
           <>
-            <EnterprisesTable 
-            category={"Tourism & Leisure"}
-            subcategory={"tourguides"}
-            ></EnterprisesTable>
+            <TourGuideTable 
+           
+            ></TourGuideTable>
           </>
         );
       case 'travelAndTourOperators':

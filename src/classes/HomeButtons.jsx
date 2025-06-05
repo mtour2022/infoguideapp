@@ -4,7 +4,7 @@ import HomeButtonFormData from "../datamodel/homeButtons_model";
 
 // Creating objects using the model
 const button1 = new HomeButtonFormData();
-button1.name = "ACCOMMODATION ESTABLISHMENTS";
+button1.name = "ACCOMMODATIONS";
 button1.link = "/enterprises/accommodations";
 button1.image = "https://firebasestorage.googleapis.com/v0/b/infoguide-13007.firebasestorage.app/o/homeButtons%2Faccommodations.png?alt=media&token=b925b582-a826-4c41-867c-c0d0b395c73d";
 button1.color = "#A051EE";
@@ -20,7 +20,7 @@ button2.caption = "Cravings satisfied.";
 button2.icon = "restaurant";
 
 const button3 = new HomeButtonFormData();
-button3.name = "SPA & WELLNESS CENTERS";
+button3.name = "SPA & WELLNESS";
 button3.link = "/enterprises/spaAndWellnessCentres";
 button3.image = "https://firebasestorage.googleapis.com/v0/b/infoguide-13007.firebasestorage.app/o/homeButtons%2Fspawellnessbackground.png?alt=media&token=ba96844e-1608-4438-95fc-902ff797c6a1";
 button3.color = "#2D8B3C";
@@ -35,7 +35,7 @@ button3.icon = "spa";
 // button4.caption = "Meet, innovate, and collaborate.";
 // button4.icon = "building";
 const button4 = new HomeButtonFormData();
-button4.name = "TOUR ACTIVITY PROVIDERS";
+button4.name = "ACTIVITY PROVIDERS";
 button4.link = "/enterprises/touristActivityProviders";
 button4.image = "https://firebasestorage.googleapis.com/v0/b/infoguide-13007.firebasestorage.app/o/parasailing.png?alt=media&token=807f6447-1760-467c-b350-b9facb0bd24f";
 button4.color = "#008080";
@@ -44,7 +44,7 @@ button4.icon = "sailboat";
 
 
 const button5 = new HomeButtonFormData();
-button5.name = "TOURIST LAND & AIR TRANSPORT OPERATORS";
+button5.name = "LAND & AIR TRANSPORT";
 button5.link = "/enterprises/touristLandAndAirTransportOperators";
 button5.image = "https://firebasestorage.googleapis.com/v0/b/infoguide-13007.firebasestorage.app/o/homeButtons%2Ftouristlandandairtransfer-min.png?alt=media&token=9c991c65-624f-4b18-9b6e-ff803068c7ba";
 button5.color = "#D6C334";
@@ -52,7 +52,7 @@ button5.caption = "Hassle-free travel.";
 button5.icon = "plane";
 
 const button6 = new HomeButtonFormData();
-button6.name = "TRAVEL AND TOUR OPERATORS";
+button6.name = "TRAVEL AND TOURS";
 button6.link = "/enterprises/travelAndTourOperators";
 button6.image = "https://firebasestorage.googleapis.com/v0/b/infoguide-13007.firebasestorage.app/o/homeButtons%2FtravelAndToursbackground-min.png?alt=media&token=41c0c7d3-697a-4031-8043-1fe7996bd29b";
 button6.color = "#4682B4";
@@ -68,7 +68,7 @@ button7.caption = "Guided steps.";
 button7.icon = "mic";
 
 const button8 = new HomeButtonFormData();
-button8.name = "TOURIST & SPECIALTY SHOPS";
+button8.name = "TOURIST SHOPS";
 button8.link = "/enterprises/touristAndSpecialtyShops";
 button8.image = "https://firebasestorage.googleapis.com/v0/b/infoguide-13007.firebasestorage.app/o/homeButtons%2Ftouristshops.jpg?alt=media&token=c3aaa527-0878-426f-92f2-5ed4f348bdbd";
 button8.color = "#8B4513";

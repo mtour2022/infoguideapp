@@ -7,12 +7,12 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFilter, faMapLocationDot, faSearch, faSortAlphaDown, faSortAlphaUp, faSortNumericDown, faSortNumericUp, faTimes } from "@fortawesome/free-solid-svg-icons";
 import MapPopup from "../components/mapSearch/MapSearchComponent";
 import FooterCustomized from "../components/footer/Footer";
-import { useParams } from 'react-router-dom';
-import { useNavigate } from "react-router-dom";
+import { useParams, useNavigate } from 'react-router-dom';
 const ListViewPageComponent = ({ }) => {
   const [totalCount, setTotalCount] = useState(0);
   const { collectionName } = useParams();
   const navigate = useNavigate();
+  
   const [pageCursors, setPageCursors] = useState([]);
   const [isLastPage, setIsLastPage] = useState(false);
   const [data, setData] = useState([]);
@@ -361,15 +361,15 @@ const ListViewPageComponent = ({ }) => {
         <Col md={12}>
           <a
             className="text-decoration-none d-block mb-5"
-            style={{ cursor: "pointer", color: "black" }}>
+            style={{ cursor: "pointer", color: "grey" }}>
             <span
               onClick={() => navigate(`/home`)}
-              style={{ color: "black", marginRight: "5px", fontSize: "0.90rem" }}>
+              style={{ color: "grey", marginRight: "5px", fontSize: "0.90rem" }}>
               home
             </span>
             <span
               onClick={() => navigate(`/enterprises/${collectionName}`)}
-              style={{ color: "black", margin: "0 5px", fontSize: "0.90rem" }}>
+              style={{ color: "grey", margin: "0 5px", fontSize: "0.90rem" }}>
               / {collectionName}
             </span>
           </a>

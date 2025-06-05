@@ -17,7 +17,7 @@ const TwoSectionButtons = () => {
     },
     {
       name: "ACTIVITIES",
-      caption: "For thrill seekers!",
+      caption: "Must-do activities!",
       link: "/enterprises/activities",
       color: "#0D1B2A", // Blue
       image: "https://firebasestorage.googleapis.com/v0/b/infoguide-13007.firebasestorage.app/o/activities.jpg?alt=media&token=bc2a2009-b794-47b6-8f36-93c9394e24aa",
@@ -26,15 +26,13 @@ const TwoSectionButtons = () => {
   ];
 
   return (
-    <div className="home-section">
-      <h2 className="home-section-title mb-1">EXPLORE MORE!</h2>
-      <p className="home-section-subtitle mb-0">Discover Attractions and Activities in Boracay</p>
+    <div className="home-section pt-0">
       <div className="row">
         {cardData.map((card, index) => (
-          <div className="col-6 p-1 p-md-2" key={index}>
+<div className="col-6 col-lg-3 m-0 p-1 p-md-2" key={index}>
             <NavLink to={card.link} className="group">
               <div
-                className="home-button-card"
+                className="home-button-card mb-0"
                 style={{ "--button-color": card.color }}
               >
                 <div

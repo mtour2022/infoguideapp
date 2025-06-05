@@ -158,7 +158,7 @@ const AddressForm = ({ groupData, setGroupData }) => {
                 name="address.country"
                 placeholder="Country"
                 onChange={handleCountryChange}
-                value={country}
+                value={"Philippines"}
                 readOnly
             />
             <Form.Select

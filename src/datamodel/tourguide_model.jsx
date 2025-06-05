@@ -3,6 +3,7 @@ export default class TourGuideFormData {
         this.id = "";
         this.name = "";
         this.designation = "";
+                this.nationalityType = "";
         this.nationality = "";
         this.birthday = "";
         this.sex = "";
@@ -29,6 +30,8 @@ export default class TourGuideFormData {
         this.link = "";
         this.geo = "";
         this.accreditation = "";
+        this.website = "";
+       this.email = "";
         this.awards = [];
         this.socials = [];
         this.memberships = [];

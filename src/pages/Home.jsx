@@ -52,7 +52,7 @@ export default function Home() {
     };
 
     return (
-        <Container fluid className="main-container">
+        <Container fluid className="">
             <div className={`customized-main-content`}>
                 <Slideshow />
 
@@ -81,6 +81,8 @@ export default function Home() {
             </div>
             <div>
                 <div id="tourism-activities">
+                    <h2 className="home-section-title mb-1">EXPLORE MORE!</h2>
+
                     {/* <AttractionsActivitiesShowcase></AttractionsActivitiesShowcase> */}
                     <TwoSectionButtons></TwoSectionButtons>
                 </div>

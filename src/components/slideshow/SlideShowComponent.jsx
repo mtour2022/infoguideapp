@@ -44,9 +44,10 @@ const Slideshow = () => {
 
   const videoRefs = useRef({});
 
-  const handleReadMore = (url) => {
-    navigate(url);
-  };
+ const handleReadMore = (collection, url) => {
+  navigate(`/read/${collection}/${url}`);
+};
+
 
   useEffect(() => {
     async function fetchData() {

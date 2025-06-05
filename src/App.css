@@ -68,6 +68,10 @@ body {
 
 }
 
+.main-container{
+  padding: 10px !important;
+}
+
 @media (min-width: 768px) {
 
   /* Medium screens and above */
@@ -1064,8 +1068,6 @@ body {
   text-align: center;
   color: #6b7280;
   /* Tailwind gray-500 */
-  margin-bottom: 1.5rem;
-
 }
 
 .home-buttons {
@@ -1112,7 +1114,60 @@ body {
   background: linear-gradient(to top, var(--button-color) 20%, transparent 50%);
   z-index: 2;
 }
+/* Mobile Overrides */
+@media (max-width: 991.98px) {
 
+
+  .home-button-card {
+    height: 100px;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+    padding-left: 48px;
+    position: relative;
+    border-radius: 8px;
+    margin-top: 5px !important;
+  }
+
+  .home-button-bg {
+    display: block;
+    position: absolute;
+    inset: 0;
+    background-size: cover;
+    background-position: center;
+    z-index: 1;
+  }
+
+   .home-button-gradient {
+    background: linear-gradient(to right, var(--button-color) 30%, transparent 70%);
+  }
+
+  .home-button-content {
+    position: relative;
+    z-index: 3;
+    padding: 0;
+    margin: 0;
+    padding-left: 10px;
+  }
+
+    .home-button-name {
+    width: 95%;
+      font-size: small !important;
+
+    white-space: normal; /* ensure wrapping */
+  }
+
+  .home-button-caption {
+    display: none;
+  }
+
+  .home-button-logo {
+    display: none;
+  }
+
+
+  
+}
 
 .text-background-solid-color {
 
@@ -1172,12 +1227,14 @@ body {
   font-size: medium;
   letter-spacing: 3px;
   color: white;
-  text-align: left;
   margin: 0;
   text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.3);
   word-wrap: break-word;
   overflow-wrap: break-word;
   white-space: normal;
+  text-transform: capitalize !important;
+    text-align: left !important; /* or center if you want */
+
 }
 
 .home-button-caption {
@@ -2446,26 +2503,22 @@ body {
   .home-section {
     padding-left: 5px;
     padding-right: 5px;
-    padding-top: 10px;
+    padding-top: 50px !important;
     padding-bottom: 10px;
-    margin-top: 20px;
+    margin-top: 0px !important;
   }
 
   .home-section-title {
     font-size: x-large;
-    text-align: start;
-    padding-left: 10px;
-    padding-bottom: 10px;
-    padding-top: 20px;
+    text-align: center;
+    padding-top: 10px;
 
   }
 
 
   .home-section-subtitle {
-    text-align: start;
-    font-size: medium;
-    padding-left: 10px;
-
+    text-align: center;
+    font-size: small;
   }
 
   .geo-filter-container {
