@@ -154,7 +154,7 @@ export default function EssentialsPage() {
       name: "TRAVEL EXPOS",
       caption: "Expo & B2B Particiipations",
       link: "/update/travelExpos",
-      color: "#8B4513", // Blue
+      color: "#39a3be", // Blue
       image: "https://firebasestorage.googleapis.com/v0/b/infoguide-13007.firebasestorage.app/o/expos-min.jpg?alt=media&token=2b8f0c43-0f2e-4326-b9a1-10ad4cb0fbe2",
       icon: faHandshake,
     },

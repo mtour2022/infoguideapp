@@ -214,12 +214,9 @@ export default function AppNavBar() {
                     <NavIconButton icon={Sailboat} path="/experiences" />
 
                                  <NavIconButton icon={Luggage} path="/essentials" />
+                                 <NavIconButton icon={Bell} path="/updates" />
 
-              <div className="d-flex flex-column align-items-center flex-fill" onClick={() => navigate('/')}>
-                <Button variant="link" className="text-white p-0">
-                  <Bell size={24} strokeWidth={1.5} />
-                </Button>
-              </div>
+              
             </div>
           ) : null}
 

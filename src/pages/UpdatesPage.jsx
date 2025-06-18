@@ -2,13 +2,12 @@ import React, { useState, useEffect } from "react";
 import { Container, Row, Col } from "react-bootstrap";
 import FooterCustomized from "../components/footer/Footer";
 import HomeButtons from "../components/homeButtons";
-import TwoSectionButtons from "../components/homebutton2";
 import { useNavigate } from 'react-router-dom';
 import DUalCarousel from "../components/TourismUpdatesComponent";
 
-export default function ExperiencesPage() {
-      const navigate = useNavigate();
-      
+export default function UpdatePage() {
+          const navigate = useNavigate();
+    
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
     const [isSmallScreen, setIsSmallScreen] = useState(window.innerWidth <= 768);
 
@@ -30,8 +29,8 @@ export default function ExperiencesPage() {
     };
 
     return (
-        <Container fluid className="main-container  mt-5">
-            <div className="home-section pt-0 pb-5">
+        <Container fluid className="main-container mt-5">
+            <div className="home-section pb-0 pt-0">
               <a
                 className="text-decoration-none d-block mb-0"
                 style={{ cursor: "pointer", color: "grey" }}>
@@ -41,28 +40,35 @@ export default function ExperiencesPage() {
                   home
                 </span>
                 <span
-                  onClick={() => navigate(`/experiences`)}
+                  onClick={() => navigate(`/updates`)}
                   style={{ color: "grey", margin: "0 5px", fontSize: "0.90rem" }}>
-                  / experiences
+                  / updates
                 </span>
               </a>
           </div>
             <div className={`customized-main-content`}>
-               <h2 className="home-section-title ">FOR YOUR BORACAY BUCKETLIST!</h2>
+               
+                <div id="updates">
+                    <DUalCarousel collectionName="updates" title="Tourism Updates"
+                        caption="Stay informed with the latest news and announcements."></DUalCarousel>
 
-                <p className="home-section-subtitle">
-                    Attractions, Activities, and Must-do Experiences.
-                </p>
-
-                <div id="activities">
-                        <TwoSectionButtons></TwoSectionButtons>
                 </div>
                 <div id="tourism-incomingevents">
                     <DUalCarousel collectionName="incomingEvents" title="Incoming Events"
                         caption="Get excited and participate on these incoming events!"></DUalCarousel>
 
                 </div>
-             
+                <div id="tourism-deals">
+                    <DUalCarousel collectionName="deals" title="Deals, Promos, Games, & Giveaways"
+                        caption="Get excited and participate on these incoming events!"></DUalCarousel>
+
+                </div>
+
+                <div id="tourism-stories">
+                    <DUalCarousel collectionName="stories" title="Tourism Stories"
+                        caption="Read, Be inspired and you might find the one!"></DUalCarousel>
+
+                </div>
                
             </div>
             <div className="home-section">
