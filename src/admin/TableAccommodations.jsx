@@ -288,6 +288,7 @@ const AccommodationTable = () => {
       <Table striped bordered hover responsive>
         <thead>
           <tr>
+             <th>Actions</th>
             <th>Business Name</th>
             <th>Established</th>
             <th>Category</th>
@@ -298,7 +299,6 @@ const AccommodationTable = () => {
             <th>Street</th>
             <th>Accreditation</th>
             <th>Rating</th>
-            <th>Actions</th>
 
           </tr>
         </thead>
@@ -307,17 +307,6 @@ const AccommodationTable = () => {
         <tbody>
           {displayedData.map((item) => (
             <tr key={item.id}>
-              <td>{item.name}</td>
-              <td>{item.established}</td>
-              <td>{item.category}</td>
-              <td>{item.subcategory}</td>
-              <td>{item.classification}</td>
-              <td>{item.geo}</td>
-              <td>{item.address.barangay}</td>
-              <td>{item.address.street}</td>
-              <td>{item.accreditation}</td>
-              <td>{item.ratings}</td>
-
               <td>
                 <Container className="d-flex justify-content-center align-items-center">
                   <OverlayTrigger placement="top" overlay={<Tooltip>Edit</Tooltip>}>
@@ -332,6 +321,18 @@ const AccommodationTable = () => {
                   </OverlayTrigger>
                 </Container>
               </td>
+              <td>{item.name}</td>
+              <td>{item.established}</td>
+              <td>{item.category}</td>
+              <td>{item.subcategory}</td>
+              <td>{item.classification}</td>
+              <td>{item.geo}</td>
+              <td>{item.address.barangay}</td>
+              <td>{item.address.street}</td>
+              <td>{item.accreditation}</td>
+              <td>{item.ratings}</td>
+
+              
             </tr>
           ))}
         </tbody>

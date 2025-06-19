@@ -176,7 +176,7 @@ const HotlineTable = () => {
         <thead>
           <tr>
           <th>Category</th>
-
+            <th>Actions</th>
             <th>Office Name</th>
             <th>Geo</th>
             <th>Barangay</th>
@@ -189,14 +189,6 @@ const HotlineTable = () => {
         <tbody>
           {displayedData.map((item) => (
             <tr key={item.id}>
-              <td>{item.category}</td>
-              <td>{item.name}</td>
-              <td>{item.geo}</td>
-              <td>{item.address.barangay}</td>
-              <td>{Array.isArray(item.mobile) ? item.mobile.join(", ") : item.mobile}</td>
-            <td>{Array.isArray(item.landline) ? item.landline.join(", ") : item.landline}</td>
-            <td>{Array.isArray(item.satellite) ? item.satellite.join(", ") : item.satellite}</td>
-            <td>{Array.isArray(item.socials) ? item.socials.join(", ") : item.socials}</td>
               <td>
                 <Container className="d-flex justify-content-center align-items-center">
                   <OverlayTrigger placement="top" overlay={<Tooltip>Edit</Tooltip>}>
@@ -211,6 +203,15 @@ const HotlineTable = () => {
                   </OverlayTrigger>
                 </Container>
               </td>
+              <td>{item.category}</td>
+              <td>{item.name}</td>
+              <td>{item.geo}</td>
+              <td>{item.address.barangay}</td>
+              <td>{Array.isArray(item.mobile) ? item.mobile.join(", ") : item.mobile}</td>
+            <td>{Array.isArray(item.landline) ? item.landline.join(", ") : item.landline}</td>
+            <td>{Array.isArray(item.satellite) ? item.satellite.join(", ") : item.satellite}</td>
+            <td>{Array.isArray(item.socials) ? item.socials.join(", ") : item.socials}</td>
+              
             </tr>
           ))}
         </tbody>

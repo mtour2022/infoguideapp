@@ -152,13 +152,14 @@ const TourismMarketsTable = () => {
       <Table striped bordered hover responsive>
         <thead>
           <tr>
+                        <th>Actions</th>
+
             <th>Title</th>
           </tr>
         </thead>
         <tbody>
           {displayedData.map((item) => (
             <tr key={item.id}>
-              <td>{item.title}</td>
               <td>
                 <Container className="d-flex justify-content-center align-items-center">
                   <OverlayTrigger placement="top" overlay={<Tooltip>Edit</Tooltip>}>
@@ -173,6 +174,8 @@ const TourismMarketsTable = () => {
                   </OverlayTrigger>
                 </Container>
               </td>
+              <td>{item.title}</td>
+              
             </tr>
           ))}
         </tbody>

@@ -205,6 +205,8 @@ const DataTable = () => {
       <Table striped bordered hover responsive>
         <thead>
           <tr>
+                        <th>Actions</th>
+
             <th onClick={handleSort} style={{ cursor: "pointer" }}>
               Date {sortOrder === "asc" ? "▲" : "▼"}
             </th>
@@ -214,19 +216,11 @@ const DataTable = () => {
             <th>Name</th>
             <th>Email</th>
             <th>Social</th>
-            <th>Actions</th>
           </tr>
         </thead>
         <tbody>
           {displayedData.map((item) => (
             <tr key={item.id}>
-              <td>{new Date(item.date).toLocaleDateString()}</td>
-              <td>{item.classification}</td>
-              <td>{item.purpose}</td>
-              <td>{item.title}</td>
-              <td>{item.name}</td>
-              <td>{item.email}</td>
-              <td>{item.social}</td>
               <td>
                 <Container className="d-flex justify-content-center align-items-center">
                   <OverlayTrigger placement="top" overlay={<Tooltip>Edit</Tooltip>}>
@@ -241,6 +235,14 @@ const DataTable = () => {
                   </OverlayTrigger>
                 </Container>
               </td>
+              <td>{new Date(item.date).toLocaleDateString()}</td>
+              <td>{item.classification}</td>
+              <td>{item.purpose}</td>
+              <td>{item.title}</td>
+              <td>{item.name}</td>
+              <td>{item.email}</td>
+              <td>{item.social}</td>
+              
             </tr>
           ))}
         </tbody>

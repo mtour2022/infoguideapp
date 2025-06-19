@@ -155,6 +155,7 @@ const OrdinanceTable = () => {
       <Table striped bordered hover responsive>
         <thead>
           <tr>
+            <th>Actions</th>
             <th>Title</th>
             <th>Ordinance No.</th>
             <th>References</th>
@@ -163,9 +164,6 @@ const OrdinanceTable = () => {
         <tbody>
           {displayedData.map((item) => (
             <tr key={item.id}>
-              <td>{item.title}</td>
-              <td>{item.ordinance}</td>
-              <td>{Array.isArray(item.references) ? item.references.join(", ") : item.references}</td>
               <td>
                 <Container className="d-flex justify-content-center align-items-center">
                   <OverlayTrigger placement="top" overlay={<Tooltip>Edit</Tooltip>}>
@@ -180,6 +178,10 @@ const OrdinanceTable = () => {
                   </OverlayTrigger>
                 </Container>
               </td>
+              <td>{item.title}</td>
+              <td>{item.ordinance}</td>
+              <td>{Array.isArray(item.references) ? item.references.join(", ") : item.references}</td>
+              
             </tr>
           ))}
         </tbody>

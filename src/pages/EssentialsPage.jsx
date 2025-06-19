@@ -143,7 +143,7 @@ export default function EssentialsPage() {
 
   const cardData3 = [
     {
-      name: "AWARDS, RECONITIONS & CERTIFICATIONS",
+      name: "AWARDS, RECONITIONS, ETC.",
       caption: "Excellence You Can Trust",
       link: "/update/awardsAndRecognitions",
       color: "#D6C334", // Green

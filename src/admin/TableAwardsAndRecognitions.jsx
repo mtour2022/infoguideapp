@@ -154,6 +154,7 @@ const AwardsAndRecognitionsTable = () => {
       <Table striped bordered hover responsive>
         <thead>
           <tr>
+            <th>Actions</th>
             <th>Title</th>
             <th>References</th>
           </tr>
@@ -161,8 +162,6 @@ const AwardsAndRecognitionsTable = () => {
         <tbody>
           {displayedData.map((item) => (
             <tr key={item.id}>
-              <td>{item.title}</td>
-              <td>{Array.isArray(item.references) ? item.references.join(", ") : item.references}</td>
               <td>
                 <Container className="d-flex justify-content-center align-items-center">
                   <OverlayTrigger placement="top" overlay={<Tooltip>Edit</Tooltip>}>
@@ -177,6 +176,8 @@ const AwardsAndRecognitionsTable = () => {
                   </OverlayTrigger>
                 </Container>
               </td>
+              <td>{item.title}</td>
+              <td>{Array.isArray(item.references) ? item.references.join(", ") : item.references}</td>
             </tr>
           ))}
         </tbody>

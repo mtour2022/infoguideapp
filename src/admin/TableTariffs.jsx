@@ -166,34 +166,18 @@ const TariffTable = () => {
       <Table striped bordered hover responsive>
           <thead>
             <tr>
+                            <th>Actions</th>
+
               <th>Title</th>
               <th>Ordinance</th>
               <th>Implementing Office</th>
               <th>References</th>
               <th>Service Providers</th>
-              <th>Actions</th>
             </tr>
           </thead>
           <tbody>
           <tr key={item.id}>
-                  <td>{item.title}</td>
-                  <td>{item.ordinance}</td>
-                  <td>
-                    {Array.isArray(item.implementor)
-                      ? item.implementor.join(", ")
-                      : item.implementor}
-                  </td>
-                  <td>
-                    {Array.isArray(item.references)
-                      ? item.references.join(", ")
-                      : item.references}
-                  </td>
-                  <td>
-                    {Array.isArray(item.serviceProviders)
-                      ? item.serviceProviders.join(", ")
-                      : item.serviceProviders}
-                  </td>
-                  <td>
+            <td>
                     <Container className="d-flex justify-content-center align-items-center">
                       <OverlayTrigger placement="top" overlay={<Tooltip>Edit</Tooltip>}>
                         <Button
@@ -216,6 +200,24 @@ const TariffTable = () => {
                       </OverlayTrigger>
                     </Container>
                   </td>
+                  <td>{item.title}</td>
+                  <td>{item.ordinance}</td>
+                  <td>
+                    {Array.isArray(item.implementor)
+                      ? item.implementor.join(", ")
+                      : item.implementor}
+                  </td>
+                  <td>
+                    {Array.isArray(item.references)
+                      ? item.references.join(", ")
+                      : item.references}
+                  </td>
+                  <td>
+                    {Array.isArray(item.serviceProviders)
+                      ? item.serviceProviders.join(", ")
+                      : item.serviceProviders}
+                  </td>
+                  
                 </tr>
           </tbody>
         </Table>

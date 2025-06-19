@@ -246,12 +246,12 @@ const ActivitiesTable = () => {
       <Table striped bordered hover responsive>
         <thead>
           <tr>
+            <th>Actions</th>
             <th>Business Name</th>
             <th>Category</th>
             <th>Geo Location</th>
             <th>Barangay</th>
             <th>Street</th>
-            <th>Actions</th>
 
           </tr>
         </thead>
@@ -260,12 +260,6 @@ const ActivitiesTable = () => {
         <tbody>
           {displayedData.map((item) => (
             <tr key={item.id}>
-              <td>{item.name}</td>
-              <td>{item.category}</td>
-              <td>{item.geo}</td>
-              <td>{item.address.barangay}</td>
-              <td>{item.address.street}</td>
-
               <td>
                 <Container className="d-flex justify-content-center align-items-center">
                   <OverlayTrigger placement="top" overlay={<Tooltip>Edit</Tooltip>}>
@@ -280,6 +274,11 @@ const ActivitiesTable = () => {
                   </OverlayTrigger>
                 </Container>
               </td>
+              <td>{item.name}</td>
+              <td>{item.category}</td>
+              <td>{item.geo}</td>
+              <td>{item.address.barangay}</td>
+              <td>{item.address.street}</td>
             </tr>
           ))}
         </tbody>

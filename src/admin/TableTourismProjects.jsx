@@ -152,6 +152,8 @@ const TourismProjectsTable = () => {
       <Table striped bordered hover responsive>
         <thead>
           <tr>
+                        <th>Actions</th>
+
             <th>Title</th>
             <th>Category</th>
           </tr>
@@ -159,8 +161,6 @@ const TourismProjectsTable = () => {
         <tbody>
           {displayedData.map((item) => (
             <tr key={item.id}>
-              <td>{item.title}</td>
-              <td>{Array.isArray(item.category) ? item.category.join(", ") : item.category}</td>
               <td>
                 <Container className="d-flex justify-content-center align-items-center">
                   <OverlayTrigger placement="top" overlay={<Tooltip>Edit</Tooltip>}>
@@ -175,6 +175,9 @@ const TourismProjectsTable = () => {
                   </OverlayTrigger>
                 </Container>
               </td>
+              <td>{item.title}</td>
+              <td>{Array.isArray(item.category) ? item.category.join(", ") : item.category}</td>
+              
             </tr>
           ))}
         </tbody>

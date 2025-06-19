@@ -176,21 +176,15 @@ const LifeStyleTable = () => {
       <Table striped bordered hover responsive>
           <thead>
             <tr>
+              <th>Actions</th>
               <th>Title</th>
               <th>References</th>
-              <th>Actions</th>
             </tr>
           </thead>
           <tbody>
           {displayedData.map((item) => (
           <tr key={item.id}>
-                  <td>{item.title}</td>
-                  <td>
-                    {Array.isArray(item.references)
-                      ? item.references.join(", ")
-                      : item.references}
-                  </td>
-                  <td>
+             <td>
                     <Container className="d-flex justify-content-center align-items-center">
                       <OverlayTrigger placement="top" overlay={<Tooltip>Edit</Tooltip>}>
                         <Button
@@ -213,6 +207,13 @@ const LifeStyleTable = () => {
                       </OverlayTrigger>
                     </Container>
                   </td>
+                  <td>{item.title}</td>
+                  <td>
+                    {Array.isArray(item.references)
+                      ? item.references.join(", ")
+                      : item.references}
+                  </td>
+                 
                 </tr>
                  ))}
           </tbody>

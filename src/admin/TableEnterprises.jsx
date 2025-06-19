@@ -275,6 +275,7 @@ const filteredData = data.filter((item) => {
       <Table striped bordered hover responsive>
         <thead>
           <tr>
+            <th>Actions</th>
             <th>Business Name</th>
             <th>Established</th>
             <th>Category</th>
@@ -283,7 +284,6 @@ const filteredData = data.filter((item) => {
             <th>Geo Location</th>
             <th>Barangay</th>
             <th>Street</th>
-            <th>Actions</th>
 
           </tr>
         </thead>
@@ -292,15 +292,6 @@ const filteredData = data.filter((item) => {
         <tbody>
           {displayedData.map((item) => (
             <tr key={item.id}>
-              <td>{item.name}</td>
-              <td>{item.established}</td>
-              <td>{item.category}</td>
-              <td>{item.subcategory}</td>
-              <td>{item.classification}</td>
-              <td>{item.geo}</td>
-              <td>{item.address.barangay}</td>
-              <td>{item.address.street}</td>
-
               <td>
                 <Container className="d-flex justify-content-center align-items-center">
                   <OverlayTrigger placement="top" overlay={<Tooltip>Edit</Tooltip>}>
@@ -315,6 +306,16 @@ const filteredData = data.filter((item) => {
                   </OverlayTrigger>
                 </Container>
               </td>
+              <td>{item.name}</td>
+              <td>{item.established}</td>
+              <td>{item.category}</td>
+              <td>{item.subcategory}</td>
+              <td>{item.classification}</td>
+              <td>{item.geo}</td>
+              <td>{item.address.barangay}</td>
+              <td>{item.address.street}</td>
+
+              
             </tr>
           ))}
         </tbody>

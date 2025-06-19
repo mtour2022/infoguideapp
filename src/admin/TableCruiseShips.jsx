@@ -152,6 +152,7 @@ const CruiseShipsTable = () => {
       <Table striped bordered hover responsive>
         <thead>
           <tr>
+            <th>Actions</th>
             <th>Title</th>
             <th>Date</th>
             <th>Country of Origin</th>
@@ -161,10 +162,6 @@ const CruiseShipsTable = () => {
         <tbody>
           {displayedData.map((item) => (
             <tr key={item.id}>
-              <td>{item.title}</td>
-              <td>{item.dateStart} {item.dateEnd}</td>
-              <td>{item.country}</td>
-              <th>{item.total}</th>
               <td>
                 <Container className="d-flex justify-content-center align-items-center">
                   <OverlayTrigger placement="top" overlay={<Tooltip>Edit</Tooltip>}>
@@ -179,6 +176,10 @@ const CruiseShipsTable = () => {
                   </OverlayTrigger>
                 </Container>
               </td>
+              <td>{item.title}</td>
+              <td>{item.dateStart} {item.dateEnd}</td>
+              <td>{item.country}</td>
+              <th>{item.total}</th>
             </tr>
           ))}
         </tbody>

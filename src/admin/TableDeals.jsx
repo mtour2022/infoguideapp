@@ -185,6 +185,7 @@ const DealTable = () => {
       <Table striped bordered hover responsive>
         <thead>
           <tr>
+            <th>Actions</th>
             <th onClick={handleSort} style={{ cursor: "pointer" }}>
               Date {sortOrder === "asc" ? "▲" : "▼"}
             </th>
@@ -198,12 +199,6 @@ const DealTable = () => {
         <tbody>
           {displayedData.map((item) => (
             <tr key={item.id}>
-              <td>{new Date(item.date).toLocaleDateString()}</td>
-              <td>{item.classification}</td>
-              <td>{item.title}</td>
-              <td>{Array.isArray(item.origin) ? item.origin.join(", ") : item.origin}</td>
-            <td>{Array.isArray(item.references) ? item.references.join(", ") : item.references}</td>
-            <td>{Array.isArray(item.socials) ? item.socials.join(", ") : item.socials}</td>
               <td>
                 <Container className="d-flex justify-content-center align-items-center">
                   <OverlayTrigger placement="top" overlay={<Tooltip>Edit</Tooltip>}>
@@ -218,6 +213,13 @@ const DealTable = () => {
                   </OverlayTrigger>
                 </Container>
               </td>
+              <td>{new Date(item.date).toLocaleDateString()}</td>
+              <td>{item.classification}</td>
+              <td>{item.title}</td>
+              <td>{Array.isArray(item.origin) ? item.origin.join(", ") : item.origin}</td>
+            <td>{Array.isArray(item.references) ? item.references.join(", ") : item.references}</td>
+            <td>{Array.isArray(item.socials) ? item.socials.join(", ") : item.socials}</td>
+              
             </tr>
           ))}
         </tbody>

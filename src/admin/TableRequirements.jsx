@@ -178,12 +178,12 @@ const RequirementTable = () => {
       <Table striped bordered hover responsive>
           <thead>
             <tr>
+              <th>Actions</th>
               <th>Title</th>
               <th>Port</th>
               <th>Purpose</th>
               <th>Steps</th>
               <th>References</th>
-              <th>Actions</th>
             </tr>
           </thead>
           <tbody>
@@ -195,15 +195,6 @@ const RequirementTable = () => {
 
               return (
                 <tr key={item.id}>
-                  <td>{item.title}</td>
-                  <td>{item.port}</td>
-                  <td>{item.purpose}</td>
-                  <td>{stepCount}</td> {/* Display counted steps */}
-                  <td>
-                    {Array.isArray(item.references)
-                      ? item.references.join(", ")
-                      : item.references}
-                  </td>
                   <td>
                     <Container className="d-flex justify-content-center align-items-center">
                       <OverlayTrigger placement="top" overlay={<Tooltip>Edit</Tooltip>}>
@@ -227,6 +218,16 @@ const RequirementTable = () => {
                       </OverlayTrigger>
                     </Container>
                   </td>
+                  <td>{item.title}</td>
+                  <td>{item.port}</td>
+                  <td>{item.purpose}</td>
+                  <td>{stepCount}</td> {/* Display counted steps */}
+                  <td>
+                    {Array.isArray(item.references)
+                      ? item.references.join(", ")
+                      : item.references}
+                  </td>
+                  
                 </tr>
               );
             })}

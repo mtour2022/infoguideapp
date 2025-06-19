@@ -242,12 +242,12 @@ const filteredData = data.filter((item) => {
       <Table striped bordered hover responsive>
         <thead>
           <tr>
+            <th>Actions</th>
             <th>Business Name</th>
             <th>Category</th>
             <th>Geo Location</th>
             <th>Barangay</th>
             <th>Street</th>
-            <th>Actions</th>
 
           </tr>
         </thead>
@@ -256,13 +256,7 @@ const filteredData = data.filter((item) => {
         <tbody>
           {displayedData.map((item) => (
             <tr key={item.id}>
-              <td>{item.name}</td>
-              <td>{Array.isArray(item.category) ? item.category.join(", ") : item.category}</td>
-              <td>{item.geo}</td>
-              <td>{item.address.barangay}</td>
-              <td>{item.address.street}</td>
-
-              <td>
+               <td>
                 <Container className="d-flex justify-content-center align-items-center">
                   <OverlayTrigger placement="top" overlay={<Tooltip>Edit</Tooltip>}>
                     <Button variant="outline-secondary" size="sm" className="me-2" onClick={() => handleEdit(item)}>
@@ -276,6 +270,11 @@ const filteredData = data.filter((item) => {
                   </OverlayTrigger>
                 </Container>
               </td>
+              <td>{item.name}</td>
+              <td>{Array.isArray(item.category) ? item.category.join(", ") : item.category}</td>
+              <td>{item.geo}</td>
+              <td>{item.address.barangay}</td>
+              <td>{item.address.street}</td>
             </tr>
           ))}
         </tbody>
