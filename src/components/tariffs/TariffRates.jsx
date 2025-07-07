@@ -129,6 +129,17 @@ export default function TariffRatesForm({}) {
                 Swal.showLoading();
             }
         });
+
+         // Upload body images if available
+            const bodyImagesURLs = await Promise.all(
+                tariffRatesFormData.body.map(async (section, index) => {
+                    if (section.image) {
+                        const imageURL = await uploadImageToFirebase(section.image, `tariff/${Date.now()}_${section.image.name}`);
+                        return imageURL;
+                    }
+                    return "";
+                })
+            );
     
         try {
 

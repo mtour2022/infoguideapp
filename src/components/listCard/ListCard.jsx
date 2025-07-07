@@ -13,7 +13,7 @@ const ListCard = ({ data, collectionName }) => {
 
 
   const handleReadMore = (collectionName, dataId) => {
-    const readCollections = ["stories", "incomingEvents", "deals", "updates", "lifeStyles", "helpfulLinks", "cruiseShips", "travelExpos", "tourismProjects", "awardsAndRecognitions", "tourismMarkets"];
+    const readCollections = ["stories", "incomingEvents", "deals", "updates", "lifeStyles", "helpfulLinks", "cruiseShips", "travelExpos", "tariffs", "tourismProjects", "awardsAndRecognitions", "tourismMarkets"];
 
     const path = readCollections.includes(collectionName)
       ? `/read/${collectionName}/${dataId}`

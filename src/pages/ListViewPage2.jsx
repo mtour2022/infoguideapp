@@ -214,6 +214,8 @@ const ListViewPageComponent2 = () => {
     tourismProjects: { title: "TOURISM PROJECTS AND PROGRAMS", subtitle: "Explore initiatives supporting sustainable tourism." },
     awardsAndRecognitions: { title: "AWARDS, RECOGNITIONS, AND CERTIFICATIONS", subtitle: "Municipality of Malay achievements in tourism excellence." },
     travelExpos: { title: "TRAVEL EXPOS, EXHIBITS, CONFERENCES, B2B, AND ROADSHOWS", subtitle: "Promoting Malay tourism globally!" },
+      tariffs: { title: "TARIFF RATES", subtitle: "Tariff rates to familiarize." },
+
   };
 
      const filteredUpdates = allData.filter(dataIndividual => {

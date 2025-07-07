@@ -28,6 +28,7 @@ import {
   faShip,
   faSlash,
   faSun,
+  faTags,
   faUmbrellaBeach
 } from "@fortawesome/free-solid-svg-icons";
 import { faInternetExplorer } from "@fortawesome/free-brands-svg-icons";
@@ -97,11 +98,20 @@ export default function EssentialsPage() {
     },
     {
       name: "TOURIST FAQS",
-      caption: "For a seemless travel",
+      caption: "All Boracay-Malay info.",
       link: "/listview/touristFAQs",
       color: "#FF8A00", // Blue
       image: "https://firebasestorage.googleapis.com/v0/b/infoguide-13007.firebasestorage.app/o/information.jpg?alt=media&token=5d2dd5e0-3f9b-441f-b06d-76b1107042e7",
       icon: faQuestionCircle,
+    },
+    {
+      name: "TARIFF RATES",
+      caption: "Rates to familiarized",
+      link: "/update/tariffs",
+      color: "#FF00FF", // Blue
+      image: "https://firebasestorage.googleapis.com/v0/b/infoguide-13007.firebasestorage.app/o/tariffrates.jpg?alt=media&token=9246d7b0-50a2-4158-bdf2-678f1497d14e"
+      ,
+      icon: faTags,
     },
   ];
 

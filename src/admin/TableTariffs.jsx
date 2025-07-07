@@ -175,51 +175,53 @@ const TariffTable = () => {
               <th>Service Providers</th>
             </tr>
           </thead>
-          <tbody>
-          <tr key={item.id}>
-            <td>
-                    <Container className="d-flex justify-content-center align-items-center">
-                      <OverlayTrigger placement="top" overlay={<Tooltip>Edit</Tooltip>}>
-                        <Button
-                          variant="outline-secondary"
-                          size="sm"
-                          className="me-2"
-                          onClick={() => handleEdit(item)}
-                        >
-                          <FontAwesomeIcon icon={faEdit} size="xs" fixedWidth />
-                        </Button>
-                      </OverlayTrigger>
-                      <OverlayTrigger placement="top" overlay={<Tooltip>Delete</Tooltip>}>
-                        <Button
-                          variant="outline-danger"
-                          size="sm"
-                          onClick={() => handleDelete(item.id)}
-                        >
-                          <FontAwesomeIcon icon={faTrash} size="xs" fixedWidth />
-                        </Button>
-                      </OverlayTrigger>
-                    </Container>
-                  </td>
-                  <td>{item.title}</td>
-                  <td>{item.ordinance}</td>
-                  <td>
-                    {Array.isArray(item.implementor)
-                      ? item.implementor.join(", ")
-                      : item.implementor}
-                  </td>
-                  <td>
-                    {Array.isArray(item.references)
-                      ? item.references.join(", ")
-                      : item.references}
-                  </td>
-                  <td>
-                    {Array.isArray(item.serviceProviders)
-                      ? item.serviceProviders.join(", ")
-                      : item.serviceProviders}
-                  </td>
-                  
-                </tr>
-          </tbody>
+         <tbody>
+  {displayedData.map((item) => (
+    <tr key={item.id}>
+      <td>
+        <Container className="d-flex justify-content-center align-items-center">
+          <OverlayTrigger placement="top" overlay={<Tooltip>Edit</Tooltip>}>
+            <Button
+              variant="outline-secondary"
+              size="sm"
+              className="me-2"
+              onClick={() => handleEdit(item)}
+            >
+              <FontAwesomeIcon icon={faEdit} size="xs" fixedWidth />
+            </Button>
+          </OverlayTrigger>
+          <OverlayTrigger placement="top" overlay={<Tooltip>Delete</Tooltip>}>
+            <Button
+              variant="outline-danger"
+              size="sm"
+              onClick={() => handleDelete(item.id)}
+            >
+              <FontAwesomeIcon icon={faTrash} size="xs" fixedWidth />
+            </Button>
+          </OverlayTrigger>
+        </Container>
+      </td>
+      <td>{item.title}</td>
+      <td>{item.ordinance}</td>
+      <td>
+        {Array.isArray(item.implementor)
+          ? item.implementor.join(", ")
+          : item.implementor}
+      </td>
+      <td>
+        {Array.isArray(item.references)
+          ? item.references.join(", ")
+          : item.references}
+      </td>
+      <td>
+        {Array.isArray(item.serviceProviders)
+          ? item.serviceProviders.join(", ")
+          : item.serviceProviders}
+      </td>
+    </tr>
+  ))}
+</tbody>
+
         </Table>
 
     )}

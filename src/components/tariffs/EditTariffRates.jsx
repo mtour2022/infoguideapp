@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect  } from "react";
 import { Container, Row, Col, Form, Button } from "react-bootstrap";
 import { db, storage } from "../../config/firebase";
 import {  collection, addDoc, doc, updateDoc  } from "firebase/firestore";
@@ -108,10 +108,10 @@ export default function EditTariffRatesForm({editingItem, toAddForm}) {
 
   useEffect(() => {
     if (editingItem) {
-      setActivityFormData(prevState => ({
+      setTariffRatesFormData(prevState => ({
         ...prevState,
         id: editingItem.id || "",
-        title: editingItem.name || "",
+        title: editingItem.title || "",
         ordinance: editingItem.ordinance || "", // Default category if not provided
         implementor: editingItem.implementor || [],
         body: editingItem.body.map((section, index) => ({
