@@ -4,10 +4,11 @@ import FooterCustomized from "../components/footer/Footer";
 import HomeButtons from "../components/homeButtons";
 import { useNavigate } from 'react-router-dom';
 import DUalCarousel from "../components/TourismUpdatesComponent";
+import SocialFeed from "../components/facebookEmbed/FacebookEmbed";
 
 export default function UpdatePage() {
-          const navigate = useNavigate();
-    
+    const navigate = useNavigate();
+
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
     const [isSmallScreen, setIsSmallScreen] = useState(window.innerWidth <= 768);
 
@@ -31,23 +32,23 @@ export default function UpdatePage() {
     return (
         <Container fluid className="main-container mt-5">
             <div className="home-section pb-0 pt-0">
-              <a
-                className="text-decoration-none d-block mb-0"
-                style={{ cursor: "pointer", color: "grey" }}>
-                <span
-                  onClick={() => navigate(`/home`)}
-                  style={{ color: "grey", marginRight: "5px", fontSize: "0.90rem" }}>
-                  home
-                </span>
-                <span
-                  onClick={() => navigate(`/updates`)}
-                  style={{ color: "grey", margin: "0 5px", fontSize: "0.90rem" }}>
-                  / updates
-                </span>
-              </a>
-          </div>
+                <a
+                    className="text-decoration-none d-block mb-0"
+                    style={{ cursor: "pointer", color: "grey" }}>
+                    <span
+                        onClick={() => navigate(`/home`)}
+                        style={{ color: "grey", marginRight: "5px", fontSize: "0.90rem" }}>
+                        home
+                    </span>
+                    <span
+                        onClick={() => navigate(`/updates`)}
+                        style={{ color: "grey", margin: "0 5px", fontSize: "0.90rem" }}>
+                        / updates
+                    </span>
+                </a>
+            </div>
             <div className={`customized-main-content`}>
-               
+
                 <div id="updates">
                     <DUalCarousel collectionName="updates" title="Tourism Updates"
                         caption="Stay informed with the latest news and announcements."></DUalCarousel>
@@ -69,8 +70,13 @@ export default function UpdatePage() {
                         caption="Read, Be inspired and you might find the one!"></DUalCarousel>
 
                 </div>
-               
+
             </div>
+            <div id="social-feed" className="text-center">
+                <SocialFeed collectionName="facebook_posts" />
+            </div>
+
+
             <div className="home-section">
                 <FooterCustomized></FooterCustomized>
             </div>
