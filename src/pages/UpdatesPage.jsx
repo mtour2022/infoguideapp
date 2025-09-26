@@ -5,6 +5,7 @@ import HomeButtons from "../components/homeButtons";
 import { useNavigate } from 'react-router-dom';
 import DUalCarousel from "../components/TourismUpdatesComponent";
 import SocialFeed from "../components/facebookEmbed/FacebookEmbed";
+import FacebookLiveStream from "../components/facebookstream";
 
 export default function UpdatePage() {
     const navigate = useNavigate();
@@ -31,6 +32,7 @@ export default function UpdatePage() {
 
     return (
         <Container fluid className="main-container mt-5">
+           
             <div className="home-section pb-0 pt-0">
                 <a
                     className="text-decoration-none d-block mb-0"
@@ -48,12 +50,17 @@ export default function UpdatePage() {
                 </a>
             </div>
             <div className={`customized-main-content`}>
-
+  <div>
+     <h2 className="home-section-title mb-1  mt-3">Live Now: Boracay MDRRMC</h2>
+          <p className="home-section-subtitle mb-1">Malay MDRRMC – #bagyongopong Live Broadcast</p>
+                    <FacebookLiveStream videoUrl="https://www.facebook.com/malay.mdrrmc/videos/1326837815488475" />
+            </div>
                 <div id="updates">
                     <DUalCarousel collectionName="updates" title="Tourism Updates"
                         caption="Stay informed with the latest news and announcements."></DUalCarousel>
 
                 </div>
+               
                 <div id="tourism-incomingevents">
                     <DUalCarousel collectionName="incomingEvents" title="Incoming Events"
                         caption="Get excited and participate on these incoming events!"></DUalCarousel>
