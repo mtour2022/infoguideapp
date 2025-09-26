@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { collection, getDocs } from "firebase/firestore";
 import { db } from "../../config/firebase";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -16,21 +16,16 @@ import BestBeachLogo from "../../assets/images/Boracay-Worlds-Best-Beach-Logo.pn
 import ImageLoader from "../../assets/images/whitebach_backdrop.png";
 import { useNavigate } from "react-router-dom";
 
+// Local video
 const videoUrl =
   "https://firebasestorage.googleapis.com/v0/b/infoguide-13007.firebasestorage.app/o/boracay%20video%20preview.mp4?alt=media&token=1a3e9db3-e1d2-45ed-a812-dc2206b2c49e";
 
+// 👇 Replace linkedVideos with Facebook Live Slide
 const linkedVideos = [
   {
-    title: "Love Boracay v5. 2025",
-    headerImage:
-      "https://firebasestorage.googleapis.com/v0/b/infoguide-13007.firebasestorage.app/o/highlightvideos%2Flove-boracay-2025.mp4?alt=media&token=ae2064a9-df06-41ab-8096-e38402a71c45",
-    link: "/read/incomingEvents/TSS3xCQcJlPsyhuQWSy2",
-  },
-  {
-    title: "22nd Fiesta De Obreros 2025",
-    headerImage:
-      "https://firebasestorage.googleapis.com/v0/b/infoguide-13007.firebasestorage.app/o/highlightvideos%2Ffiesta-de-obreros.mp4?alt=media&token=feb1f3d6-a7dc-4e1b-89d7-2133ce5730cb",
-    link: "/read/incomingEvents/cCW9d9XpzyIZxhxPTUdl",
+    type: "facebook",
+    title: "Live Now: Boracay MDRRMC",
+    videoUrl: "https://www.facebook.com/malay.mdrrmc/videos/1326837815488475",
   },
 ];
 
@@ -41,13 +36,11 @@ const Slideshow = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [videoStates, setVideoStates] = useState({});
   const [videoLoadedFlags, setVideoLoadedFlags] = useState({});
-
   const videoRefs = useRef({});
 
- const handleReadMore = (collection, url) => {
-  navigate(`/read/${collection}/${url}`);
-};
-
+  const handleReadMore = (collection, url) => {
+    navigate(`/read/${collection}/${url}`);
+  };
 
   useEffect(() => {
     async function fetchData() {
@@ -68,31 +61,12 @@ const Slideshow = () => {
         data.splice(0, 0, bestBeachSlide);
       }
 
+      // 👇 Put facebook live as first, then local video, then the rest
       setSlides([...linkedVideos, { title: "", headerImage: videoUrl }, ...data]);
     }
 
     fetchData();
   }, []);
-
-  // useEffect(() => {
-  //   const currentSlide = slides[currentIndex];
-  //   const isVideo = currentSlide?.headerImage.includes("mp4");
-
-  //   if (!isVideo) {
-  //     // Stop video when transitioning away from a video slide
-  //     const prevVideo = videoRefs.current[currentIndex];
-  //     if (prevVideo) {
-  //       prevVideo.pause();
-  //     }
-  //   }
-
-  //   const interval = setInterval(() => {
-  //     const nextIndex = (currentIndex + 1) % slides.length;
-  //     setCurrentIndex(nextIndex);
-  //   }, 8000);
-
-  //   return () => clearInterval(interval);
-  // }, [currentIndex, slides]);
 
   useEffect(() => {
     const video = videoRefs.current[currentIndex];
@@ -155,35 +129,21 @@ const Slideshow = () => {
   };
 
   const toggleLogo = (index) => {
-    if (index === 0 || index === 1) {
-      // Toggle visibility of the title and read more button instead of the logo for index 0 and 1
-      setVideoStates((prev) => ({
-        ...prev,
-        [index]: {
-          ...prev[index],
-          titleVisible: !prev[index]?.titleVisible,
-          readMoreVisible: !prev[index]?.readMoreVisible,
-        },
-      }));
-    } else {
-      setVideoStates((prev) => ({
-        ...prev,
-        [index]: {
-          ...prev[index],
-          logoVisible: !prev[index]?.logoVisible,
-        },
-      }));
-    }
+    setVideoStates((prev) => ({
+      ...prev,
+      [index]: {
+        ...prev[index],
+        logoVisible: !prev[index]?.logoVisible,
+      },
+    }));
   };
 
   const handleNavClick = (direction) => {
-    // Stop video for the current slide
     const currentVideo = videoRefs.current[currentIndex];
     if (currentVideo) {
       currentVideo.pause();
     }
 
-    // Move to the next or previous slide
     setCurrentIndex((prevIndex) => {
       let newIndex = prevIndex + direction;
       if (newIndex < 0) newIndex = slides.length - 1;
@@ -199,7 +159,7 @@ const Slideshow = () => {
 
       {slides.map((slide, index) => {
         const isActive = index === currentIndex;
-        const isVideo = slide.headerImage.includes("mp4");
+        const isVideo = slide.headerImage?.includes("mp4");
         const state = videoStates[index] || {};
         const videoLoaded = videoLoadedFlags[index] || false;
 
@@ -209,14 +169,28 @@ const Slideshow = () => {
             className={`slide ${isActive ? "active" : ""}`}
             onMouseEnter={() => initializeVideoState(index)}
           >
-            {!videoLoaded && isVideo && isActive && (
-              <div
-                className="slide-image"
-                style={{ backgroundImage: `url(${ImageLoader})` }}
-              />
-            )}
+            {/* 👇 Render Facebook Live if type = facebook */}
+           {slide.type === "facebook" ? (
+  <div className="video-wrapper">
+    <iframe
+      src={`https://www.facebook.com/plugins/video.php?href=${encodeURIComponent(
+        slide.videoUrl
+      )}&show_text=false&autoplay=true`}
+      style={{
+        border: "none",
+        overflow: "hidden",
+        width: "100%",
+        height: "100%",
+      }}
+      scrolling="no"
+      frameBorder="0"
+      allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"
+      allowFullScreen={true}
+      title="Facebook Live Stream"
+    ></iframe>
+  </div>
+) : isVideo ? (
 
-            {isVideo ? (
               <div className="video-container">
                 <video
                   ref={(el) => (videoRefs.current[index] = el)}
@@ -231,13 +205,14 @@ const Slideshow = () => {
                     }));
                   }}
                   onEnded={() => {
-                    if (isActive) setVideoStates((prev) => ({
-                      ...prev,
-                      [index]: {
-                        ...prev[index],
-                        playing: false,
-                      },
-                    }));
+                    if (isActive)
+                      setVideoStates((prev) => ({
+                        ...prev,
+                        [index]: {
+                          ...prev[index],
+                          playing: false,
+                        },
+                      }));
                   }}
                   style={{ display: isActive && videoLoaded ? "block" : "none" }}
                 >
@@ -251,30 +226,7 @@ const Slideshow = () => {
               />
             )}
 
-            {(index === 0 || index === 1) ? (
-              <div className="slide-content">
-                {state.titleVisible && (
-                  <h1
-                    className={
-                      window.innerWidth <= 640
-                        ? "slideshow-title-small"
-                        : "slideshow-title"
-                    }
-                    data-text={slide.title}
-                  >
-                    {slide.title}
-                  </h1>
-                )}
-                {state.readMoreVisible && (
-                  <button
-                    className="read-more"
-                    onClick={() => handleReadMore(slide.link)}
-                  >
-                    Read More
-                  </button>
-                )}
-              </div>
-            ) : (
+            {slide.type !== "facebook" && (
               <div className="slide-content">
                 <h1
                   className={
@@ -297,66 +249,66 @@ const Slideshow = () => {
               </div>
             )}
 
-            {index === 2 && state.logoVisible && (
-              <div className="slide-content">
-                <img
-                  src={BestBeachLogo}
-                  alt="Boracay Best Beach Logo"
-                  className="beach-logo"
-                />
-              </div>
-            )}
+            {index === 1 && state.logoVisible && (
+  <div className="slide-content">
+    <img
+      src={BestBeachLogo}
+      alt="Boracay Best Beach Logo"
+      className="beach-logo"
+    />
+  </div>
+)}
 
-            <div className="bottom-row">
-              <div className="dots">
-                {slides.map((_, dotIndex) => (
-                  <span
-                    key={dotIndex}
-                    className={`dot ${dotIndex === currentIndex ? "active" : ""}`}
-                    onClick={() => setCurrentIndex(dotIndex)}
-                  ></span>
-                ))}
-              </div>
 
-              {isVideo && (
+            {isVideo && (
+              <div className="bottom-row">
+                <div className="dots">
+                  {slides.map((_, dotIndex) => (
+                    <span
+                      key={dotIndex}
+                      className={`dot ${dotIndex === currentIndex ? "active" : ""}`}
+                      onClick={() => setCurrentIndex(dotIndex)}
+                    ></span>
+                  ))}
+                </div>
                 <div className="button-group">
                   <button
                     className="video-control me-2"
                     onClick={() => toggleLogo(index)}
                   >
-                    <FontAwesomeIcon icon={state.logoVisible ? faEyeSlash : faEye} />
+                    <FontAwesomeIcon
+                      icon={state.logoVisible ? faEyeSlash : faEye}
+                    />
                   </button>
                   <button
                     className="video-control me-2"
                     onClick={() => togglePlayback(index)}
                   >
-                    <FontAwesomeIcon icon={state.playing ? faPause : faPlay} />
+                    <FontAwesomeIcon
+                      icon={state.playing ? faPause : faPlay}
+                    />
                   </button>
-                  {index != 2 && (
+                  {index !== 2 && (
                     <button
                       className="video-control"
                       onClick={() => toggleMute(index)}
                     >
-                      <FontAwesomeIcon icon={state.muted ? faVolumeMute : faVolumeUp} />
+                      <FontAwesomeIcon
+                        icon={state.muted ? faVolumeMute : faVolumeUp}
+                      />
                     </button>
                   )}
                 </div>
-              )}
-            </div>
+              </div>
+            )}
           </div>
         );
       })}
 
-      <button
-        className="nav-button left"
-        onClick={() => handleNavClick(-1)}
-      >
+      <button className="nav-button left" onClick={() => handleNavClick(-1)}>
         <FontAwesomeIcon icon={faChevronLeft} />
       </button>
-      <button
-        className="nav-button right"
-        onClick={() => handleNavClick(1)}
-      >
+      <button className="nav-button right" onClick={() => handleNavClick(1)}>
         <FontAwesomeIcon icon={faChevronRight} />
       </button>
     </div>

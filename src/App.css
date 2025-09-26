@@ -618,7 +618,22 @@ body {
   color: white !important; /* Ensure text color is white */
   padding: 5px 10px; /* Optional: Add padding to make the badge more clickable */
 }
+/* Make Facebook video responsive */
+/* Make Facebook Live / video responsive */
+.video-wrapper {
+  position: relative;
+  width: 100%;
+  max-width: 1000px; /* optional: cap size */
+  margin: 0 auto;
+  aspect-ratio: 16 / 9;
+}
 
+.video-wrapper iframe,
+.video-wrapper video {
+  width: 100% !important;
+  height: 100% !important;
+  max-width: 100% !important;
+}
 
 /* slideshow */
 
