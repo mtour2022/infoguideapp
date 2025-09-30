@@ -82,6 +82,8 @@ import TourismMarketsForm from '../components/tourismMarkets/TourismMarket';
 import TourismMarketsTable from '../admin/TableTourismMarkets';
 import MainlandMalayHotelsTable from '../admin/TableMainlandMalayHotels';
 import TourGuideTable from '../admin/TableTourGuides';
+import FacebookLiveAdmin from '../components/facebookstream_admin';
+import SocialFeedAdmin from '../components/facebookEmbed/FacebookEmbed_Admin';
 
 // Sidebar link component using onClick to set active content.
 function NavlinkIcon({ icon, title, onClick, active }) {
@@ -413,6 +415,18 @@ export default function AdminDashboard() {
                           <>
                             <TourismMarketsTable></TourismMarketsTable>
                           </>
+                        );    
+                        case 'livestream':
+                        return (
+                          <>
+                            <FacebookLiveAdmin></FacebookLiveAdmin>
+                          </>
+                        );  
+                        case 'socialmedia':
+                        return (
+                          <>
+                            <SocialFeedAdmin></SocialFeedAdmin>
+                          </>
                         );           
                                     
                       case 'cruiseShips':
@@ -731,6 +745,22 @@ export default function AdminDashboard() {
                 active={activePage === 'tourismMarkets'}
             />
         </ExpandableNavItem>
+        <Nav.Link
+          className="ms-lg-2"
+          id="basic-nav-sidebar-item"
+          onClick={() => { setActivePage('livestream'); handleClose(); }}
+          style={{ cursor: 'pointer' }}
+        >
+          LIVE STREAM
+        </Nav.Link>
+        <Nav.Link
+          className="ms-lg-2"
+          id="basic-nav-sidebar-item"
+          onClick={() => { setActivePage('socialmedia'); handleClose(); }}
+          style={{ cursor: 'pointer' }}
+        >
+          SOCIAL MEDIA HIGHLIGHTS
+        </Nav.Link>
         <Nav.Link
           className="ms-lg-2"
           id="basic-nav-sidebar-item"

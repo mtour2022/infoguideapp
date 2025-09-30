@@ -8,7 +8,6 @@ import UpdatesCarousel from "../components/QuickCheckSlides";
 import { updatesCategoryOptions } from "../datamodel/updates_model";
 import { storiesClassificationOptions } from "../datamodel/stories_model";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import FacebookLiveStream from "../components/facebookstream"
 import {
     faBuilding,
     faBell,
@@ -28,6 +27,10 @@ import TwoSectionButtons from "../components/homebutton2";
 import { dealsAndPromotionsCategoryOptions } from "../datamodel/deals_model";
 import DUalCarousel from "../components/TourismUpdatesComponent";
 import IncomingEventsComponent from "../components/IncomingEventsComponent";
+import SocialFeed from "../components/facebookEmbed/FacebookEmbed";
+import FacebookLiveStream from "../components/facebookstream";
+import { faFacebook } from "@fortawesome/free-brands-svg-icons";
+
 export default function Home() {
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
     const [isSmallScreen, setIsSmallScreen] = useState(window.innerWidth <= 768);
@@ -58,9 +61,11 @@ export default function Home() {
 
             <div className={`customized-main-content`}>
                 <Slideshow />
+                                
+                <p className="home-section-subtitle text-center mt-4">Quick Links</p>
 
                 {/* Navigation Buttons */}
-                <div className="text-center mt-4">
+                <div className="text-center mb-4">
                     <button onClick={() => scrollToSection("home-buttons")} className="discover-more-btn my-2 fw-bold" >
                         <FontAwesomeIcon icon={faBuilding} className="me-2" />Enterprises</button>
                     <button onClick={() => scrollToSection("tourism-activities")} className="discover-more-btn my-2 fw-bold" >
@@ -75,14 +80,23 @@ export default function Home() {
                         <FontAwesomeIcon icon={faCalendarCheck} className="me-2" />Events</button>
                     <button onClick={() => scrollToSection("tourism-stories")} className="discover-more-btn my-2 fw-bold">
                         <FontAwesomeIcon icon={faBookOpen} className="me-2" />Stories</button>
+                    <button onClick={() => scrollToSection("social-feed")} className="discover-more-btn my-2 fw-bold">
+                        <FontAwesomeIcon icon={faFacebook} className="me-2" />Social Highlights</button>
 
                 </div>
-                <p className="home-section-subtitle text-center">Quick Links</p>
+                 <div className="text-center mt-4">
+
+                                    <FacebookLiveStream videoUrl="https://www.facebook.com/malay.mdrrmc/videos/1326837815488475" />
+
+                </div>
                 <div id="home-buttons">
                     <HomeButtons />
                 </div>
+                
             </div>
+           
             <div>
+                
                 <div id="tourism-activities">
                     <h2 className="home-section-title mb-1">EXPLORE MORE!</h2>
 
@@ -110,6 +124,10 @@ export default function Home() {
                         caption="Read, Be inspired and you might find the one!"></DUalCarousel>
 
                 </div>
+                <div id="social-feed" className="text-center">
+                <SocialFeed collectionName="facebook_posts" />
+            </div>
+
 
                 {/* <div id="tourism-updates">
                     <UpdatesCarousel

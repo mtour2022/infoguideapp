@@ -20,19 +20,10 @@ import { useNavigate } from "react-router-dom";
 const videoUrl =
   "https://firebasestorage.googleapis.com/v0/b/infoguide-13007.firebasestorage.app/o/boracay%20video%20preview.mp4?alt=media&token=1a3e9db3-e1d2-45ed-a812-dc2206b2c49e";
 
-// 👇 Replace linkedVideos with Facebook Live Slide
-const linkedVideos = [
-  {
-    type: "facebook",
-    title: "Live Now: Boracay MDRRMC",
-    videoUrl: "https://www.facebook.com/malay.mdrrmc/videos/1326837815488475",
-  },
-];
-
 const Slideshow = () => {
   const navigate = useNavigate();
 
-  const [slides, setSlides] = useState([{ title: "", headerImage: ImageLoader }]);
+  const [slides, setSlides] = useState([{ title: "", headerImage: videoUrl }]);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [videoStates, setVideoStates] = useState({});
   const [videoLoadedFlags, setVideoLoadedFlags] = useState({});
@@ -61,8 +52,8 @@ const Slideshow = () => {
         data.splice(0, 0, bestBeachSlide);
       }
 
-      // 👇 Put facebook live as first, then local video, then the rest
-      setSlides([...linkedVideos, { title: "", headerImage: videoUrl }, ...data]);
+      // Put local video first, then other slides
+      setSlides([{ title: "", headerImage: videoUrl }, ...data]);
     }
 
     fetchData();
@@ -169,28 +160,7 @@ const Slideshow = () => {
             className={`slide ${isActive ? "active" : ""}`}
             onMouseEnter={() => initializeVideoState(index)}
           >
-            {/* 👇 Render Facebook Live if type = facebook */}
-           {slide.type === "facebook" ? (
-  <div className="video-wrapper">
-    <iframe
-      src={`https://www.facebook.com/plugins/video.php?href=${encodeURIComponent(
-        slide.videoUrl
-      )}&show_text=false&autoplay=true`}
-      style={{
-        border: "none",
-        overflow: "hidden",
-        width: "100%",
-        height: "100%",
-      }}
-      scrolling="no"
-      frameBorder="0"
-      allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"
-      allowFullScreen={true}
-      title="Facebook Live Stream"
-    ></iframe>
-  </div>
-) : isVideo ? (
-
+            {isVideo ? (
               <div className="video-container">
                 <video
                   ref={(el) => (videoRefs.current[index] = el)}
@@ -226,39 +196,36 @@ const Slideshow = () => {
               />
             )}
 
-            {slide.type !== "facebook" && (
-              <div className="slide-content">
-                <h1
-                  className={
-                    window.innerWidth <= 640
-                      ? "slideshow-title-small"
-                      : "slideshow-title"
-                  }
-                  data-text={slide.title}
+            <div className="slide-content">
+              <h1
+                className={
+                  window.innerWidth <= 640
+                    ? "slideshow-title-small"
+                    : "slideshow-title"
+                }
+                data-text={slide.title}
+              >
+                {slide.title}
+              </h1>
+              {slide.id && (
+                <button
+                  className="read-more"
+                  onClick={() => handleReadMore("tourismMarkets", slide.id)}
                 >
-                  {slide.title}
-                </h1>
-                {slide.id && (
-                  <button
-                    className="read-more"
-                    onClick={() => handleReadMore("tourismMarkets", slide.id)}
-                  >
-                    Read More
-                  </button>
-                )}
-              </div>
-            )}
+                  Read More
+                </button>
+              )}
+            </div>
 
             {index === 1 && state.logoVisible && (
-  <div className="slide-content">
-    <img
-      src={BestBeachLogo}
-      alt="Boracay Best Beach Logo"
-      className="beach-logo"
-    />
-  </div>
-)}
-
+              <div className="slide-content">
+                <img
+                  src={BestBeachLogo}
+                  alt="Boracay Best Beach Logo"
+                  className="beach-logo"
+                />
+              </div>
+            )}
 
             {isVideo && (
               <div className="bottom-row">

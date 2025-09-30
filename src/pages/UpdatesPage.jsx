@@ -51,8 +51,8 @@ export default function UpdatePage() {
             </div>
             <div className={`customized-main-content`}>
   <div>
-     <h2 className="home-section-title mb-1  mt-3">Live Now: Boracay MDRRMC</h2>
-          <p className="home-section-subtitle mb-1">Malay MDRRMC – #bagyongopong Live Broadcast</p>
+     {/* Facebook Live */}
+
                     <FacebookLiveStream videoUrl="https://www.facebook.com/malay.mdrrmc/videos/1326837815488475" />
             </div>
                 <div id="updates">
