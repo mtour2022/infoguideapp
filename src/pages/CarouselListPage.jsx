@@ -80,6 +80,7 @@ const CarouselListPage = ({ title, caption }) => {
   };
 
   return (
+    <>
     <div className="home-section">
       <Row>
             <Col md={12}>
@@ -130,8 +131,10 @@ const CarouselListPage = ({ title, caption }) => {
           );
         })}
       </div>
-      <FooterCustomized></FooterCustomized>
     </div>
+          <FooterCustomized></FooterCustomized>
+
+          </>
   );
 };
 

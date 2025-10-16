@@ -242,6 +242,7 @@ const ItemViewComponent = () => {
 
 
   return (
+    <>
     <Container className="my-4">
       <Row className="align-items-center justify-content-center pt-5">
 
@@ -1256,12 +1257,13 @@ const ItemViewComponent = () => {
           {/* Header Image with Gaussian Blur Background */}
 
 
-          <FooterCustomized />
         </Col>
       </Row>
 
     </Container>
+          <FooterCustomized />
 
+          </>
   );
 };
 

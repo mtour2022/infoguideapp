@@ -28,6 +28,7 @@ export default function EnterprisePage() {
     };
 
     return (
+        <>
         <Container fluid className="main-container mt-5">
             <div className="home-section pb-0 pt-0">
               <a
@@ -52,11 +53,11 @@ export default function EnterprisePage() {
                 </div>
                
             </div>
-            <div className="home-section">
-                <FooterCustomized></FooterCustomized>
-            </div>
+            
 
 
         </Container>
+                        <FooterCustomized></FooterCustomized>
+</>
     );
 }

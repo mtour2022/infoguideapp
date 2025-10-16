@@ -55,11 +55,17 @@ const HomeButtons = ({ buttonDataArray = defaultButtonDataArray }) => {
     <div className="home-section">
       {/* First Section: DOT Accredited */}
       <div className="">
-          <h2 className="home-section-title ">DOT ACCREDITED TOURISM ENTERPRISES</h2>
+         <div className="text-center my-4 text-white">
+  <h2 className="custom-section-title text-white">
+    DOT ACCREDITED TOURISM ENTERPRISES
+  </h2>
 
-        <p className="home-section-subtitle ">
-          Department of Tourism (DOT) Accredited Enterprises in Boracay Island, Malay, Philippines as of <strong>May 2025</strong>. 
-        </p>
+  <small className="home-section-subtitle d-block mt-2 text-white">
+    Department of Tourism (DOT) Accredited Enterprises in Boracay Island, Malay, Philippines as of{" "}
+    <strong>May 2025</strong>.
+  </small>
+</div>
+
         <div className="row">
             {buttonDataArray.length > 0 ? (
               buttonDataArray.slice(0, 8).map((button, index) => (

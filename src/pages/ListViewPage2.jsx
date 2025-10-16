@@ -255,6 +255,7 @@ const ListViewPageComponent2 = () => {
       });
 
   return (
+    <>
     <div className="home-section content-wrapper">
       {loading ? (
         <div className="d-flex justify-content-center align-items-center" style={{ minHeight: "50vh" }}>
@@ -479,14 +480,16 @@ const ListViewPageComponent2 = () => {
                 </Button>
               </Col>
             </Row>
-            <FooterCustomized />
+
           </Row>
+                      
+
         </>
       )}
 
     </div>
-
-
+<FooterCustomized />
+  </>
   );
 };
 

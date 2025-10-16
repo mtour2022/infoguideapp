@@ -68,7 +68,7 @@ body {
 
 }
 
-.main-container{
+.main-container {
   padding: 10px !important;
 }
 
@@ -614,16 +614,21 @@ body {
 }
 
 .read-more-badge {
-  background-color: #1F89B2 !important; /* Set a custom background color */
-  color: white !important; /* Ensure text color is white */
-  padding: 5px 10px; /* Optional: Add padding to make the badge more clickable */
+  background-color: #1F89B2 !important;
+  /* Set a custom background color */
+  color: white !important;
+  /* Ensure text color is white */
+  padding: 5px 10px;
+  /* Optional: Add padding to make the badge more clickable */
 }
+
 /* Make Facebook video responsive */
 /* Make Facebook Live / video responsive */
 .video-wrapper {
   position: relative;
   width: 100%;
-  max-width: 1000px; /* optional: cap size */
+  max-width: 1000px;
+  /* optional: cap size */
   margin: 0 auto;
   aspect-ratio: 16 / 9;
 }
@@ -958,13 +963,18 @@ body {
 
 .upper-row {
   display: flex;
-  justify-content: flex-end; /* Aligns items to the right */
-  align-items: flex-end; /* Aligns items to the bottom */
+  justify-content: flex-end;
+  /* Aligns items to the right */
+  align-items: flex-end;
+  /* Aligns items to the bottom */
   width: 100%;
   position: absolute;
-  top: 20px; /* Places the row 20px from the top */
-  right: 10px; /* Moves the row to the right, with 30px offset from the right edge */
-  padding: 0 10px 10px 0; /* Adjusted padding */
+  top: 20px;
+  /* Places the row 20px from the top */
+  right: 10px;
+  /* Moves the row to the right, with 30px offset from the right edge */
+  padding: 0 10px 10px 0;
+  /* Adjusted padding */
   z-index: 2;
 }
 
@@ -1100,7 +1110,7 @@ body {
   height: 250px;
   /* Keep the height fixed or adjust as needed */
   margin-top: 20px;
-  border-radius: 12px;
+  border-radius: 0;
   box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.1);
   overflow: hidden;
   position: relative;
@@ -1129,6 +1139,7 @@ body {
   background: linear-gradient(to top, var(--button-color) 20%, transparent 50%);
   z-index: 2;
 }
+
 /* Mobile Overrides */
 @media (max-width: 991.98px) {
 
@@ -1140,7 +1151,7 @@ body {
     justify-content: flex-start;
     padding-left: 48px;
     position: relative;
-    border-radius: 8px;
+    border-radius: 0;
     margin-top: 5px !important;
   }
 
@@ -1153,7 +1164,7 @@ body {
     z-index: 1;
   }
 
-   .home-button-gradient {
+  .home-button-gradient {
     background: linear-gradient(to right, var(--button-color) 30%, transparent 70%);
   }
 
@@ -1165,11 +1176,12 @@ body {
     padding-left: 10px;
   }
 
-    .home-button-name {
+  .home-button-name {
     width: 95%;
-      font-size: small !important;
+    font-size: small !important;
 
-    white-space: normal; /* ensure wrapping */
+    white-space: normal;
+    /* ensure wrapping */
   }
 
   .home-button-caption {
@@ -1181,7 +1193,7 @@ body {
   }
 
 
-  
+
 }
 
 .text-background-solid-color {
@@ -1248,7 +1260,8 @@ body {
   overflow-wrap: break-word;
   white-space: normal;
   text-transform: capitalize !important;
-    text-align: left !important; /* or center if you want */
+  text-align: left !important;
+  /* or center if you want */
 
 }
 
@@ -2110,15 +2123,27 @@ body {
 }
 
 
-.footer-component {
+/* .footer-component {
   background-color: white;
-  /* Set background to white */
   color: #333333;
-  /* Set text color to dark grey */
   padding-top: 20px;
   padding-bottom: 20px;
   margin-top: 50px;
-  /* Spacing above the footer */
+} */
+
+
+.footer-component {
+  background-color: white;
+  color: #333333;
+  /* padding-top: 20px; */
+  padding-bottom: 20px;
+  /* margin-top: 50px; */
+
+  width: 100%;
+  margin: 0;
+  left: 0;
+  right: 0;
+
 }
 
 .footer-component a {
@@ -2359,8 +2384,10 @@ body {
 }
 
 .toc-link:hover {
-  color: #0d6efd; /* Bootstrap primary blue */
-  text-decoration: underline; /* optional if you want underline on hover */
+  color: #0d6efd;
+  /* Bootstrap primary blue */
+  text-decoration: underline;
+  /* optional if you want underline on hover */
 }
 
 
@@ -2389,7 +2416,6 @@ body {
 
 @media (max-width: 576px) {
   .footer-component {
-    padding-top: 15px;
     padding-bottom: 15px;
   }
 
@@ -2434,8 +2460,8 @@ body {
 
 
 @media (max-width: 768px) {
-  
-  
+
+
   /* Targets tablets and smaller screens */
 
   .read-more {
@@ -2543,4 +2569,416 @@ body {
     padding-left: 10px;
   }
 
+}
+
+/* Make the subscribe form taller and visually balanced */
+.subscribe-form .form-control,
+.subscribe-form .btn {
+  height: 56px;
+  /* taller height */
+}
+
+.subscribe-form .form-control {
+  font-size: 0.95rem;
+  padding: 0.75rem 1rem;
+}
+
+.subscribe-form .btn {
+  font-size: 0.95rem;
+  letter-spacing: 1px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .subscribe-form {
+    flex-direction: column;
+  }
+
+  .subscribe-form .btn {
+    width: 100%;
+    margin-top: 8px;
+  }
+}
+
+/* Add slight spacing for awards section */
+.awards-wrapper img {
+  margin-bottom: 6px;
+}
+
+
+/* swiper */
+.custom-swiper-container-wrapper {
+  width: 100%;
+  height: 330px;
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+  margin-bottom: 4rem;
+}
+
+.custom-mySwiper {
+  width: 100%;
+  height: 100%;
+}
+
+/* --- SLIDE BASE STYLE --- */
+.custom-slide {
+  flex: 0 0 70%;
+  max-width: 70%;
+  scroll-snap-align: start;
+  display: flex;
+  align-items: stretch;
+  justify-content: flex-start;
+  height: 100%;
+  border: 0.5px solid rgb(255, 255, 255);
+  border-left: none !important;
+  border-radius: 0;
+  overflow: hidden;
+  box-sizing: border-box;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+  position: relative;
+  margin: 0 !important;
+  box-shadow: 0 -4px 6px rgba(0, 0, 0, 0.2);
+}
+
+/* .custom-slide:hover {
+  transform: scale(1.02);
+  box-shadow: 0 -6px 10px rgba(0, 0, 0, 0.3);
+} */
+
+/* --- SLIDE WIDTH --- */
+.custom-slide {
+  width: 70vw;
+  max-width: 70%;
+}
+
+/* --- INNER CONTENT LAYOUT --- */
+.custom-slide-content {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  height: 100%;
+  position: relative;
+  z-index: 1;
+  gap: 0 !important;
+}
+
+/* Left image column */
+.custom-slide-image {
+  flex: 0 0 calc(50% - 0.5px);
+  border-right: 1px solid rgb(255, 255, 255);
+  width: 50%;
+  height: 100%;
+  overflow: hidden;
+  position: relative;
+  z-index: 0;
+}
+
+.custom-slide-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+    object-position: top center; /* ✅ display from the top */
+
+}
+
+/* Right description column */
+.custom-slide-description {
+  flex: 0 0 calc(50% - 0.5px);
+  width: 50%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: space-between;
+  padding: 2rem;
+  box-sizing: border-box;
+  color: #fff;
+  position: relative;
+  z-index: 2;
+  text-align: left;
+}
+
+.custom-text-box {
+  width: 100%;
+}
+
+.custom-slide-description h2 {
+  margin: 0 0 10px 0;
+  font-size: 1.3rem;
+  line-height: 1.4;
+  font-weight: 500;
+}
+
+.custom-slide-description p {
+  margin: 0;
+  font-size: 1rem;
+  line-height: 1.4;
+  opacity: 0.95;
+}
+
+.read-more-btn {
+  background: transparent;
+  border: 1px solid white;
+  color: white;
+  padding: 5px 12px;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: background 0.3s, color 0.3s;
+}
+
+.read-more-btn:hover {
+  background: white;
+  color: black;
+}
+
+
+/* --- Pagination bullets --- */
+.swiper-pagination {
+  display: none !important;
+}
+
+/* --- Loading spinner --- */
+.spinner-container {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: rgba(30, 41, 59, 0.3);
+}
+
+.loading-spinner {
+  width: 40px;
+  height: 40px;
+  border: 3px solid rgba(255, 255, 255, 0.3);
+  border-top: 3px solid #fff;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Header row: title + button */
+.custom-header-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.5rem 0;
+  margin-bottom: 0.75rem;
+  padding-right: 2.5rem;
+  padding-left: 2.5rem;
+}
+
+.custom-section-title {
+  font-family: BARABARA-FINAL;
+  font-size: 1.4rem;
+  font-weight: 300;
+  color: #1F89B2;
+  margin: 0;
+  letter-spacing: 1.5px;
+  /* ✅ adds space between letters */
+
+}
+
+/* Blue "View All" button */
+.view-all-btn {
+  background: #1F89B2;
+  border: 1px solid #1F89B2;
+  color: white;
+  padding: 6px 16px;
+  border-radius: 20px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: background 0.3s, color 0.3s;
+}
+
+.view-all-btn:hover {
+  background: white;
+  color: #1F89B2;
+}
+
+.map-section {
+  height: auto;
+  width: 100%;
+  position: relative;
+  overflow: hidden;
+}
+
+.map-section-short {
+  height: auto;
+  width: 100%;
+  position: relative;
+  overflow: hidden;
+}
+
+.view-text-short {
+  display: none;
+}
+
+@media (max-width: 576px) {
+  .view-text-full {
+    display: none;
+  }
+  .view-text-short {
+    display: inline;
+  }
+}
+
+/* --- Responsive adjustments --- */
+@media (max-width: 992px) {
+  .custom-slide {
+    width: 85vw;
+    max-width: 85%;
+  }
+
+  .custom-slide-description {
+    padding: 1.5rem;
+  }
+
+  .custom-slide-description h2 {
+    font-size: 1.1rem;
+  }
+
+  .custom-slide-description p {
+    font-size: 0.95rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .map-section {
+    margin-top: 3.4rem !important;
+    padding-top: 3rem !important;
+    height: 850px !important;
+     margin-bottom: 3.4rem !important;
+    background-position: 13% center !important;
+    /* ✅ pushes image a bit to the left */
+  }
+    .map-section-short {
+    margin-top: 3.4rem !important;
+    padding-top: 3rem !important;
+    height: 350px !important;
+    background-position: 13% center !important;
+    /* ✅ pushes image a bit to the left */
+  }
+
+  .custom-swiper-container-wrapper {
+
+    margin-bottom: 0;
+  }
+
+  .custom-header-row {
+
+    padding-right: 1rem;
+    padding-left: 1rem;
+  }
+
+  .custom-slide {
+    width: 95vw;
+    max-width: 95%;
+  }
+
+  .custom-slide-content {
+    flex-direction: row;
+    /* ✅ keep side-by-side */
+  }
+
+  .custom-slide-image,
+  .custom-slide-description {
+    flex: 0 0 50%;
+    width: 50%;
+    height: auto;
+    border: none;
+  }
+
+  .custom-slide-description {
+    align-items: flex-start;
+    justify-content: center;
+    text-align: left;
+    padding: 1rem;
+  }
+
+  .custom-slide-description h2 {
+    font-size: 1rem;
+  }
+
+  .custom-slide-description p {
+    font-size: 0.85rem;
+  }
+}
+
+/* ✅ Extra-small screens fix (<576px) */
+@media (max-width: 576px) {
+  .map-section {
+    margin-top: 3.4rem !important;
+   
+    padding-top: 3rem !important;
+    height: 850px !important;
+     margin-bottom: 3.4rem !important;
+    background-position:50% center !important;
+    /* ✅ pushes image a bit to the left */
+  }
+  .map-section-short {
+    margin-top: 3.4rem !important;
+    padding-top: 1rem !important;
+    height: 300px !important;
+    background-position: 13% center !important;
+    /* ✅ pushes image a bit to the left */
+  }
+
+
+  .custom-swiper-container-wrapper {
+
+    margin-bottom: 0;
+  }
+
+  /* Header row: title + button */
+  .custom-header-row {
+
+    padding-right: 1rem;
+    padding-left: 1rem;
+  }
+
+  .custom-swiper-container-wrapper {
+    height: 280px;
+    /* shorter height for small phones */
+  }
+
+  .custom-slide {
+    width: 98vw;
+    /* fill screen width nicely */
+    max-width: 98%;
+    height: auto;
+  }
+
+  .custom-slide-image,
+  .custom-slide-description {
+    flex: 0 0 50%;
+    width: 50%;
+    height: 100%;
+  }
+
+  .custom-slide-description {
+    padding: 0.75rem;
+  }
+
+  .custom-slide-description h2 {
+    font-size: 0.9rem;
+  }
+
+  .custom-slide-description p {
+    font-size: 0.8rem;
+    line-height: 1.2;
+  }
+
+  .read-more-btn {
+    font-size: 0.75rem;
+    padding: 3px 10px;
+  }
 }

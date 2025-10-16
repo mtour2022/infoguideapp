@@ -84,6 +84,11 @@ import MainlandMalayHotelsTable from '../admin/TableMainlandMalayHotels';
 import TourGuideTable from '../admin/TableTourGuides';
 import FacebookLiveAdmin from '../components/facebookstream_admin';
 import SocialFeedAdmin from '../components/facebookEmbed/FacebookEmbed_Admin';
+import TouristArrivalsAdmin from '../components/touristarrivaldata/touristarrivaladmin';
+import PortScheduleTodayAdmin from '../components/portLocationAdmin/portLocationAdmin';
+import ActivityScheduleTodayComponent from '../components/activityLocationAdmin/activityLocationComponent';
+import ActivityScheduleTodayAdmin from '../components/activityLocationAdmin/activityLocationAdmin';
+import HolidayTodayAdmin from '../components/holidayTodayAdmin/holidayAdmin';
 
 // Sidebar link component using onClick to set active content.
 function NavlinkIcon({ icon, title, onClick, active }) {
@@ -440,7 +445,34 @@ export default function AdminDashboard() {
                             <>
                               <MainlandMalayHotelsTable></MainlandMalayHotelsTable>
                             </>
-                          );            
+                          );   
+                           case 'touristArrival':
+
+                           
+                        return (
+                          <>
+                            <TouristArrivalsAdmin></TouristArrivalsAdmin>
+                          </>
+                        );
+                        case 'portLocation':
+                          return (
+                            <>
+                              <PortScheduleTodayAdmin></PortScheduleTodayAdmin>
+                            </>
+                          );   
+                          case 'activityLocation':
+                          return (
+                            <>
+                              <ActivityScheduleTodayAdmin></ActivityScheduleTodayAdmin>
+                            </>
+                          );   
+                           case 'holidayToday':
+                          return (
+                            <>
+                              <HolidayTodayAdmin></HolidayTodayAdmin>
+                            </>
+                          );   
+           
                         
       
       // Add more cases for other pages as needed.
@@ -697,8 +729,8 @@ export default function AdminDashboard() {
             <NavlinkIcon
                 icon={faBarChart}
                 title="TOURIST ARRIVALS"
-                onClick={() => { setActivePage('arrivals'); handleClose(); }}
-                active={activePage === 'arrivals'}
+                onClick={() => { setActivePage('touristArrival'); handleClose(); }}
+                active={activePage === 'touristArrival'}
             />
             <NavlinkIcon
                 icon={faShip}
@@ -745,6 +777,30 @@ export default function AdminDashboard() {
                 active={activePage === 'tourismMarkets'}
             />
         </ExpandableNavItem>
+        <Nav.Link
+          className="ms-lg-2"
+          id="basic-nav-sidebar-item"
+          onClick={() => { setActivePage('holidayToday'); handleClose(); }}
+          style={{ cursor: 'pointer' }}
+        >
+          HOLIDAY TODAY/INCOMING HOLIDAY
+        </Nav.Link>
+        <Nav.Link
+          className="ms-lg-2"
+          id="basic-nav-sidebar-item"
+          onClick={() => { setActivePage('portLocation'); handleClose(); }}
+          style={{ cursor: 'pointer' }}
+        >
+          PORT LOCATION
+        </Nav.Link>
+        <Nav.Link
+          className="ms-lg-2"
+          id="basic-nav-sidebar-item"
+          onClick={() => { setActivePage('activityLocation'); handleClose(); }}
+          style={{ cursor: 'pointer' }}
+        >
+          ACTIVITY LOCATION
+        </Nav.Link>
         <Nav.Link
           className="ms-lg-2"
           id="basic-nav-sidebar-item"

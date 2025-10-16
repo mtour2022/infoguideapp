@@ -14,7 +14,6 @@ import youtubelogo from "../assets/images/logos/youtubelogo.png";
 import messengerlogo from "../assets/images/logos/messenger-logo.png";
 import emaillogo from "../assets/images/logos/google-email-logo.png";
 import whatsapplogo from "../assets/images/logos/whats-app-logo.png";
-
 import tripadvisorlogo from "../assets/images/logos/tripadvisorlogo.png";
 import googlemaplogo from "../assets/images/logos/googlemaplogo.png";
 import DOTlogo from "../assets/images/DepartmentOfTourismAccreditationLogo.png";
@@ -579,8 +578,10 @@ const ArticleViewComponent = () => {
         />
 
 
-        <FooterCustomized />
-      </div></>
+      </div>
+              <FooterCustomized />
+
+      </>
   );
 };
 

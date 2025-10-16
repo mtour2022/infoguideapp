@@ -30,6 +30,7 @@ export default function ExperiencesPage() {
     };
 
     return (
+        <>
         <Container fluid className="main-container  mt-5">
             <div className="home-section pt-0 pb-5">
               <a
@@ -65,11 +66,12 @@ export default function ExperiencesPage() {
              
                
             </div>
-            <div className="home-section">
-                <FooterCustomized></FooterCustomized>
-            </div>
+            
 
 
         </Container>
+                        <FooterCustomized></FooterCustomized>
+
+                        </>
     );
 }

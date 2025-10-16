@@ -42,8 +42,11 @@ export default function FacebookLiveStream() {
   if (!streamData?.active || !isAvailable) return null;
 
   return (
-    <div className="text-center my-4">
-           <h2 className="home-section-title mb-1  mt-3 mb-3">{streamData.title}</h2>
+    <div className="text-center my-5">
+      
+                            <h2 className="custom-section-title text-center my-3">
+                            {streamData.title}
+                        </h2>
                 <p className="home-section-subtitle mb-1">{streamData.subtitle}</p>
       <div className="video-wrapper">
         <div

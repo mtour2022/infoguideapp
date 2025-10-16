@@ -47,14 +47,14 @@ const SocialFeed = ({ collectionName = "facebook_posts" }) => {
     }
   }, [collectionName]);
 
- useEffect(() => {
-  const init = async () => {
-    await loadFacebookSDK(); // load SDK
-    await fetchSocialPosts(); // fetch posts
-    // no need to call FB.XFBML.parse() here anymore
-  };
-  init();
-}, [fetchSocialPosts]);
+  useEffect(() => {
+    const init = async () => {
+      await loadFacebookSDK(); // load SDK
+      await fetchSocialPosts(); // fetch posts
+      // no need to call FB.XFBML.parse() here anymore
+    };
+    init();
+  }, [fetchSocialPosts]);
 
 
   useEffect(() => {
@@ -62,8 +62,13 @@ const SocialFeed = ({ collectionName = "facebook_posts" }) => {
     let filtered = [];
 
     if (filter === "today") {
-      filtered = posts.filter((post) => dayjs(post.posted_at).isSame(now, "day"));
-    } else if (filter === "this_week") {
+      // Change: show posts from the last 7 days including today
+      const sevenDaysAgo = now.subtract(7, "day").startOf("day");
+      filtered = posts.filter((post) =>
+        dayjs(post.posted_at).isAfter(sevenDaysAgo)
+      );
+    }
+    else if (filter === "this_week") {
       filtered = posts.filter((post) => dayjs(post.posted_at).isSame(now, "week"));
     } else if (filter === "this_month") {
       filtered = posts.filter((post) => dayjs(post.posted_at).isSame(now, "month"));
@@ -86,16 +91,16 @@ const SocialFeed = ({ collectionName = "facebook_posts" }) => {
   }, [posts, filter, customRange]);
 
   // After fetching and filtering posts
-useEffect(() => {
-  if (!window.FB) return;
+  useEffect(() => {
+    if (!window.FB) return;
 
-  // Small timeout ensures DOM has updated
-  const timer = setTimeout(() => {
-    window.FB.XFBML.parse();
-  }, 100); // 100ms delay is usually enough
+    // Small timeout ensures DOM has updated
+    const timer = setTimeout(() => {
+      window.FB.XFBML.parse();
+    }, 100); // 100ms delay is usually enough
 
-  return () => clearTimeout(timer);
-}, [filteredPosts, currentIndex]);
+    return () => clearTimeout(timer);
+  }, [filteredPosts, currentIndex]);
 
 
   if (loading) {
@@ -116,129 +121,130 @@ useEffect(() => {
 
   return (
     <div className="container my-4">
-      <h2 className="home-section-title mb-1 mt-5 mb-3">SOCIAL MEDIA HIGHLIGHTS</h2>
+      {/* <h2 className="home-section-title mb-1 mt-5 mb-3">SOCIAL MEDIA HIGHLIGHTS</h2> */}
 
       {/* Filter */}
       <Row className="justify-content-center align-items-center flex-nowrap">
         <Col xs={12} sm={12} md={6} lg={4} xl={4} xxl={4}>
-        <Row className="mb-3 g-2 justify-content-center align-items-center flex-nowrap">
-        <Col xs="auto" className="flex-grow-1">
-          <Form.Select value={filter} onChange={(e) => setFilter(e.target.value)}>
-            <option value="today">Today</option>
-            <option value="this_week">This Week</option>
-            <option value="this_month">This Month</option>
-            <option value="custom">Custom Date</option>
-          </Form.Select>
-        </Col>
-
-        {filter === "custom" && (
-          <>
+          <Row className="mb-3 g-2 justify-content-center align-items-center flex-nowrap">
             <Col xs="auto" className="flex-grow-1">
-              <Form.Control
-                type="date"
-                value={customRange.from}
-                onChange={(e) => setCustomRange({ ...customRange, from: e.target.value })}
-              />
+              <Form.Select value={filter} onChange={(e) => setFilter(e.target.value)}>
+                <option value="today">Today</option>
+                <option value="this_week">This Week</option>
+                <option value="this_month">This Month</option>
+                <option value="custom">Custom Date</option>
+              </Form.Select>
             </Col>
-            <Col xs="auto" className="flex-grow-1">
-              <Form.Control
-                type="date"
-                value={customRange.to}
-                onChange={(e) => setCustomRange({ ...customRange, to: e.target.value })}
-              />
-            </Col>
-          </>
-        )}
 
-        <Col xs="auto">
-          <Button variant="primary" onClick={fetchSocialPosts}>
-            <FontAwesomeIcon icon={faSyncAlt} />
-          </Button>
+            {filter === "custom" && (
+              <>
+                <Col xs="auto" className="flex-grow-1">
+                  <Form.Control
+                    type="date"
+                    value={customRange.from}
+                    onChange={(e) => setCustomRange({ ...customRange, from: e.target.value })}
+                  />
+                </Col>
+                <Col xs="auto" className="flex-grow-1">
+                  <Form.Control
+                    type="date"
+                    value={customRange.to}
+                    onChange={(e) => setCustomRange({ ...customRange, to: e.target.value })}
+                  />
+                </Col>
+              </>
+            )}
+
+            <Col xs="auto">
+              <Button variant="primary" onClick={fetchSocialPosts}>
+                <FontAwesomeIcon icon={faSyncAlt} />
+              </Button>
+            </Col>
+          </Row>
+          {/* Current Post */}
+          {currentPost.platform === "facebook" ? (
+            <div
+              className="fb-post w-100"
+              data-href={currentPost.url}
+              data-show-text="true"
+            ></div>
+          ) : (
+            <div
+              className="d-flex align-items-center justify-content-center w-100"
+              style={{
+                backgroundColor: "#f0f0f0",
+                fontSize: "1.2rem",
+                textAlign: "center",
+                padding: "1rem",
+              }}
+            >
+              {currentPost.title || "No preview available"}
+            </div>
+          )}
+
+          {/* Navigation and Dots Section */}
+          <div className="">
+            <Row className="pt-3 align-items-center">
+              {/* Left: Dot Indicators (max 5) */}
+              <Col className="d-flex justify-content-start ms-0 ps-0">
+                {(() => {
+                  const totalDots = filteredPosts.length;
+                  const maxVisibleDots = 5;
+                  let start = 0;
+
+                  if (totalDots > maxVisibleDots) {
+                    // Center currentIndex if possible
+                    start = Math.max(0, currentIndex - Math.floor(maxVisibleDots / 2));
+                    // Ensure we don't overflow
+                    if (start + maxVisibleDots > totalDots) {
+                      start = totalDots - maxVisibleDots;
+                    }
+                  }
+
+                  return filteredPosts.slice(start, start + maxVisibleDots).map((_, i) => {
+                    const dotIndex = start + i;
+                    return (
+                      <span
+                        key={dotIndex}
+                        className={`dot ${dotIndex === currentIndex ? "active" : ""}`}
+                        onClick={() => setCurrentIndex(dotIndex)}
+                        style={{
+                          width: "10px",
+                          height: "10px",
+                          borderRadius: "50%",
+                          background: dotIndex === currentIndex ? "#007bff" : "#ccc",
+                          cursor: "pointer",
+                          marginRight: "5px",
+                        }}
+                      ></span>
+                    );
+                  });
+                })()}
+              </Col>
+
+              {/* Right: Navigation Arrows */}
+              <Col className="d-flex justify-content-end">
+                <FontAwesomeIcon
+                  icon={faChevronLeft}
+                  className="nav-icon left me-3"
+                  onClick={() =>
+                    setCurrentIndex((prev) => (prev - 1 + filteredPosts.length) % filteredPosts.length)
+                  }
+                  style={{ cursor: "pointer" }}
+                />
+                <FontAwesomeIcon
+                  icon={faChevronRight}
+                  className="nav-icon right"
+                  onClick={() => setCurrentIndex((prev) => (prev + 1) % filteredPosts.length)}
+                  style={{ cursor: "pointer" }}
+                />
+              </Col>
+            </Row>
+          </div>
+
         </Col>
       </Row>
-      {/* Current Post */}
-      {currentPost.platform === "facebook" ? (
-        <div
-          className="fb-post w-100"
-          data-href={currentPost.url}
-          data-show-text="true"
-        ></div>
-      ) : (
-        <div
-          className="d-flex align-items-center justify-content-center w-100"
-          style={{
-            backgroundColor: "#f0f0f0",
-            fontSize: "1.2rem",
-            textAlign: "center",
-            padding: "1rem",
-          }}
-        >
-          {currentPost.title || "No preview available"}
-        </div>
-      )}
-
-      {/* Navigation and Dots Section */}
-      <div className="">
-        <Row className="pt-3 align-items-center">
-          {/* Left: Dot Indicators (max 5) */}
-          <Col className="d-flex justify-content-start ms-0 ps-0">
-            {(() => {
-              const totalDots = filteredPosts.length;
-              const maxVisibleDots = 5;
-              let start = 0;
-
-              if (totalDots > maxVisibleDots) {
-                // Center currentIndex if possible
-                start = Math.max(0, currentIndex - Math.floor(maxVisibleDots / 2));
-                // Ensure we don't overflow
-                if (start + maxVisibleDots > totalDots) {
-                  start = totalDots - maxVisibleDots;
-                }
-              }
-
-              return filteredPosts.slice(start, start + maxVisibleDots).map((_, i) => {
-                const dotIndex = start + i;
-                return (
-                  <span
-                    key={dotIndex}
-                    className={`dot ${dotIndex === currentIndex ? "active" : ""}`}
-                    onClick={() => setCurrentIndex(dotIndex)}
-                    style={{
-                      width: "10px",
-                      height: "10px",
-                      borderRadius: "50%",
-                      background: dotIndex === currentIndex ? "#007bff" : "#ccc",
-                      cursor: "pointer",
-                      marginRight: "5px",
-                    }}
-                  ></span>
-                );
-              });
-            })()}
-          </Col>
-
-          {/* Right: Navigation Arrows */}
-          <Col className="d-flex justify-content-end">
-            <FontAwesomeIcon
-              icon={faChevronLeft}
-              className="nav-icon left me-3"
-              onClick={() =>
-                setCurrentIndex((prev) => (prev - 1 + filteredPosts.length) % filteredPosts.length)
-              }
-              style={{ cursor: "pointer" }}
-            />
-            <FontAwesomeIcon
-              icon={faChevronRight}
-              className="nav-icon right"
-              onClick={() => setCurrentIndex((prev) => (prev + 1) % filteredPosts.length)}
-              style={{ cursor: "pointer" }}
-            />
-          </Col>
-        </Row>
-      </div>
-
-        </Col>
-      </Row>
+      {/* embed */}
 
     </div>
   );

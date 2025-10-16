@@ -202,6 +202,7 @@ const ListViewPageComponent3 = () => {
 
 
   return (
+    <>
     <div className="home-section content-wrapper">
       <Row>
         <Col md={12}>
@@ -387,8 +388,10 @@ const ListViewPageComponent3 = () => {
 
 
 
-      <FooterCustomized />
+      
     </div>
+    <FooterCustomized />
+    </>
   );
 };
 
