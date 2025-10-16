@@ -2679,7 +2679,8 @@ body {
   height: 100%;
   object-fit: cover;
   display: block;
-    object-position: top center; /* ✅ display from the top */
+  object-position: top center;
+  /* ✅ display from the top */
 
 }
 
@@ -2826,6 +2827,7 @@ body {
   .view-text-full {
     display: none;
   }
+
   .view-text-short {
     display: inline;
   }
@@ -2855,15 +2857,16 @@ body {
   .map-section {
     margin-top: 3.4rem !important;
     padding-top: 3rem !important;
-    height: 850px !important;
-     margin-bottom: 3.4rem !important;
+    height: 950px !important;
+    margin-bottom: 3.4rem !important;
     background-position: 13% center !important;
     /* ✅ pushes image a bit to the left */
   }
-    .map-section-short {
+
+  .map-section-short {
     margin-top: 3.4rem !important;
     padding-top: 3rem !important;
-    height: 350px !important;
+    height: 500px !important;
     background-position: 13% center !important;
     /* ✅ pushes image a bit to the left */
   }
@@ -2917,44 +2920,44 @@ body {
 @media (max-width: 576px) {
   .map-section {
     margin-top: 3.4rem !important;
-   
     padding-top: 3rem !important;
-    height: 850px !important;
-     margin-bottom: 3.4rem !important;
-    background-position:50% center !important;
-    /* ✅ pushes image a bit to the left */
+    height: 1000px !important;
+    margin-bottom: 3.4rem !important;
+    background-position: 50% center !important;
   }
+
   .map-section-short {
     margin-top: 3.4rem !important;
     padding-top: 1rem !important;
-    height: 300px !important;
+    height: 500px !important;
     background-position: 13% center !important;
-    /* ✅ pushes image a bit to the left */
   }
 
-
   .custom-swiper-container-wrapper {
-
     margin-bottom: 0;
+    height: 300px;
+    /* slightly taller for better proportions */
   }
 
   /* Header row: title + button */
   .custom-header-row {
-
     padding-right: 1rem;
     padding-left: 1rem;
   }
 
-  .custom-swiper-container-wrapper {
-    height: 280px;
-    /* shorter height for small phones */
+  /* --- Slide styling --- */
+  .custom-slide {
+    width: 110vw;
+    /* ✅ expanded beyond viewport to avoid tight look */
+    max-width: 110%;
+    /* ✅ allow full edge-to-edge layout */
+    margin-left: -5vw;
+    /* ✅ centers expanded slide nicely */
+    height: auto;
   }
 
-  .custom-slide {
-    width: 98vw;
-    /* fill screen width nicely */
-    max-width: 98%;
-    height: auto;
+  .custom-slide-content {
+    flex-direction: row;
   }
 
   .custom-slide-image,
@@ -2965,20 +2968,21 @@ body {
   }
 
   .custom-slide-description {
-    padding: 0.75rem;
+    padding: 1rem;
+    /* slightly more breathing space */
   }
 
   .custom-slide-description h2 {
-    font-size: 0.9rem;
+    font-size: 0.95rem;
   }
 
   .custom-slide-description p {
     font-size: 0.8rem;
-    line-height: 1.2;
+    line-height: 1.3;
   }
 
   .read-more-btn {
     font-size: 0.75rem;
-    padding: 3px 10px;
+    padding: 4px 12px;
   }
 }

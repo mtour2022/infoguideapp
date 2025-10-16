@@ -351,10 +351,12 @@ export default function Home() {
                             </Row>
                             <Row className="justify-content-center align-items-center w-100 px-2 text-center">
                                 <Col xs={12} md={6}>
-                                    <UpcomingEventHighlight></UpcomingEventHighlight>
+                                                                    <ActivityScheduleTodayComponent></ActivityScheduleTodayComponent>
+
                                 </Col>
                                 <Col xs={12} md={6}>
-                                    <ActivityScheduleTodayComponent></ActivityScheduleTodayComponent>
+                                                                    <UpcomingEventHighlight></UpcomingEventHighlight>
+
                                 </Col>
                             </Row>
                         </Col>

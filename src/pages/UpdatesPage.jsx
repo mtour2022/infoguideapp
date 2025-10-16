@@ -84,7 +84,7 @@ export default function UpdatePage() {
                         caption="Read, Be inspired and you might find the one!"></DUalCarousel>
 
                 </div> */}
-                  
+
 
                 </div>
 
@@ -213,11 +213,13 @@ export default function UpdatePage() {
                             </Row>
                             <Row className="justify-content-center align-items-center w-100 px-2 text-center">
                                 <Col xs={12} md={6}>
-                                <UpcomingEventHighlight></UpcomingEventHighlight>
-                                    
+                                    <ActivityScheduleTodayComponent></ActivityScheduleTodayComponent>
+
+
                                 </Col>
                                 <Col xs={12} md={6}>
-                                    <ActivityScheduleTodayComponent></ActivityScheduleTodayComponent>
+                                    <UpcomingEventHighlight></UpcomingEventHighlight>
+
                                 </Col>
                             </Row>
                         </Col>
@@ -379,10 +381,10 @@ export default function UpdatePage() {
                     </Row>
                 </section>
             </div> */}
-  {/* <div id="social-feed" className="text-center">
+{/* <div id="social-feed" className="text-center">
                     <SocialFeed collectionName="facebook_posts" />
                 </div> */}
-                    {/* <div id="social-feed" className="text-center">
+{/* <div id="social-feed" className="text-center">
                       <h2 className="home-section-title mb-1 mt-5 mb-3">SOCIAL MEDIA HIGHLIGHTS</h2>
                     <script src="https://elfsightcdn.com/platform.js" async></script>
 <div class="elfsight-app-7e170490-e60d-48e7-b008-a39a52205baf" data-elfsight-app-lazy></div>

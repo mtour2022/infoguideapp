@@ -20,7 +20,7 @@ export default function CustomSwiper({ collectionName = "deals", title }) {
   const [slides, setSlides] = useState([]);
   const navigate = useNavigate();
 
-    useEffect(() => {
+  useEffect(() => {
     const fetchSlides = async () => {
       try {
         // ✅ Try to sort by createdAt descending
@@ -61,7 +61,7 @@ export default function CustomSwiper({ collectionName = "deals", title }) {
     return `hsl(${hue}, ${saturation}%, ${lightness}%)`;
   };
 
- 
+
 
   const navigateTo = (id) => {
     navigate(`/read/${collectionName}/${id}`);
@@ -69,16 +69,16 @@ export default function CustomSwiper({ collectionName = "deals", title }) {
 
   return (
     <div className="custom-swiper-container-wrapper">
-    <div className="custom-header-row">
-  <h2 className="custom-section-title">{title}</h2>
-  <button
-    className="read-more-btn view-all-btn"
-    onClick={() => navigate(`/update/${collectionName}`)}
-  >
-    <span className="view-text-full">View All →</span>
-    <span className="view-text-short">View →</span>
-  </button>
-</div>
+      <div className="custom-header-row">
+        <h2 className="custom-section-title">{title}</h2>
+        <button
+          className="read-more-btn view-all-btn"
+          onClick={() => navigate(`/update/${collectionName}`)}
+        >
+          <span className="view-text-full">View All →</span>
+          <span className="view-text-short">View →</span>
+        </button>
+      </div>
 
       <Swiper
         slidesPerView="auto"
