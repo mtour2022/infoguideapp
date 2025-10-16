@@ -67,10 +67,12 @@ export default function CustomSwiper({ collectionName = "deals", title }) {
     navigate(`/read/${collectionName}/${id}`);
   };
 
+
+
   return (
     <div className="custom-swiper-container-wrapper">
       <div className="custom-header-row">
-        <h2 className="custom-section-title">{title}</h2>
+         <h2 className="custom-section-title">{title}</h2>
         <button
           className="read-more-btn view-all-btn"
           onClick={() => navigate(`/update/${collectionName}`)}

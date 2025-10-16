@@ -373,7 +373,7 @@ export default function Home() {
                 <UpdateSection></UpdateSection>
             </div>
             <div id="tourism-deals">
-                <CustomSwiper collectionName="deals" title={"DEALS, PROMOS, & GIVEAWAYS"} />
+                <CustomSwiper collectionName="deals" title={"HOT DEALS"} />
             </div>
             <div id="tourism-socials">
                 <section
@@ -392,8 +392,8 @@ export default function Home() {
                     <Row className="justify-content-center align-items-center w-100 px-2 text-center">
                         <Col xs={12} md={12}>
 
-                            <script src="https://elfsightcdn.com/platform.js" async></script>
-                            <div class="elfsight-app-7e170490-e60d-48e7-b008-a39a52205baf" data-elfsight-app-lazy></div>
+                         <script src="https://elfsightcdn.com/platform.js" async></script>
+<div class="elfsight-app-7b49c8c7-fb6d-47c6-b472-0dcfde284d47" data-elfsight-app-lazy></div>
                         </Col>
 
                     </Row>

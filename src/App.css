@@ -2785,7 +2785,6 @@ body {
   margin: 0;
   letter-spacing: 1.5px;
   /* ✅ adds space between letters */
-
 }
 
 /* Blue "View All" button */
@@ -2914,6 +2913,12 @@ body {
   .custom-slide-description p {
     font-size: 0.85rem;
   }
+.custom-section-title {
+  font-size: 1rem;
+}
+   
+
+  
 }
 
 /* ✅ Extra-small screens fix (<576px) */
@@ -2930,9 +2935,12 @@ body {
     margin-top: 0 !important;
     padding-top: 1rem !important;
     height: 500px !important;
-    background-position: 13% center !important;
+    background-position: 65% center !important;
   }
-
+.custom-section-title {
+  font-size: 1rem;
+}
+ 
 }
 
 /* Extra-small screens: forced fixed heights and truncation (<576px) */
@@ -2942,6 +2950,7 @@ body {
     --xs-image-height: 220px;    /* <-- image portion height */
     --xs-desc-height: calc(var(--xs-slide-height) - var(--xs-image-height)); /* description portion */
   }
+
 
   .custom-swiper-container-wrapper {
     height: auto;
