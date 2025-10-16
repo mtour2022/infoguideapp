@@ -146,7 +146,7 @@ const FooterCustomized = ({ scrollToId = "page-top" }) => {
                   placeholder="Subscribe for Real-time Updates!"
                   className="rounded-0 form-control-lg custom-input"
                 />
-                <Button variant="dark" className="rounded-0 px-4 custom-button">
+                <Button variant="light" className="rounded-0 px-4 custom-button">
                   SUBSCRIBE
                 </Button>
               </Form>
@@ -155,10 +155,10 @@ const FooterCustomized = ({ scrollToId = "page-top" }) => {
               <div
                 className="d-flex align-items-center flex-wrap mb-3 awards-wrapper justify-content-lg-end justify-content-center gap-4"
               >
-                <img src={worldtravellogo} alt="World Travel Award 2025" height="150" className="award-logo" />
-                <img src={condenastlogo} alt="Conde Nast Traveller Readers' Choice Awards 2025" height="150" className="award-logo" />
-                <img src={philawardlogo} alt="Philippine Tourism Awards 2025" height="150" className="award-logo" />
-                <img src={travelleisurelogo} alt="Travel + Leisure Readers' Choice Awards 2024" height="150" className="award-logo" />
+                <img src={worldtravellogo} alt="World Travel Award 2025" height="100" className="award-logo" />
+                <img src={condenastlogo} alt="Conde Nast Traveller Readers' Choice Awards 2025" height="100" className="award-logo" />
+                <img src={philawardlogo} alt="Philippine Tourism Awards 2025" height="100" className="award-logo" />
+                <img src={travelleisurelogo} alt="Travel + Leisure Readers' Choice Awards 2024" height="100" className="award-logo" />
 
               </div>
             </div>
