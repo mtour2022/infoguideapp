@@ -20,7 +20,7 @@ import EnterprisePage from './pages/EnterprisesPage.jsx';
 import ExperiencesPage from './pages/ExperiencesPage.jsx';
 import EssentialsPage from './pages/EssentialsPage.jsx';
 import UpdatePage from './pages/UpdatesPage.jsx';
-
+import TouristEmergencyPreparednessPage from './components/touristEmergency/touristEmergency.jsx'
 function PrivateRoute({ element, ...rest }) {
   const { userLoggedIn } = useAuth();
 
@@ -43,6 +43,7 @@ function App() {
               <Route path="/experiences" element={<ExperiencesPage />} />
               <Route path="/essentials" element={<EssentialsPage />} />
               <Route path="/updates" element={<UpdatePage />} />
+              <Route path="/touristEmergencyPreparedness" element={<TouristEmergencyPreparednessPage />} />
               <Route path="/enterprises/:collectionName" element={<ListViewPageComponent />} />
               <Route path="/update/:collectionName" element={<ListViewPageComponent2 />} />
               <Route path="/slideshow/:collectionName" element={<CarouselListPage />} />

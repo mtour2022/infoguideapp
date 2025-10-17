@@ -10,7 +10,8 @@ import { Link, NavLink } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faBell, faLeaf, faSearch, faFire, faCalendarDay, faBinoculars, faPersonSwimming, faBagShopping
-  , faBars, faBookOpen, faCompass, faHotel, faFlag, faUtensils, faPlane, faSailboat, faShop, faHome, faShuttleVan, faCross, faAmbulance, faMedal, faStore, faUserGroup, faHeart, faIdCard, faWalking, faLink, faQuestion, faHandPaper, faCheck
+  , faBars, faBookOpen, faCompass, faHotel, faFlag, faUtensils, faPlane, faSailboat, faShop, faHome, faShuttleVan, faCross, faAmbulance, faMedal, faStore, faUserGroup, faHeart, faIdCard, faWalking, faLink, faQuestion, faHandPaper, faCheck,
+  faSun
 } from '@fortawesome/free-solid-svg-icons';
 import { Hotel, Luggage, Home, BookHeart, Bell, BookMarked, Sailboat } from 'lucide-react'; // If available or use a similar one like Building or Landmark
 import { useLocation, useNavigate } from 'react-router-dom';
@@ -111,6 +112,9 @@ export default function AppNavBar() {
         </Nav.Link>
         <NavDropdown className='ms-lg-2 me-lg-2 ms-md-2 ms-sm-2 my-2' title={<span className="text-dark" style={{ fontSize: '0.80rem' }}>ESSENTIALS</span>}
           id="basic-nav-dropdown-title">
+            <NavDropdown.Item as={NavLink} className='text-dark my-2' to={`/touristEmergencyPreparedness`} id='basic-nav-dropdown-item'>
+            {<span className="text-dark" style={{ fontSize: '0.80rem' }}> <FontAwesomeIcon icon={faSun} size="md" className=' pe-2' fixedWidth /> SAFETY ESSENTIALS</span>}
+          </NavDropdown.Item>
           <NavDropdown.Item as={NavLink} className='text-dark my-2' to={`/listview/hotlines`} id='basic-nav-dropdown-item'>
             {<span className="text-dark" style={{ fontSize: '0.80rem' }}> <FontAwesomeIcon icon={faAmbulance} size="md" className=' pe-2' fixedWidth /> EMERGENCY HOTLINES</span>}
           </NavDropdown.Item>
@@ -334,6 +338,9 @@ export default function AppNavBar() {
                 <NavDropdown className='ms-lg-2 me-lg-2 ' show={isLargeScreen ? hoveredDropdown === "essentials" : undefined}
                   onMouseEnter={isLargeScreen ? () => setHoveredDropdown("essentials") : undefined}
                   onMouseLeave={isLargeScreen ? () => setHoveredDropdown(null) : undefined} title="ESSENTIALS" id="basic-nav-dropdown">
+<Nav.Link className='ms-lg-2 me-lg-2 ms-md-2 ms-sm-2  ' id="basic-nav-dropdown-title" as={NavLink} to={`/touristEmergencyPreparedness`} >SAFETY ESSENTIALS</Nav.Link>
+                  <NavDropdown.Divider />
+                    
                   <Nav.Link className='ms-lg-2 me-lg-2 ms-md-2 ms-sm-2  ' id="basic-nav-dropdown-title" as={NavLink} to={`/listview/hotlines`} >EMERGENCY HOTLINES</Nav.Link>
                   <NavDropdown.Divider />
                   <Nav.Link className='ms-lg-2 me-lg-2 ms-md-2 ms-sm-2  ' id="basic-nav-dropdown-title" as={NavLink} to={`/listview/requirements`}>TOURIST REQUIREMENTS</Nav.Link>

@@ -14,6 +14,8 @@ import {
   faBagShopping,
   faBan,
   faCloud,
+  faCross,
+  faFirstAid,
   faGavel,
   faGlobe,
   faHandshake,
@@ -56,6 +58,14 @@ export default function EssentialsPage() {
   };
 
   const cardData = [
+    {
+      name: "SAFETY ESSENTIALS",
+      caption: "For emergency prepared and safety essentials",
+      link: "/touristEmergencyPreparedness",
+      color: "#2326cbff", // Green
+      image: "https://firebasestorage.googleapis.com/v0/b/infoguide-13007.firebasestorage.app/o/safetytips.jpg?alt=media&token=6dcd41e1-0c5c-40c7-aaee-6576edb1d99d",
+      icon: faFirstAid,
+    },
     {
       name: "EMERGENCY HOTLINES",
       caption: "For emergencies and important inquiries",
@@ -231,6 +241,7 @@ export default function EssentialsPage() {
           <ButtonCards cardData={cardData} />
         </div>
       </div>
+    
        <div className={`customized-main-content mt-5`}>
         <h2 className="home-section-title ">SUSTAINABLE TRAVEL</h2>
         <p className="home-section-subtitle">
