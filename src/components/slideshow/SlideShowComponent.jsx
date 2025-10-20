@@ -16,53 +16,75 @@ import BestBeachLogo from "../../assets/images/Boracay-Worlds-Best-Beach-Logo.pn
 import ImageLoader from "../../assets/images/whitebach_backdrop.png";
 import { useNavigate } from "react-router-dom";
 
-// Local video
-const videoUrl =
-  "https://firebasestorage.googleapis.com/v0/b/infoguide-13007.firebasestorage.app/o/boracay%20video%20preview.mp4?alt=media&token=1a3e9db3-e1d2-45ed-a812-dc2206b2c49e";
-
 const Slideshow = () => {
   const navigate = useNavigate();
-
-  const [slides, setSlides] = useState([{ title: "", headerImage: videoUrl }]);
+  const [slides, setSlides] = useState([]);
+  const [videoUrl, setVideoUrl] = useState(null);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [videoStates, setVideoStates] = useState({});
   const [videoLoadedFlags, setVideoLoadedFlags] = useState({});
   const videoRefs = useRef({});
 
-  const handleReadMore = (collection, url) => {
-    navigate(`/read/${collection}/${url}`);
-  };
+  // ✅ Fetch slideshow video URL from Firestore
+  useEffect(() => {
+    const fetchVideoUrl = async () => {
+      try {
+        const snapshot = await getDocs(collection(db, "slideshowVideo"));
+        if (!snapshot.empty) {
+          const docData = snapshot.docs[0].data();
+          setVideoUrl(docData.videoUrl);
+        } else {
+          // fallback if no video found
+          setVideoUrl(
+            "https://firebasestorage.googleapis.com/v0/b/infoguide-13007.firebasestorage.app/o/boracay%20video%20preview.mp4?alt=media&token=1a3e9db3-e1d2-45ed-a812-dc2206b2c49e"
+          );
+        }
+      } catch (error) {
+        console.error("Error fetching video URL:", error);
+      }
+    };
 
+    fetchVideoUrl();
+  }, []);
+
+  // ✅ Fetch tourism markets slides
   useEffect(() => {
     async function fetchData() {
-      const querySnapshot = await getDocs(collection(db, "tourismMarkets"));
-      const data = querySnapshot.docs.map((doc) => ({
-        ...doc.data(),
-        id: doc.id,
-      }));
+      try {
+        const querySnapshot = await getDocs(collection(db, "tourismMarkets"));
+        const data = querySnapshot.docs.map((doc) => ({
+          ...doc.data(),
+          id: doc.id,
+        }));
 
-      if (data.length === 0) return;
+        if (data.length === 0) return;
 
-      const bestBeachIndex = data.findIndex((slide) =>
-        slide.title.toLowerCase().includes("best beach")
-      );
+        const bestBeachIndex = data.findIndex((slide) =>
+          slide.title?.toLowerCase().includes("best beach")
+        );
 
-      if (bestBeachIndex !== -1) {
-        const bestBeachSlide = data.splice(bestBeachIndex, 1)[0];
-        data.splice(0, 0, bestBeachSlide);
+        if (bestBeachIndex !== -1) {
+          const bestBeachSlide = data.splice(bestBeachIndex, 1)[0];
+          data.splice(0, 0, bestBeachSlide);
+        }
+
+        // Wait for videoUrl to load before setting slides
+        if (videoUrl) {
+          setSlides([{ title: "", headerImage: videoUrl }, ...data]);
+        }
+      } catch (error) {
+        console.error("Error fetching slides:", error);
       }
-
-      // Put local video first, then other slides
-      setSlides([{ title: "", headerImage: videoUrl }, ...data]);
     }
 
     fetchData();
-  }, []);
+  }, [videoUrl]); // depend on videoUrl so slideshow updates once it's loaded
 
+  // ✅ Play the active video when slide changes
   useEffect(() => {
     const video = videoRefs.current[currentIndex];
     if (video) {
-      video.play().catch(() => {});
+      video.play().catch(() => { });
     }
   }, [currentIndex]);
 
@@ -85,23 +107,16 @@ const Slideshow = () => {
     if (video) {
       if (isPlaying) {
         video.pause();
-        setVideoStates((prev) => ({
-          ...prev,
-          [index]: {
-            ...prev[index],
-            playing: false,
-          },
-        }));
       } else {
-        video.play().catch(() => {});
-        setVideoStates((prev) => ({
-          ...prev,
-          [index]: {
-            ...prev[index],
-            playing: true,
-          },
-        }));
+        video.play().catch(() => { });
       }
+      setVideoStates((prev) => ({
+        ...prev,
+        [index]: {
+          ...prev[index],
+          playing: !isPlaying,
+        },
+      }));
     }
   };
 
@@ -131,9 +146,7 @@ const Slideshow = () => {
 
   const handleNavClick = (direction) => {
     const currentVideo = videoRefs.current[currentIndex];
-    if (currentVideo) {
-      currentVideo.pause();
-    }
+    if (currentVideo) currentVideo.pause();
 
     setCurrentIndex((prevIndex) => {
       let newIndex = prevIndex + direction;
@@ -141,6 +154,10 @@ const Slideshow = () => {
       if (newIndex >= slides.length) newIndex = 0;
       return newIndex;
     });
+  };
+
+  const handleReadMore = (collection, url) => {
+    navigate(`/read/${collection}/${url}`);
   };
 
   return (
@@ -162,32 +179,51 @@ const Slideshow = () => {
           >
             {isVideo ? (
               <div className="video-container">
-                <video
-                  ref={(el) => (videoRefs.current[index] = el)}
-                  className="slide-video"
-                  autoPlay={isActive}
-                  muted={state.muted}
-                  loop={false}
-                  onCanPlay={() => {
-                    setVideoLoadedFlags((prev) => ({
-                      ...prev,
-                      [index]: true,
-                    }));
-                  }}
-                  onEnded={() => {
-                    if (isActive)
+                <div className="video-container" style={{ position: "relative" }}>
+                  {/* Loader image (visible while video not loaded) */}
+                  {!videoLoaded && (
+                    <img
+                      src={ImageLoader}
+                      alt="Loading..."
+                      className="absolute top-0 left-0 w-full h-full object-cover"
+                      style={{
+                        display: isActive ? "block" : "none",
+                        zIndex: 1,
+                      }}
+                    />
+                  )}
+
+                  {/* Video */}
+                  <video
+                    ref={(el) => (videoRefs.current[index] = el)}
+                    className="slide-video"
+                    autoPlay={isActive}
+                    muted={state.muted}
+                    loop={false}
+                    onCanPlay={() =>
+                      setVideoLoadedFlags((prev) => ({
+                        ...prev,
+                        [index]: true,
+                      }))
+                    }
+                    onEnded={() =>
                       setVideoStates((prev) => ({
                         ...prev,
-                        [index]: {
-                          ...prev[index],
-                          playing: false,
-                        },
-                      }));
-                  }}
-                  style={{ display: isActive && videoLoaded ? "block" : "none" }}
-                >
-                  <source src={slide.headerImage} type="video/mp4" />
-                </video>
+                        [index]: { ...prev[index], playing: false },
+                      }))
+                    }
+                    style={{
+                      display: isActive ? "block" : "none",
+                      opacity: videoLoaded ? 1 : 0,
+                      transition: "opacity 0.5s ease-in-out",
+                      position: "relative",
+                      zIndex: 2,
+                    }}
+                  >
+                    <source src={slide.headerImage} type="video/mp4" />
+                  </video>
+                </div>
+
               </div>
             ) : (
               <div
@@ -207,6 +243,7 @@ const Slideshow = () => {
               >
                 {slide.title}
               </h1>
+
               {slide.id && (
                 <button
                   className="read-more"
@@ -217,7 +254,7 @@ const Slideshow = () => {
               )}
             </div>
 
-            {index === 1 && state.logoVisible && (
+            {index === 2 && state.logoVisible && (
               <div className="slide-content">
                 <img
                   src={BestBeachLogo}
@@ -233,7 +270,8 @@ const Slideshow = () => {
                   {slides.map((_, dotIndex) => (
                     <span
                       key={dotIndex}
-                      className={`dot ${dotIndex === currentIndex ? "active" : ""}`}
+                      className={`dot ${dotIndex === currentIndex ? "active" : ""
+                        }`}
                       onClick={() => setCurrentIndex(dotIndex)}
                     ></span>
                   ))}

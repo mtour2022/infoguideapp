@@ -89,6 +89,7 @@ import PortScheduleTodayAdmin from '../components/portLocationAdmin/portLocation
 import ActivityScheduleTodayComponent from '../components/activityLocationAdmin/activityLocationComponent';
 import ActivityScheduleTodayAdmin from '../components/activityLocationAdmin/activityLocationAdmin';
 import HolidayTodayAdmin from '../components/holidayTodayAdmin/holidayAdmin';
+import SlideshowVideoAdmin from '../components/slideshow/SlideShowAdmin';
 
 // Sidebar link component using onClick to set active content.
 function NavlinkIcon({ icon, title, onClick, active }) {
@@ -471,7 +472,15 @@ export default function AdminDashboard() {
                             <>
                               <HolidayTodayAdmin></HolidayTodayAdmin>
                             </>
-                          );   
+                          );  
+                          case 'slideShow':
+                          return (
+                            <>
+                              <SlideshowVideoAdmin></SlideshowVideoAdmin>
+                            </>
+                          );    
+
+                          
            
                         
       
@@ -800,6 +809,14 @@ export default function AdminDashboard() {
           style={{ cursor: 'pointer' }}
         >
           ACTIVITY LOCATION
+        </Nav.Link>
+        <Nav.Link
+          className="ms-lg-2"
+          id="basic-nav-sidebar-item"
+          onClick={() => { setActivePage('slideShow'); handleClose(); }}
+          style={{ cursor: 'pointer' }}
+        >
+          SLIDE SHOW
         </Nav.Link>
         <Nav.Link
           className="ms-lg-2"
