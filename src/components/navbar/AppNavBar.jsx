@@ -11,7 +11,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faBell, faLeaf, faSearch, faFire, faCalendarDay, faBinoculars, faPersonSwimming, faBagShopping
   , faBars, faBookOpen, faCompass, faHotel, faFlag, faUtensils, faPlane, faSailboat, faShop, faHome, faShuttleVan, faCross, faAmbulance, faMedal, faStore, faUserGroup, faHeart, faIdCard, faWalking, faLink, faQuestion, faHandPaper, faCheck,
-  faSun
+  faSun,
+  faSwimmingPool
 } from '@fortawesome/free-solid-svg-icons';
 import { Hotel, Luggage, Home, BookHeart, Bell, BookMarked, Sailboat } from 'lucide-react'; // If available or use a similar one like Building or Landmark
 import { useLocation, useNavigate } from 'react-router-dom';
@@ -99,6 +100,9 @@ export default function AppNavBar() {
           </NavDropdown.Item>
           <NavDropdown.Item as={NavLink} className='text-dark  my-2' to={`/enterprises/touristActivityProviders`} id='basic-nav-dropdown-item'>
             {<span className="text-dark" style={{ fontSize: '0.80rem' }}> <FontAwesomeIcon icon={faSailboat} size="md" className=' pe-2' fixedWidth /> TOURIST ACTIVITY PROVIDERS</span>}
+          </NavDropdown.Item>
+           <NavDropdown.Item as={NavLink} className='text-dark  my-2' to={`/enterprises/recreationCenters`} id='basic-nav-dropdown-item'>
+            {<span className="text-dark" style={{ fontSize: '0.80rem' }}> <FontAwesomeIcon icon={faSwimmingPool} size="md" className=' pe-2' fixedWidth /> RECREATION CENTERS</span>}
           </NavDropdown.Item>
           <NavDropdown.Item as={NavLink} className='text-dark my-2' to={`/enterprises/touristAndSpecialtyShops`} id='basic-nav-dropdown-item'>
             {<span className="text-dark" style={{ fontSize: '0.80rem' }}> <FontAwesomeIcon icon={faShop} size="md" className=' pe-2' fixedWidth /> TOURISTS AND SPECIALTY SHOPS</span>}
@@ -286,6 +290,9 @@ export default function AppNavBar() {
                     <NavDropdown.Divider />
                     <NavDropdown.Item as={NavLink} id='basic-nav-dropdown-item' to={`/enterprises/touristActivityProviders`}>
                       TOURIST ACTIVITY PROVIDERS
+                    </NavDropdown.Item>
+                    <NavDropdown.Item as={NavLink} id='basic-nav-dropdown-item' to={`/enterprises/recreationCenters`}>
+                      RECREATION CENTERS
                     </NavDropdown.Item>
                     <NavDropdown.Divider />
                     {/* <NavDropdown.Item as={NavLink}  id='basic-nav-dropdown-item'>

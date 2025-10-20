@@ -81,7 +81,7 @@ button9.icon = "building";
 
 const button10 = new HomeButtonFormData();
 button10.name = "RECREATION CENTERS";
-button10.link = "/enterprises/RecreationCenters";
+button10.link = "/enterprises/recreationCenters";
 button10.image = "https://firebasestorage.googleapis.com/v0/b/infoguide-13007.firebasestorage.app/o/recreationcenter.jpg?alt=media&token=b538ed55-6f21-4679-926e-afc910abd520";
 button10.color = "#E6A8D7";
 button10.caption = "Unique experiences for you";
