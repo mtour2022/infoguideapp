@@ -55,57 +55,57 @@ const HomeButtons = ({ buttonDataArray = defaultButtonDataArray }) => {
     <div className="home-section">
       {/* First Section: DOT Accredited */}
       <div className="">
-         <div className="text-center my-4 text-white">
-  <h2 className="custom-section-title text-white">
-    DOT ACCREDITED TOURISM ENTERPRISES
-  </h2>
+        <div className="text-center my-4 text-white">
+          <h2 className="custom-section-title text-white">
+            DOT ACCREDITED TOURISM ENTERPRISES
+          </h2>
 
-  <small className="home-section-subtitle d-block mt-2 text-white">
-    Department of Tourism (DOT) Accredited Enterprises in Boracay Island, Malay, Philippines as of{" "}
-    <strong>May 2025</strong>.
-  </small>
-</div>
+          <small className="home-section-subtitle d-block mt-2 text-white">
+            Department of Tourism (DOT) Accredited Enterprises in Boracay Island, Malay, Philippines as of{" "}
+            <strong>May 2025</strong>.
+          </small>
+        </div>
 
         <div className="row">
-            {buttonDataArray.length > 0 ? (
-              buttonDataArray.slice(0, 8).map((button, index) => (
-<div className="col-6 col-lg-3 m-0 p-1 p-md-2" key={index}>
-                  <NavLink to={button.link} className="group">
+          {buttonDataArray.length > 0 ? (
+            buttonDataArray.slice(0, 10).map((button, index) => (
+              <div className="col-6 col-lg-3 m-0 p-1 p-md-2" key={index}>
+                <NavLink to={button.link} className="group">
+                  <div
+                    className="home-button-card"
+                    style={{ "--button-color": button.color }}
+                  >
                     <div
-                      className="home-button-card"
-                      style={{ "--button-color": button.color }}
-                    >
-                      <div
-                        className="home-button-bg"
-                        style={{
-                          backgroundImage: `url(${button.image ? button.image : fallbackImage})`,
-                        }}
-                      ></div>
-                      <div className="home-button-gradient"></div>
-                      <img src={DOTlogo} alt="DOT Accreditation" className="home-button-logo" />
-                      {button.icon && (
-            <FontAwesomeIcon icon={iconMap[button.icon]} className="home-button-icon" />
-          )}
+                      className="home-button-bg"
+                      style={{
+                        backgroundImage: `url(${button.image ? button.image : fallbackImage})`,
+                      }}
+                    ></div>
+                    <div className="home-button-gradient"></div>
+                    <img src={DOTlogo} alt="DOT Accreditation" className="home-button-logo" />
+                    {button.icon && (
+                      <FontAwesomeIcon icon={iconMap[button.icon]} className="home-button-icon" />
+                    )}
 
-                      <div className="home-button-content">
-                        <p className="home-button-name">{button.name}</p>
-                        <p className="home-button-caption">{button.caption}</p>
-                      </div>
+                    <div className="home-button-content">
+                      <p className="home-button-name">{button.name}</p>
+                      <p className="home-button-caption">{button.caption}</p>
                     </div>
-                  </NavLink>
-                </div>
-              ))
-            ) : (
-              <p className="text-center text-gray-500">No data available</p>
-            )}
-          </div>
+                  </div>
+                </NavLink>
+              </div>
+            ))
+          ) : (
+            <p className="text-center text-gray-500">No data available</p>
+          )}
+        </div>
 
-      
+
       </div>
 
-      
-          </div>
-        );
-      };
+
+    </div>
+  );
+};
 
 export default HomeButtons;

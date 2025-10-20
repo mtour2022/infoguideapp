@@ -254,7 +254,8 @@ const Slideshow = () => {
               )}
             </div>
 
-            {index === 2 && state.logoVisible && (
+{/* update this */}
+            {/* {index === 2 && state.logoVisible && (
               <div className="slide-content">
                 <img
                   src={BestBeachLogo}
@@ -262,7 +263,7 @@ const Slideshow = () => {
                   className="beach-logo"
                 />
               </div>
-            )}
+            )} */}
 
             {isVideo && (
               <div className="bottom-row">
