@@ -291,6 +291,7 @@ export default function AppNavBar() {
                     <NavDropdown.Item as={NavLink} id='basic-nav-dropdown-item' to={`/enterprises/touristActivityProviders`}>
                       TOURIST ACTIVITY PROVIDERS
                     </NavDropdown.Item>
+                    <NavDropdown.Divider />
                     <NavDropdown.Item as={NavLink} id='basic-nav-dropdown-item' to={`/enterprises/recreationCenters`}>
                       RECREATION CENTERS
                     </NavDropdown.Item>

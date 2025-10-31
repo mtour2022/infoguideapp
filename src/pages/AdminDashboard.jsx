@@ -598,6 +598,12 @@ export default function AdminDashboard() {
             />
             <NavlinkIcon
               icon={faPeopleGroup}
+              title="RECREATION CENTERS"
+              onClick={() => { setActivePage('recreationCenters'); handleClose(); }}
+              active={activePage === 'recreationCenters'}
+            />
+            <NavlinkIcon
+              icon={faPeopleGroup}
               title="M.I.C.E. FACILITIES"
               onClick={() => { setActivePage('MICEFacilities'); handleClose(); }}
               active={activePage === 'MICEFacilities'}

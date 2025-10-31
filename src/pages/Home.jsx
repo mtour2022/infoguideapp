@@ -40,6 +40,7 @@ import ActivityScheduleTodayComponent from "../components/activityLocationAdmin/
 import HolidayTodayComponent from "../components/holidayTodayAdmin/holidayComponent";
 import UpcomingEventHighlight from "../components/holidayTodayAdmin/IncommingEventComponent";
 import { useNavigate } from 'react-router-dom';
+import FacebookFeed from "../components/facebookEmbed/facebookFeed";
 
 
 export default function Home() {
@@ -182,13 +183,13 @@ export default function Home() {
 
 
             </Container>
-            <div className="text-center mt-4">
+            {/* <div className="text-center mt-4">
 
                         <FacebookLiveStream videoUrl="https://www.facebook.com/malay.mdrrmc/videos/1326837815488475" />
 
-                    </div>
+                    </div> */}
             <Slideshow />
-                
+
             <div id="tourism-socials">
                 <section
                     className="map-section-long d-flex align-items-center justify-content-end position-relative"
@@ -217,20 +218,20 @@ export default function Home() {
 
                 </section>
             </div>
-                
+
             <div id="tourism-activities">
                 <Row className="justify-content-center align-items-center w-100 px-2 text-center">
-                        <Col xs={12} md={12}>
+                    <Col xs={12} md={12}>
 
-                            <h2 className="custom-section-title text-center my-3">
+                        <h2 className="custom-section-title text-center my-3">
                             EXPLORE MORE WONDERS
                         </h2>
                         <TwoSectionButtons></TwoSectionButtons>
-                        </Col>
+                    </Col>
 
-                    </Row>
-                        
-                    </div>
+                </Row>
+
+            </div>
 
             {/* Quick Links Section */}
             <section className="quick-links-section text-center my-5 px-sm-3 px-4">
@@ -351,11 +352,11 @@ export default function Home() {
                             </Row>
                             <Row className="justify-content-center align-items-center w-100 px-2 text-center">
                                 <Col xs={12} md={6}>
-                                                                    <ActivityScheduleTodayComponent></ActivityScheduleTodayComponent>
+                                    <ActivityScheduleTodayComponent></ActivityScheduleTodayComponent>
 
                                 </Col>
                                 <Col xs={12} md={6}>
-                                                                    <UpcomingEventHighlight></UpcomingEventHighlight>
+                                    <UpcomingEventHighlight></UpcomingEventHighlight>
 
                                 </Col>
                             </Row>
@@ -388,18 +389,13 @@ export default function Home() {
                         aspectRatio: "16 / 9",
                     }}
                 >
-
                     <Row className="justify-content-center align-items-center w-100 px-2 text-center">
-                        <Col xs={12} md={12}>
-
-                         <script src="https://elfsightcdn.com/platform.js" async></script>
-<div class="elfsight-app-7b49c8c7-fb6d-47c6-b472-0dcfde284d47" data-elfsight-app-lazy></div>
-                        </Col>
-
-                    </Row>
-
-
-
+  <Col xs={12} md={12}>
+      {/* <script src="https://elfsightcdn.com/platform.js" async></script>
+                            <div class="elfsight-app-7b49c8c7-fb6d-47c6-b472-0dcfde284d47" data-elfsight-app-lazy></div> */}
+    <FacebookFeed pageUrl="https://www.facebook.com/malaytourism" />
+  </Col>
+</Row>
                 </section>
             </div>
 

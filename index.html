@@ -3,20 +3,40 @@
   <head>
     <meta charset="UTF-8" />
     <link rel="icon" href="/logoBlueIcon.png" type="image/png" />
-    <!-- <link rel="icon" type="image/svg+xml" href="/vite.svg" /> -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Boracay Info Guide</title>
 
     <!-- Meta Description for SEO -->
-    <meta name="description" content="Explore Boracay's best tourist spots, activities, and enterprises with Boracay Info Guide - a centralized information system managed by the LGU Malay - Municipal Tourism Office." />
+    <meta
+      name="description"
+      content="Explore Boracay's best tourist spots, activities, and enterprises with Boracay Info Guide - a centralized information system managed by the LGU Malay - Municipal Tourism Office."
+    />
 
     <!-- Open Graph Meta Tags for Social Media -->
     <meta property="og:title" content="Boracay Info Guide" />
-    <meta property="og:description" content="Explore Boracay's best tourist spots, activities, and enterprises with Boracay Info Guide - a centralized information system managed by the LGU Malay - Municipal Tourism Office." />
-    <meta property="og:image" content="https://firebasestorage.googleapis.com/v0/b/infoguide-13007.firebasestorage.app/o/infoguide-boracay.png?alt=media&token=60b65b19-bc8a-43f0-88f8-3ae41b771b97" />
+    <meta
+      property="og:description"
+      content="Explore Boracay's best tourist spots, activities, and enterprises with Boracay Info Guide - a centralized information system managed by the LGU Malay - Municipal Tourism Office."
+    />
+    <meta
+      property="og:image"
+      content="https://firebasestorage.googleapis.com/v0/b/infoguide-13007.firebasestorage.app/o/infoguide-boracay.png?alt=media&token=60b65b19-bc8a-43f0-88f8-3ae41b771b97"
+    />
     <meta property="og:url" content="https://www.boracayinfoguide.com" />
   </head>
+
   <body>
+    <!-- Facebook SDK root -->
+    <div id="fb-root"></div>
+    <script
+      async
+      defer
+      crossorigin="anonymous"
+      src="https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v19.0"
+      nonce="FbApp"
+    ></script>
+
+    <!-- React app root -->
     <div id="root"></div>
     <script type="module" src="/src/main.jsx"></script>
   </body>
