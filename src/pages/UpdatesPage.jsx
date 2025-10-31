@@ -15,6 +15,7 @@ import PortScheduleTodayComponent from "../components/portLocationAdmin/portLoca
 import ActivityScheduleTodayComponent from "../components/activityLocationAdmin/activityLocationComponent";
 import HolidayTodayComponent from "../components/holidayTodayAdmin/holidayComponent";
 import UpcomingEventHighlight from "../components/holidayTodayAdmin/IncommingEventComponent";
+import FacebookFeed from "../components/facebookEmbed/facebookFeed";
 
 export default function UpdatePage() {
     const navigate = useNavigate();
@@ -254,8 +255,10 @@ export default function UpdatePage() {
 
                     <Row className="justify-content-center align-items-center w-100 px-2 text-center">
                         <Col xs={12} md={12}>
-<script src="https://elfsightcdn.com/platform.js" async></script>
-<div class="elfsight-app-7b49c8c7-fb6d-47c6-b472-0dcfde284d47" data-elfsight-app-lazy></div>
+                            {/* <script src="https://elfsightcdn.com/platform.js" async></script>
+<div class="elfsight-app-7b49c8c7-fb6d-47c6-b472-0dcfde284d47" data-elfsight-app-lazy></div> */}
+                            <FacebookFeed pageUrl="https://www.facebook.com/malaytourism" />
+
                         </Col>
 
                     </Row>
