@@ -41,6 +41,7 @@ import HolidayTodayComponent from "../components/holidayTodayAdmin/holidayCompon
 import UpcomingEventHighlight from "../components/holidayTodayAdmin/IncommingEventComponent";
 import { useNavigate } from 'react-router-dom';
 import FacebookFeed from "../components/facebookEmbed/facebookFeed";
+import BrochureViewer from "../components/BrochureViewer";
 
 
 export default function Home() {
@@ -343,17 +344,15 @@ export default function Home() {
                         <Col md={12}>
                             <Row className="justify-content-center align-items-center w-100 px-2 text-center">
                                 <Col xs={12} md={6}>
-                                    <HolidayTodayComponent></HolidayTodayComponent>
+                                    <PortScheduleTodayComponent></PortScheduleTodayComponent>
                                 </Col>
                                 <Col xs={12} md={6}>
-                                    <PortScheduleTodayComponent></PortScheduleTodayComponent>
-
+                                    <ActivityScheduleTodayComponent></ActivityScheduleTodayComponent>
                                 </Col>
                             </Row>
                             <Row className="justify-content-center align-items-center w-100 px-2 text-center">
                                 <Col xs={12} md={6}>
-                                    <ActivityScheduleTodayComponent></ActivityScheduleTodayComponent>
-
+                                    <HolidayTodayComponent></HolidayTodayComponent>
                                 </Col>
                                 <Col xs={12} md={6}>
                                     <UpcomingEventHighlight></UpcomingEventHighlight>
@@ -390,17 +389,27 @@ export default function Home() {
                     }}
                 >
                     <Row className="justify-content-center align-items-center w-100 px-2 text-center">
-  <Col xs={12} md={12}>
-      {/* <script src="https://elfsightcdn.com/platform.js" async></script>
+                        <Col xs={12} md={12}>
+                            {/* <script src="https://elfsightcdn.com/platform.js" async></script>
                             <div class="elfsight-app-7b49c8c7-fb6d-47c6-b472-0dcfde284d47" data-elfsight-app-lazy></div> */}
-    <FacebookFeed pageUrl="https://www.facebook.com/malaytourism" />
-  </Col>
-</Row>
+                            <FacebookFeed pageUrl="https://www.facebook.com/malaytourism" />
+                        </Col>
+                    </Row>
                 </section>
             </div>
+            <div id="tourism-brochure" className="my-5">
+                <BrochureViewer
+                    title="Tourism Brochure"
+                    pages={[
+                        { src: "https://firebasestorage.googleapis.com/v0/b/esteem-64c71.firebasestorage.app/o/Brochure%2Ftourism%20brochure%20edited.jpg?alt=media&token=5b0ad7d9-bded-43a8-819b-3cd7d3efdc5f", label: "Welcome" },
+                        { src: "https://firebasestorage.googleapis.com/v0/b/esteem-64c71.firebasestorage.app/o/Brochure%2Ftourism%20brochure%20edited%20(2).jpg?alt=media&token=d3d8a593-7a14-41fc-bb2a-61103d2e9f4e", label: "Destinations" },
+                        { src: "https://firebasestorage.googleapis.com/v0/b/esteem-64c71.firebasestorage.app/o/Brochure%2Ftourism%20brochure%20edited%20(1).jpg?alt=media&token=3a6116e8-e1b9-4bb8-90db-be20cb3b376d", label: "Activities" },
+                        { src: "https://firebasestorage.googleapis.com/v0/b/esteem-64c71.firebasestorage.app/o/Brochure%2Ftourism%20brochure%20edited%20(3).jpg?alt=media&token=44958e0b-893c-47ce-bd7c-c515039307e7", label: "Contact" },
+                    ]}
+                />
+            </div>
 
-
-            <div id="tourism-stories">
+            <div id="tourism-stories" className="mt-5">
                 <CustomSwiper collectionName="stories" title={"TOURISM STORIES"} />
             </div>
 

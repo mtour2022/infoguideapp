@@ -17,53 +17,55 @@ import {
   getDocs,
 } from "firebase/firestore";
 import { db } from "../../config/firebase";
-import ActivityLocationComponent from "./activityLocationComponent"; // frontend display component
+import TouristInfoDeskComponent from "./TouristInfoDeskComponent";
 
-export default function TouristInformationDeskLocationAdmin({
-  collectionName = "touristInformationDeskLocation",
+export default function TouristInfoDeskAdmin({
+  collectionName = "touristInfoDesk",
 }) {
-  const [info, setInfo] = useState(null);
+  const [desk, setDesk] = useState(null);
   const [loading, setLoading] = useState(true);
 
   // Form fields
-  const [location, setLocation] = useState("");
-  const [datePosted, setDatePosted] = useState("");
-  const [reference, setReference] = useState("");
-  const [status, setStatus] = useState("Open");
-  const [visible, setVisible] = useState(true);
+  const [deskName, setDeskName] = useState("");
+  const [address, setAddress] = useState("");
   const [openTime, setOpenTime] = useState("");
   const [closeTime, setCloseTime] = useState("");
-  const [postedBy, setPostedBy] = useState("Tourism Information Desk");
+  const [contactPerson, setContactPerson] = useState("");
+  const [contactNumber, setContactNumber] = useState("");
+  const [status, setStatus] = useState("Open");
+  const [visible, setVisible] = useState(true);
+  const [postedBy, setPostedBy] = useState("Municipality of Malay Tourism Office");
   const [postedAt, setPostedAt] = useState("");
   const [editingItem, setEditingItem] = useState(null);
 
-  // Fetch the single record
-  const fetchInfo = async () => {
+  // Fetch the single desk record
+  const fetchDesk = async () => {
     setLoading(true);
     try {
       const snapshot = await getDocs(collection(db, collectionName));
       const docs = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
-      setInfo(docs.length > 0 ? docs[0] : null);
+      setDesk(docs.length > 0 ? docs[0] : null);
     } catch (err) {
-      console.error("Error loading info:", err);
+      console.error("Error loading desk:", err);
     } finally {
       setLoading(false);
     }
   };
 
   useEffect(() => {
-    fetchInfo();
+    fetchDesk();
   }, [collectionName]);
 
   const resetForm = () => {
-    setLocation("");
-    setDatePosted("");
-    setReference("");
-    setStatus("Open");
-    setVisible(true);
+    setDeskName("");
+    setAddress("");
     setOpenTime("");
     setCloseTime("");
-    setPostedBy("Tourism Information Desk");
+    setContactPerson("");
+    setContactNumber("");
+    setStatus("Open");
+    setVisible(true);
+    setPostedBy("Municipality of Malay Tourism Office");
     setPostedAt("");
     setEditingItem(null);
   };
@@ -80,20 +82,21 @@ export default function TouristInformationDeskLocationAdmin({
         day: "numeric",
       });
 
-      // Delete any existing record before adding a new one
+      // Delete existing record (only one allowed)
       const snapshot = await getDocs(collection(db, collectionName));
       for (const s of snapshot.docs) {
         await deleteDoc(doc(db, collectionName, s.id));
       }
 
       const data = {
-        location,
-        date_posted: datePosted,
-        reference,
-        status,
-        visible,
+        deskName,
+        address,
         openTime,
         closeTime,
+        contactPerson,
+        contactNumber,
+        status,
+        visible,
         postedBy,
         postedAt: formattedPostedAt,
       };
@@ -106,34 +109,33 @@ export default function TouristInformationDeskLocationAdmin({
       }
 
       resetForm();
-      fetchInfo();
+      fetchDesk();
     } catch (err) {
-      console.error("Error saving info:", err);
+      console.error("Error saving info desk:", err);
     }
   };
 
-  // Edit
   const handleEdit = (item) => {
     setEditingItem(item);
-    setLocation(item.location);
-    setDatePosted(item.date_posted);
-    setReference(item.reference);
-    setStatus(item.status || "Open");
-    setVisible(item.visible);
+    setDeskName(item.deskName);
+    setAddress(item.address);
     setOpenTime(item.openTime || "");
     setCloseTime(item.closeTime || "");
-    setPostedBy(item.postedBy || "Tourism Information Desk");
+    setContactPerson(item.contactPerson || "");
+    setContactNumber(item.contactNumber || "");
+    setStatus(item.status || "Open");
+    setVisible(item.visible);
+    setPostedBy(item.postedBy || "Municipality of Malay Tourism Office");
     setPostedAt(item.postedAt || "");
   };
 
-  // Delete
   const handleDelete = async (id) => {
-    if (!window.confirm("Are you sure you want to delete this record?")) return;
+    if (!window.confirm("Are you sure you want to delete this desk location?")) return;
     try {
       await deleteDoc(doc(db, collectionName, id));
-      fetchInfo();
+      fetchDesk();
     } catch (err) {
-      console.error("Error deleting info:", err);
+      console.error("Error deleting desk:", err);
     }
   };
 
@@ -142,50 +144,37 @@ export default function TouristInformationDeskLocationAdmin({
       <Card className="mb-4 shadow-sm">
         <Card.Body>
           <h5 className="mb-3">
-            {editingItem
-              ? "Edit Tourist Information Desk Location"
-              : "Add Tourist Information Desk Location"}
+            {editingItem ? "Edit Tourist Information Desk" : "Add Tourist Information Desk"}
           </h5>
           <Form onSubmit={handleSave}>
             <Row className="mb-3">
-              <Col md={3}>
+              <Col md={4}>
                 <Form.Group>
-                  <Form.Label>Location</Form.Label>
+                  <Form.Label>Desk Name</Form.Label>
                   <Form.Control
                     type="text"
-                    value={location}
-                    onChange={(e) => setLocation(e.target.value)}
-                    placeholder="e.g. Cagban Jetty Port, Station 2 Info Booth"
+                    value={deskName}
+                    onChange={(e) => setDeskName(e.target.value)}
+                    placeholder="e.g. Caticlan Jetty Port Tourist Desk"
                     required
                   />
                 </Form.Group>
               </Col>
 
-              <Col md={3}>
+              <Col md={4}>
                 <Form.Group>
-                  <Form.Label>Date Posted</Form.Label>
+                  <Form.Label>Address</Form.Label>
                   <Form.Control
-                    type="date"
-                    value={datePosted}
-                    onChange={(e) => setDatePosted(e.target.value)}
+                    type="text"
+                    value={address}
+                    onChange={(e) => setAddress(e.target.value)}
+                    placeholder="e.g. Malay Tourism Office, Caticlan"
                     required
                   />
                 </Form.Group>
               </Col>
 
-              <Col md={3}>
-                <Form.Group>
-                  <Form.Label>Reference / Link</Form.Label>
-                  <Form.Control
-                    type="text"
-                    value={reference}
-                    onChange={(e) => setReference(e.target.value)}
-                    placeholder="Paste reference link or source"
-                  />
-                </Form.Group>
-              </Col>
-
-              <Col md={3}>
+              <Col md={4}>
                 <Form.Group>
                   <Form.Label>Status</Form.Label>
                   <Form.Select
@@ -194,7 +183,6 @@ export default function TouristInformationDeskLocationAdmin({
                   >
                     <option value="Open">Open</option>
                     <option value="Closed">Closed</option>
-                    <option value="Relocated">Relocated</option>
                     <option value="Under Maintenance">Under Maintenance</option>
                   </Form.Select>
                 </Form.Group>
@@ -226,12 +214,24 @@ export default function TouristInformationDeskLocationAdmin({
 
               <Col md={3}>
                 <Form.Group>
-                  <Form.Label>Posted By</Form.Label>
+                  <Form.Label>Contact Person</Form.Label>
                   <Form.Control
                     type="text"
-                    value={postedBy}
-                    onChange={(e) => setPostedBy(e.target.value)}
-                    placeholder="e.g. Tourism Information Desk"
+                    value={contactPerson}
+                    onChange={(e) => setContactPerson(e.target.value)}
+                    placeholder="e.g. Mr. Juan Dela Cruz"
+                  />
+                </Form.Group>
+              </Col>
+
+              <Col md={3}>
+                <Form.Group>
+                  <Form.Label>Contact Number</Form.Label>
+                  <Form.Control
+                    type="text"
+                    value={contactNumber}
+                    onChange={(e) => setContactNumber(e.target.value)}
+                    placeholder="e.g. 0928 123 4567"
                   />
                 </Form.Group>
               </Col>
@@ -248,7 +248,7 @@ export default function TouristInformationDeskLocationAdmin({
             </Form.Group>
 
             <Button type="submit" variant="primary">
-              {editingItem ? "Update Information" : "Save Information"}
+              {editingItem ? "Update Desk Info" : "Save Desk Info"}
             </Button>
             {editingItem && (
               <Button variant="secondary" className="ms-2" onClick={resetForm}>
@@ -259,21 +259,21 @@ export default function TouristInformationDeskLocationAdmin({
         </Card.Body>
       </Card>
 
-      <h5 className="mb-3">Current Tourist Information Desk Location</h5>
+      <h5 className="mb-3">Current Tourist Information Desk</h5>
 
       {loading ? (
         <Spinner animation="border" />
-      ) : !info ? (
-        <div className="text-muted">No information available.</div>
+      ) : !desk ? (
+        <div className="text-muted">No information desk set.</div>
       ) : (
         <div className="table-responsive">
           <Table bordered hover>
             <thead>
               <tr>
-                <th>Location</th>
-                <th>Date Posted</th>
+                <th>Desk Name</th>
+                <th>Address</th>
                 <th>Open–Close Time</th>
-                <th>Reference</th>
+                <th>Contact</th>
                 <th>Status</th>
                 <th>Posted By</th>
                 <th>Posted At</th>
@@ -282,58 +282,47 @@ export default function TouristInformationDeskLocationAdmin({
               </tr>
             </thead>
             <tbody>
-              <tr key={info.id}>
-                <td>{info.location}</td>
-                <td>{info.date_posted}</td>
+              <tr key={desk.id}>
+                <td>{desk.deskName}</td>
+                <td>{desk.address}</td>
                 <td>
-                  {info.openTime && info.closeTime
-                    ? `${info.openTime} – ${info.closeTime}`
+                  {desk.openTime && desk.closeTime
+                    ? `${desk.openTime} – ${desk.closeTime}`
                     : "—"}
                 </td>
-                <td className="text-truncate" style={{ maxWidth: "250px" }}>
-                  {info.reference ? (
-                    <a
-                      href={info.reference}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      {info.reference}
-                    </a>
-                  ) : (
-                    <span className="text-muted">—</span>
-                  )}
+                <td>
+                  {desk.contactPerson || "—"} <br />
+                  <small>{desk.contactNumber || ""}</small>
                 </td>
                 <td
                   style={{
                     color:
-                      info.status === "Open"
+                      desk.status === "Open"
                         ? "green"
-                        : info.status === "Closed"
+                        : desk.status === "Closed"
                         ? "red"
-                        : info.status === "Relocated"
-                        ? "#f0ad4e"
-                        : "#6c757d",
+                        : "#f0ad4e",
                     fontWeight: "bold",
                   }}
                 >
-                  {info.status || "N/A"}
+                  {desk.status || "N/A"}
                 </td>
-                <td>{info.postedBy || "—"}</td>
-                <td>{info.postedAt || "—"}</td>
-                <td>{info.visible ? "Yes" : "No"}</td>
+                <td>{desk.postedBy || "—"}</td>
+                <td>{desk.postedAt || "—"}</td>
+                <td>{desk.visible ? "Yes" : "No"}</td>
                 <td>
                   <Button
                     size="sm"
                     variant="warning"
                     className="me-2"
-                    onClick={() => handleEdit(info)}
+                    onClick={() => handleEdit(desk)}
                   >
                     Edit
                   </Button>
                   <Button
                     size="sm"
                     variant="danger"
-                    onClick={() => handleDelete(info.id)}
+                    onClick={() => handleDelete(desk.id)}
                   >
                     Delete
                   </Button>
@@ -347,7 +336,7 @@ export default function TouristInformationDeskLocationAdmin({
       {/* Live Preview */}
       <div className="mt-5">
         <h5 className="mb-3">Preview</h5>
-        <ActivityLocationComponent collectionName={collectionName} />
+        <TouristInfoDeskComponent collectionName={collectionName} />
       </div>
     </div>
   );

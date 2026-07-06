@@ -206,17 +206,15 @@ export default function UpdatePage() {
                         <Col md={12}>
                             <Row className="justify-content-center align-items-center w-100 px-2 text-center">
                                 <Col xs={12} md={6}>
-                                    <HolidayTodayComponent></HolidayTodayComponent>
+                                    <PortScheduleTodayComponent></PortScheduleTodayComponent>
                                 </Col>
                                 <Col xs={12} md={6}>
-                                    <PortScheduleTodayComponent></PortScheduleTodayComponent>
+                                    <ActivityScheduleTodayComponent></ActivityScheduleTodayComponent>
                                 </Col>
                             </Row>
                             <Row className="justify-content-center align-items-center w-100 px-2 text-center">
                                 <Col xs={12} md={6}>
-                                    <ActivityScheduleTodayComponent></ActivityScheduleTodayComponent>
-
-
+                                    <HolidayTodayComponent></HolidayTodayComponent>
                                 </Col>
                                 <Col xs={12} md={6}>
                                     <UpcomingEventHighlight></UpcomingEventHighlight>
