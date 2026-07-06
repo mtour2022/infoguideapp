@@ -3139,7 +3139,7 @@ body {
 
   /* Add these back */
   --bv-sand-dim: #e9e0cd;
---bv-coral: #FFC107;
+  --bv-coral: #FFC107;
   --bv-gold: #e8b96a;
   --bv-text-soft: rgba(255,255,255,0.75);
   --bv-shadow: 0 30px 60px -20px rgba(0,0,0,0.35);
@@ -3259,11 +3259,11 @@ body {
   position: relative;
   z-index: 2;
   width: 100%;
-  max-width: 980px;
+  max-width: 1200px;
   opacity: 0;
   transform: translateY(14px);
   pointer-events: none;
-  transition: opacity 0.5s ease, transform 0.5s ease;
+  transition: opacity .5s ease, transform .5s ease;
 }
 .bv-viewer--visible {
   opacity: 1;
@@ -3353,10 +3353,12 @@ body {
   cursor: not-allowed;
 }
 
+/* A4 landscape = 297mm x 210mm -> aspect-ratio 297 / 210 (~1.4143) */
 .bv-book {
   position: relative;
-  width: min(560px, 62vw);
-  aspect-ratio: 3 / 4;
+  width: min(1100px, 90vw);
+  max-height: 78vh;
+  aspect-ratio: 297 / 210;
   perspective: 1600px;
   touch-action: pan-y;
 }
@@ -3365,7 +3367,7 @@ body {
   position: relative;
   width: 100%;
   height: 100%;
-  border-radius: var(--bv-radius);
+  border-radius: 20px;
   overflow: hidden;
   box-shadow: var(--bv-shadow);
   background: var(--bv-sand-dim);
@@ -3399,12 +3401,12 @@ body {
 }
 
 .bv-page-image {
-    width: 100%;
-    height: 100%;
-    object-fit: contain;
-    background: #ffffff;
-    display: block;
-    user-select: none;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  background: #ffffff;
+  display: block;
+  user-select: none;
 }
 
 .bv-page-sheen {
@@ -3489,9 +3491,9 @@ body {
 }
 .bv-thumb-frame {
   position: relative;
-  width: 52px;
-  height: 68px;
-  border-radius: 8px;
+  width: 60px;
+  aspect-ratio: 297 / 210;
+  border-radius: 6px;
   overflow: hidden;
   border: 2px solid transparent;
   box-shadow: 0 6px 16px rgba(3, 15, 16, 0.4);
@@ -3552,6 +3554,8 @@ body {
 .bv-lightbox-image {
   max-width: 100%;
   max-height: 90vh;
+  aspect-ratio: 297 / 210;
+  object-fit: contain;
   border-radius: 10px;
   box-shadow: 0 30px 80px rgba(0, 0, 0, 0.6);
   cursor: default;
@@ -3579,37 +3583,56 @@ body {
 /* ------------------------------------------------------------------ */
 /* Responsive                                                           */
 /* ------------------------------------------------------------------ */
+@media (max-width: 900px) {
+  .bv-root {
+    padding: 28px 20px 32px;
+  }
+  .bv-viewer {
+    max-width: 100%;
+  }
+  .bv-book {
+    width: min(720px, 92vw);
+    max-height: 62vh;
+    aspect-ratio: 297 / 210;
+  }
+}
+
 @media (max-width: 720px) {
   .bv-root {
-    padding: 20px 14px 28px;
-    align-items: flex-start;
+    min-height: 100dvh;
+    padding: 24px 16px 28px;
   }
   .bv-header {
     margin-bottom: 16px;
   }
   .bv-book {
-  position: relative;
-  width: min(900px, 90vw);
-  aspect-ratio: 297 / 210;   /* A4 Landscape */
-  perspective: 1600px;
-  touch-action: pan-y;
-}
+    width: min(600px, 94vw);
+    max-height: 50vh;
+    aspect-ratio: 297 / 210; /* A4 Landscape */
+    perspective: 1200px;
+  }
   .bv-nav {
     width: 38px;
     height: 38px;
   }
   .bv-thumb-frame {
-    width: 42px;
-    height: 56px;
+    width: 46px;
+    aspect-ratio: 297 / 210;
   }
 }
 
 @media (max-width: 420px) {
   .bv-book {
-    width: 68vw;
+    width: 92vw;
+    max-height: 42vh;
+    aspect-ratio: 297 / 210;
   }
   .bv-stage {
     gap: 8px;
+  }
+  .bv-thumb-frame {
+    width: 40px;
+    aspect-ratio: 297 / 210;
   }
 }
 
